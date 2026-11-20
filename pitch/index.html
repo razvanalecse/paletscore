@@ -1,0 +1,282 @@
+<!doctype html>
+<html lang="ro">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>PaletScore Pitch</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Barlow+Condensed:wght@600;700;800&family=Barlow:wght@400;500;600;700&family=Barlow:wght@400;500;600;700&display=swap">
+<style>
+/* PaletScore: sobru, ca o fișă tehnică. Fond deschis, cerneală, galben doar ca accent. */
+section {
+  --bg: #EEF0F0;
+  --bg2: #E3E6E7;
+  --ink: #15181B;
+  --muted: #586068;
+  --line: #C6CBCE;
+  --yellow: #F2BE1A;
+  --yellow-ink: #6B5500;
+  --blue: #2B62B3;
+  --red: #B8322A;
+  padding: 128px 128px 160px;
+  background: var(--bg);
+  color: var(--ink);
+  font-family: 'Barlow', Arial, sans-serif;
+  display: flex;
+  flex-direction: column;
+  gap: 48px;
+  counter-increment: page;
+}
+section.alt { background: var(--bg2); }
+
+h1, h2 { font-family: 'Barlow', Arial, sans-serif; font-weight: 600; letter-spacing: -1px; margin: 0; }
+h1 { font-size: 88px; line-height: 1.05; }
+h2 { font-size: 64px; line-height: 1.1; }
+h3 { font-family: 'Barlow', Arial, sans-serif; font-size: 44px; font-weight: 600; line-height: 1.15; margin: 0; }
+p { font-size: 32px; line-height: 1.4; margin: 0; }
+.muted { color: var(--muted); }
+.label { font-size: 26px; font-weight: 600; letter-spacing: 2px; text-transform: uppercase; color: var(--muted); }
+.big { font-family: 'Barlow Condensed', 'Arial Narrow', Arial, sans-serif; font-weight: 700; line-height: 0.95; margin: 0; }
+.note { font-size: 24px; line-height: 1.35; color: var(--muted); }
+
+.brand { position: absolute; left: 128px; top: 64px; width: 600px; font-size: 26px; font-weight: 700; margin: 0; }
+.brand span { color: var(--yellow-ink); }
+.footer { position: absolute; left: 128px; bottom: 64px; width: 1664px; font-size: 24px; color: var(--muted); margin: 0; }
+
+/* 1 · problema */
+.cover { display: grid; grid-template-columns: 1fr 600px; gap: 96px; align-items: end; flex: 1; }
+.figure { border-top: 8px solid var(--yellow); padding-top: 24px; display: flex; flex-direction: column; gap: 16px; }
+.figure .big { font-size: 150px; white-space: nowrap; }
+
+/* 2 · roluri */
+.roles { display: grid; grid-template-columns: 1fr 1fr; gap: 0; }
+.rolecol { padding: 40px 64px 0 0; display: flex; flex-direction: column; gap: 20px; border-top: 4px solid var(--ink); }
+.rolecol.client { padding-left: 64px; padding-right: 0; border-left: 2px solid var(--line); border-top-color: var(--yellow); }
+.rolecol h3 { font-size: 64px; }
+.rolecol p { font-size: 34px; }
+
+.route { margin-top: auto; display: grid; grid-template-columns: 1fr 1fr 1fr; gap: 0; border-top: 2px solid var(--line); }
+.route p { font-size: 28px; line-height: 1.35; padding: 20px 40px 0 0; }
+.route .n { display: block; font-size: 26px; font-weight: 700; color: var(--yellow-ink); }
+
+/* 3 · grafic */
+.answer { position: absolute; left: 128px; top: 360px; width: 440px; display: flex; flex-direction: column; gap: 18px; }
+.answer .big { font-size: 160px; }
+.answer .after { font-size: 30px; color: var(--red); font-weight: 600; }
+.chart { position: absolute; left: 704px; top: 340px; width: 1080px; height: 500px; }
+.ax { position: absolute; font-size: 24px; color: var(--muted); margin: 0; }
+.mark { position: absolute; font-size: 26px; font-weight: 700; margin: 0; }
+
+/* 4 · finanțe */
+.months { display: grid; grid-template-columns: repeat(12, 1fr); gap: 8px; }
+.m { background: var(--ink); color: var(--bg); padding: 18px 0; text-align: center; font-size: 26px; font-weight: 600; }
+.m.late { background: transparent; color: var(--muted); border: 2px dashed var(--line); padding: 16px 0; }
+.legend { display: flex; justify-content: space-between; gap: 40px; }
+.legend p { font-size: 26px; }
+.nums { margin-top: auto; display: grid; grid-template-columns: 1fr 1fr 1fr; gap: 64px; }
+.nums div { border-top: 4px solid var(--ink); padding-top: 16px; display: flex; flex-direction: column; gap: 8px; }
+.nums div.key { border-top-color: var(--yellow); }
+.nums .big { font-size: 96px; }
+.nums p { font-size: 28px; line-height: 1.3; }
+
+/* 5 · încercați */
+.close { display: grid; grid-template-columns: 1fr 640px; gap: 96px; flex: 1; }
+.url { background: var(--yellow); padding: 18px 24px; font-size: 26px; font-weight: 600; align-self: flex-start; }
+.steps { margin: 0; padding-left: 44px; display: flex; flex-direction: column; gap: 18px; font-size: 34px; line-height: 1.35; }
+.plan { display: flex; flex-direction: column; gap: 28px; border-left: 2px solid var(--line); padding-left: 48px; }
+.plan p { font-size: 30px; line-height: 1.35; }
+.plan .when { font-size: 26px; font-weight: 600; letter-spacing: 1px; text-transform: uppercase; color: var(--muted); }
+
+/* imagini din aplicație */
+.heroimg { position: absolute; left: 800px; top: 0; width: 1120px; height: 1080px; object-fit: cover; background: #D8DBDC; }
+.heroleft { width: 600px; flex: 1; display: flex; flex-direction: column; justify-content: flex-end; gap: 40px; }
+.heroleft h1 { font-size: 66px; line-height: 1.08; }
+.stat1 { border-top: 8px solid var(--yellow); padding-top: 20px; display: flex; flex-direction: column; gap: 10px; }
+.stat1 .big { font-size: 128px; white-space: nowrap; }
+.stat1 p { font-size: 28px; line-height: 1.35; }
+.footer.narrow { width: 620px; }
+.screen { position: absolute; left: 880px; top: 230px; width: 912px; background: var(--ink); padding: 0 0 0 0; box-shadow: 0 30px 60px rgba(21, 24, 27, 0.25); }
+.screenbar { height: 40px; background: var(--ink); display: flex; align-items: center; gap: 10px; padding: 0 16px; }
+.screenbar p { font-size: 24px; color: #A9AFB5; }
+.screen img { display: block; width: 912px; height: 547px; object-fit: cover; background: #D8DBDC; }
+.left700 { width: 680px; display: flex; flex-direction: column; gap: 36px; }
+.icon { width: 56px; height: 56px; color: var(--ink); }
+.rolecol.client .icon { color: var(--yellow-ink); }
+
+/* 4 · diferențiere și bani */
+.diff { display: grid; grid-template-columns: 1fr 600px; gap: 80px; align-items: stretch; flex: 1; }
+.vs { display: flex; flex-direction: column; justify-content: center; }
+.vsrow { display: grid; grid-template-columns: 1fr 1fr; gap: 48px; padding: 26px 0; border-top: 2px solid var(--line); }
+.vsrow:first-child { border-top: none; padding-top: 0; }
+.vsrow p { font-size: 30px; line-height: 1.35; }
+.vsrow .old { color: var(--muted); }
+.vsrow .new { font-weight: 600; }
+.vshead p { font-size: 24px; font-weight: 600; letter-spacing: 2px; text-transform: uppercase; color: var(--muted); }
+.vshead .new { color: var(--yellow-ink); }
+.money { background: var(--ink); color: #EEF0F0; padding: 48px 48px 44px; display: flex; flex-direction: column; justify-content: center; gap: 14px; }
+.money .label { color: #A9AFB5; }
+.money .big { font-size: 132px; color: var(--yellow); }
+.money .sub { font-size: 30px; line-height: 1.3; }
+.money ul { margin: 18px 0 0; padding-left: 32px; font-size: 28px; line-height: 1.45; color: #D3D7DA; display: flex; flex-direction: column; gap: 6px; }
+
+/* intrare discretă */
+.vsrow, .money { animation: fadein 700ms ease-out both; animation-delay: calc(var(--i, 0) * 150ms); }
+.figure, .rolecol, .answer, .chart, .nums div, .months, .plan, .stat1, .screen { animation: fadein 700ms ease-out both; animation-delay: calc(var(--i, 0) * 150ms); }
+.heroimg { animation: fadein 900ms ease-out both; }
+@keyframes fadein { from { opacity: 0; transform: translateY(12px); } to { opacity: 1; transform: translateY(0); } }
+
+/* prezentare */
+html, body { margin: 0; height: 100%; background: #0E1012; overflow: hidden; }
+.stage { position: fixed; left: 50%; top: 50%; width: 1920px; height: 1080px; transform-origin: 0 0; }
+.stage > section { position: absolute; inset: 0; width: 1920px; height: 1080px; box-sizing: border-box; overflow: hidden; display: none; }
+.stage > section.current { display: flex; }
+aside { display: none; }
+.bar { position: fixed; left: 0; right: 0; bottom: 0; display: flex; justify-content: center; align-items: center; gap: 16px; padding: 10px; font: 600 14px 'Barlow', Arial, sans-serif; color: #A9AFB5; opacity: 0; transition: opacity .2s; }
+body:hover .bar { opacity: 1; }
+.bar button { font: inherit; color: #EEF0F0; background: #23272B; border: 0; border-radius: 4px; padding: 8px 14px; cursor: pointer; }
+.bar a { color: #F2BE1A; }
+@media (prefers-reduced-motion: reduce) { * { animation: none !important; } }
+</style>
+</head>
+<body>
+<div class="stage" id="stage">
+<section id="problema" data-transition="fade">
+<img class="heroimg" src="img/blocked.png" alt="Simularea PaletScore: paletul B e plin, paletul A e în schimbare, iar robotul așteaptă o poziție liberă">
+<p class="brand">PaletScore <span>■</span></p>
+<div class="heroleft">
+<h1>Un robot UR20 așază 7,4 găleți pe minut. Cât stă când trebuie schimbat paletul?</h1>
+<div class="stat1" style="--i:1">
+<p class="big">7 min 22 s</p>
+<p>pe oră robotul așteaptă un palet liber, dacă schimbarea durează 7 minute.</p>
+</div>
+</div>
+<p class="footer narrow">AI-Powered Business Challenge 2026 · Echipa [cod echipă]</p>
+<aside>Tech-Con a instalat la PURATOS celule UR20 care așază 7,4 găleți pe minut. Când vorbim cu o altă fabrică, întrebarea directorului de producție e alta: ce se întâmplă cât timp cineva schimbă paletul? În imagine e chiar aplicația noastră: un palet e plin, celălalt se schimbă, iar robotul stă. Dacă schimbarea durează 7 minute, robotul stă peste 7 minute din fiecare oră. Am construit PaletScore ca fabrica să afle asta înainte să ceară o ofertă.</aside>
+</section>
+<section id="strategia" class="alt" data-transition="fade">
+<p class="brand">PaletScore <span>■</span></p>
+<h2>Cine folosește aplicația și cine o plătește</h2>
+<div class="roles">
+<div class="rolecol" style="--i:1">
+<svg class="icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" aria-hidden="true"><circle cx="9" cy="8" r="3.2"/><path d="M3 19c.8-3.2 3.2-5 6-5s5.2 1.8 6 5"/><circle cx="17" cy="9" r="2.4"/><path d="M15.5 14.2c2.6-.4 4.7 1.2 5.5 4"/></svg>
+<p class="label">Utilizator</p>
+<h3>Directorul de producție</h3>
+<p>Dintr-o fabrică alimentară care ambalează în găleți. Își testează linia pe telefon, gratuit, înainte să ceară o ofertă.</p>
+</div>
+<div class="rolecol client" style="--i:2">
+<svg class="icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M12 3l7 3v5c0 4.5-3 8-7 10-4-2-7-5.5-7-10V6z"/><path d="M8.8 12.2l2.2 2.2 4.4-4.6"/></svg>
+<p class="label">Client</p>
+<h3>Tech-Con</h3>
+<p>Plătește aplicația din bugetul de promovare. Primește cereri care vin deja cu datele liniei, așa că evaluarea tehnică pornește mai repede.</p>
+</div>
+</div>
+<div class="route" style="--i:3">
+<p><span class="n">1</span>Fabrica își testează linia în PaletScore.</p>
+<p><span class="n">2</span>Tech-Con primește cererea, cu datele liniei.</p>
+<p><span class="n">3</span>Urmează evaluarea, demonstrația și oferta pentru celulă.</p>
+</div>
+<p class="footer">Aplicația pentru telefon apare în bugetul de promovare al Tech-Con, la 3.000 € pe an.</p>
+<aside>Avem doi actori diferiți. Utilizatorul e directorul de producție dintr-o fabrică alimentară: el își testează linia, gratuit. Clientul nostru e Tech-Con: plătește aplicația din bugetul de promovare și o folosește ca să vândă celule. Fiecare test făcut de o fabrică ajunge la Tech-Con ca o cerere care are deja datele liniei.</aside>
+</section>
+<section id="functia" data-transition="fade">
+<p class="brand">PaletScore <span>■</span></p>
+<h2>Directorul află cât de repede trebuie schimbat paletul</h2>
+<div class="answer" style="--i:1">
+<p class="label">Pentru 430 de găleți pe oră</p>
+<p class="big">6:09</p>
+<p>minute e cea mai lungă schimbare de palet care mai atinge obiectivul</p>
+<p class="after">Cu 30 de secunde în plus: 401 găleți</p>
+</div>
+<div class="chart" style="--i:2">
+<svg aria-label="Găleți paletizate într-o oră în funcție de durata schimbării paletului: 442 până la aproximativ 6 minute, apoi scad până la 220 la 15 minute" width="1080" height="500" viewBox="0 0 1100 500"><line x1="0" y1="38.5" x2="1100" y2="38.5" stroke="#C6CBCE" stroke-width="2"/><line x1="0" y1="250" x2="1100" y2="250" stroke="#C6CBCE" stroke-width="2"/><line x1="0" y1="461.5" x2="1100" y2="461.5" stroke="#C6CBCE" stroke-width="2"/><line x1="0" y1="57.7" x2="1100" y2="57.7" stroke="#15181B" stroke-width="2" stroke-dasharray="10 8"/><line x1="404.6" y1="57.7" x2="404.6" y2="500" stroke="#15181B" stroke-width="2" stroke-dasharray="4 6"/><polyline fill="none" stroke="#2B62B3" stroke-width="6" stroke-linejoin="round" points="0.0,34.6 39.3,34.6 78.6,34.6 117.9,34.6 157.1,34.6 196.4,34.6 235.7,34.6 275.0,34.6 314.3,34.6 353.6,34.6 392.9,40.4 404.6,57.7 432.1,96.2 443.9,113.5 471.4,138.5 510.7,188.5 550.0,209.6 589.3,251.9 628.6,292.3 667.9,292.3 707.1,323.1 746.4,357.7 785.7,376.9 825.0,376.9 864.3,378.8 903.6,407.7 942.9,434.6 982.1,461.5 1021.4,461.5 1060.7,461.5 1100.0,461.5"/><circle cx="404.6" cy="57.7" r="12" fill="#F2BE1A" stroke="#15181B" stroke-width="3"/><circle cx="443.9" cy="113.5" r="10" fill="#B8322A"/></svg>
+<p class="ax" style="left:-64px;top:22px">440</p>
+<p class="ax" style="left:-64px;top:234px">330</p>
+<p class="ax" style="left:-64px;top:445px">220</p>
+<p class="ax" style="left:58px;top:510px">2 min</p>
+<p class="ax" style="left:364px;top:510px">6 min</p>
+<p class="ax" style="left:670px;top:510px">10 min</p>
+<p class="ax" style="left:978px;top:510px">14 min</p>
+<p class="mark" style="left:860px;top:16px;width:220px">obiectiv: 430</p>
+<p class="mark" style="left:470px;top:110px;width:220px;color:#B8322A">+30 s: 401</p>
+</div>
+<p class="footer">Rezultat simulat, găleți de 13 kg la 7,4 pe minut, două poziții, un operator. Axa: găleți pe oră, după durata schimbării.</p>
+<aside>Aici arăt aplicația. Directorul spune: vreau cel puțin 430 de găleți pe oră. PaletScore caută cea mai lungă schimbare de palet care mai atinge cifra asta: 6 minute și 9 secunde. Rulez scena la limită, apoi adaug 30 de secunde: linia scade la 401. Pe grafic se vede de ce: până la 6 minute schimbul nu contează, după aceea fiecare minut costă găleți. Directorul pleacă cu un singur lucru de măsurat mâine: cât durează la el schimbarea.</aside>
+</section>
+<section id="finantele" class="alt" data-transition="fade">
+<p class="brand">PaletScore <span>■</span></p>
+<h2>De ce ar alege Tech-Con PaletScore</h2>
+<div class="diff">
+<div class="vs">
+<div class="vsrow vshead"><p class="old">De obicei</p><p class="new">Cu PaletScore</p></div>
+<div class="vsrow" style="--i:1"><p class="old">O broșură cu cifrele de la PURATOS.</p><p class="new">Testul liniei fabricii, cu datele ei.</p></div>
+<div class="vsrow" style="--i:2"><p class="old">Un calculator de economii care arată doar câștiguri.</p><p class="new">Arată și unde robotul nu ajută: un robot mai rapid ar aduce doar 4 găleți în plus.</p></div>
+<div class="vsrow" style="--i:3"><p class="old">O vizită tehnică pornită de la zero.</p><p class="new">Cererea vine cu măsurătorile deja făcute.</p></div>
+</div>
+<div class="money" style="--i:4">
+<p class="label">Pentru Tech-Con, într-un an</p>
+<p class="big">310.800 €</p>
+<p class="sub">profit net la 20 de celule livrate</p>
+<ul>
+<li>121 de cereri din 30.000 € de promovare</li>
+<li>12 fabrici câștigate, cu câte două celule</li>
+<li>comenzi închise până în august</li>
+</ul>
+</div>
+</div>
+<p class="footer">20.000 € rămân pe fiecare celulă (130.000 − 110.000). Impozitul de 16%, lipsa altor costuri și ratele de conversie sunt ipoteze de confirmat cu Tech-Con.</p>
+<aside>Ce ne diferențiază. Azi, o fabrică primește de obicei o broșură cu cifrele altcuiva sau un calculator de economii care arată doar câștiguri. PaletScore face altceva: testează linia fabricii cu datele ei și spune deschis și unde robotul nu ajută. De exemplu, un robot mai rapid ar aduce doar 4 găleți în plus, pentru că problema e schimbul de paleți. Asta construiește încredere. Pentru Tech-Con, cererea vine cu măsurătorile deja făcute. Cu 30.000 de euro de promovare estimăm 121 de cereri și 12 fabrici câștigate. Dacă cele 20 de celule sunt comandate până în august, profitul net ajunge la 310.800 de euro, cu impozit de 16% și fără alte costuri, ipoteze pe care le confirmăm cu Tech-Con.</aside>
+</section>
+<section id="pasii" data-transition="fade">
+<p class="brand">PaletScore <span>■</span></p>
+<div class="left700">
+<h2>Încercați aplicația</h2>
+<p class="url">razvanalecse.github.io/paletscore</p>
+<ol class="steps">
+<li>Apăsați „Demo 45 s”.</li>
+<li>Apăsați „Primul blocaj”, apoi pe paletul marcat cu roșu.</li>
+<li>La „Ținta”, cereți 430 de găleți, apoi adăugați 30 de secunde.</li>
+</ol>
+<p class="muted" style="font-size:28px">Pentru Tech-Con: campanie în ianuarie–martie, evaluări în aprilie–iunie, comenzi până în august.</p>
+</div>
+<div class="screen" style="--i:1">
+<div class="screenbar"><p>PaletScore · simulare</p></div>
+<img src="img/running.png" alt="Scena din aplicație: transportorul, robotul UR20 care preia o găleată, paletul B în umplere și paletul A în schimbare">
+</div>
+<p class="footer">Toate datele din aplicație sunt fictive. Reperele PURATOS sunt rezultate de test, nu garanții. · Echipa [cod echipă]</p>
+<aside>Puteți încerca aplicația chiar acum, la linkul de pe ecran: demo-ul durează 45 de secunde, iar primul blocaj și ținta de 430 de găleți se văd în două apăsări. Pentru Tech-Con, planul e simplu: campania începe în ianuarie, evaluările vin în primăvară, iar comenzile trebuie închise până în august, ca să se livreze anul acesta. Mulțumim.</aside>
+</section>
+</div>
+<div class="bar"><button type="button" id="prev" aria-label="Slide-ul anterior">←</button><span id="count"></span><button type="button" id="next" aria-label="Slide-ul următor">→</button><button type="button" id="fs">Ecran complet (F)</button><a href="../">Deschide aplicația</a></div>
+<script>
+(function () {
+  var stage = document.getElementById('stage'), slides = [].slice.call(stage.children), i = 0;
+  function fit() {
+    var s = Math.min(window.innerWidth / 1920, window.innerHeight / 1080);
+    stage.style.transform = 'scale(' + s + ') translate(-50%, -50%)';
+  }
+  function show(n) {
+    i = Math.max(0, Math.min(slides.length - 1, n));
+    slides.forEach(function (s, k) { s.classList.toggle('current', k === i); });
+    document.getElementById('count').textContent = (i + 1) + ' / ' + slides.length;
+    if (location.hash !== '#' + (i + 1)) history.replaceState(null, '', '#' + (i + 1));
+  }
+  window.addEventListener('resize', fit);
+  document.addEventListener('keydown', function (e) {
+    if (e.key === 'ArrowRight' || e.key === 'PageDown' || e.key === ' ') { e.preventDefault(); show(i + 1); }
+    else if (e.key === 'ArrowLeft' || e.key === 'PageUp') show(i - 1);
+    else if (e.key === 'Home') show(0);
+    else if (e.key === 'End') show(slides.length - 1);
+    else if (e.key === 'f' || e.key === 'F') toggleFs();
+  });
+  function toggleFs() { if (document.fullscreenElement) document.exitFullscreen(); else if (document.documentElement.requestFullscreen) document.documentElement.requestFullscreen(); }
+  document.getElementById('prev').addEventListener('click', function () { show(i - 1); });
+  document.getElementById('next').addEventListener('click', function () { show(i + 1); });
+  document.getElementById('fs').addEventListener('click', toggleFs);
+  stage.addEventListener('click', function (e) { show(e.clientX > window.innerWidth / 2 ? i + 1 : i - 1); });
+  fit();
+  show((parseInt(location.hash.slice(1), 10) || 1) - 1);
+})();
+</script>
+</body>
+</html>
