@@ -18,3 +18,9 @@ Versiune operațională cu roluri de muncitor și administrator, copiată din su
 Datele sunt locale în browser (`localStorage`), iar sesiunea este locală (`sessionStorage`). Dispozitivele diferite nu partajează înregistrările. Nu există backend sau comandă către robot. Rolurile locale nu reprezintă autorizare de producție. Integrarea AI externă nu este verificată prin testele numerice; cheia din browser este o soluție de prototip. Un pilot real cere backend, date comune și apeluri AI pe server.
 
 Testele numerice: `node test.js`. Construire: `sh build.sh`.
+
+## Verificare în browser pe 20 noiembrie 2026
+
+Au fost verificate configurarea administratorului, adăugarea unui muncitor, ieșirea din cont, accesul cu PIN și deschiderea paginilor Cronometru și Probleme. Conturile Director Demo și Operator Demo sunt fictive. [Capturi reale](../capturi/). Nu au fost înregistrate măsurători industriale și nu a fost testat API-ul extern.
+
+Pentru a reproduce scenariul financiar al planului, introdu explicit 50.000 EUR alte costuri, 16% impozit și patru celule/lună capacitate. Calendarul de comenzi februarie–august este 2, 2, 4, 4, 4, 4, 4. Valorile implicite ale aplicației pot fi diferite; fișierele Excel și planul definesc scenariul prezentat.
