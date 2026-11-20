@@ -10,4 +10,6 @@ mkdir -p dist
   printf '\n</body>\n</html>\n'
 } > dist/index.html
 cp model.js dist/model.js
+# copie pentru GitHub Pages (servit din rădăcina depozitului)
+cp dist/index.html index.html
 echo "dist/ gata"

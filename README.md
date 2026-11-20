@@ -3,6 +3,10 @@
 Prototip web pentru AI-Powered Business Challenge 2026 (secțiunea Studenți, tema Tech-Con / paletizare UR20).
 Simulează secundă cu secundă o celulă UR20 cu două poziții și arată ce merită schimbat în fabrică.
 
+**Aplicația:** https://razvanalecse.github.io/paletscore/
+
+**Cine e cine:** utilizatorul este directorul de producție dintr-o fabrică alimentară, care își testează linia gratuit; clientul este Tech-Con, care plătește aplicația din bugetul de promovare și primește cererile.
+
 ## Cum testezi (2 minute)
 1. **Demo 45 s**: flux stabil → schimbare în 7 minute → primul blocaj → intervenția recomandată pe aceeași oră.
 2. **Primul blocaj** (scenariul „Schimbare lentă”): minutul 12:02. Apasă pe palet sau pe robot pentru Inspector și pentru „Unde merită să intervii?”.
