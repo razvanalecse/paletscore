@@ -337,6 +337,10 @@ table.grid3 td b { display: block; font-family: var(--font-display); font-size: 
 .card .opts { display: grid; gap: 6px; }
 .card .opts button { justify-content: flex-start; text-align: left; font-family: var(--font-body); font-weight: 600; text-transform: none; letter-spacing: 0; font-size: 15px; }
 .card .ans { font-size: 15px; border-left: 4px solid var(--accent); padding-left: 10px; }
+.visually-hidden { position: absolute; width: 1px; height: 1px; overflow: hidden; clip: rect(0 0 0 0); white-space: nowrap; }
+.filebtn { font-family: var(--font-display); font-weight: 700; font-size: 14px; letter-spacing: .04em; text-transform: uppercase; border: 2px solid var(--line-2); border-radius: 3px; padding: 6px 12px; min-height: 38px; display: inline-flex; align-items: center; cursor: pointer; }
+.filebtn:hover { background: var(--surface); }
+#csvFile:focus-visible + .filebtn, .filebtn:focus-within { outline: 3px solid var(--accent); }
 textarea.csv { width: 100%; min-height: 160px; font-family: var(--font-code); font-size: 12.5px; border: 2px solid var(--line-2); border-radius: 3px; background: var(--raise); color: var(--ink); padding: 10px; }
 .mini { border-collapse: collapse; width: 100%; }
 .mini th, .mini td { padding: 7px 8px; border-bottom: 1px solid var(--line); text-align: right; font-size: 14px; }
@@ -746,7 +750,7 @@ footer { color: var(--muted); font-size: 13px; display: flex; flex-wrap: wrap; g
     </div>
     <div class="tabp" id="tp-csv" role="tabpanel">
       <p>Un rând pe eveniment: <code>sosire,&lt;secunda din oră&gt;</code> sau <code>schimbare,&lt;durata în secunde&gt;</code>. Schimbările se folosesc în ordinea din fișier. Restul liniei (format, buffer, operatori) vine din „Linia ta”.</p>
-      <div class="cmp-ctrl"><button class="quiet" type="button" id="csvSample">Încarcă ora demonstrativă</button><label class="quiet" style="display:inline-flex;align-items:center;gap:8px;font-weight:600"><input type="file" id="csvFile" accept=".csv,.txt,text/csv,text/plain"> Fișier CSV</label></div>
+      <div class="cmp-ctrl"><button class="quiet" type="button" id="csvSample">Încarcă ora demonstrativă</button><label class="filebtn" for="csvFile">Alege un fișier CSV</label><input type="file" id="csvFile" accept=".csv,.txt,text/csv,text/plain" class="visually-hidden"><span class="hint" id="csvName"></span></div>
       <textarea class="csv" id="csvText" spellcheck="false" aria-label="Datele orei în format CSV"></textarea>
       <div class="cmp-ctrl"><button class="primary" type="button" id="csvRun">Reconstituie ora</button><button type="button" id="csvScene" disabled>Rulează în scenă</button></div>
       <div id="csvOut"></div>
@@ -754,9 +758,9 @@ footer { color: var(--muted); font-size: 13px; display: flex; flex-wrap: wrap; g
     <div class="tabp" id="tp-two" role="tabpanel" hidden>
       <p>Fiecare celulă merge bine cu propriul operator. Cu un singur om pentru amândouă apar conflicte. Aplicația încearcă trei reguli de prioritate și decalări ale pornirii, cu timpul de deplasare dat ca ipoteză.</p>
       <div class="cmp-ctrl">
-        <div class="field" style="width:170px" id="f-twoA"><label for="twoA">Schimbare celula 1</label><div class="inrow"><input id="twoA" inputmode="numeric" value="200"><span class="u">s</span></div></div>
-        <div class="field" style="width:170px" id="f-twoB"><label for="twoB">Schimbare celula 2</label><div class="inrow"><input id="twoB" inputmode="numeric" value="200"><span class="u">s</span></div></div>
-        <div class="field" style="width:170px" id="f-travel"><label for="travel">Deplasare între celule</label><div class="inrow"><input id="travel" inputmode="numeric" value="30"><span class="u">s</span></div></div>
+        <div class="field" style="width:170px" id="f-twoA"><label for="twoA">Schimbare celula 1</label><div class="inrow"><input id="twoA" inputmode="numeric" value="200"><span class="u">s</span></div><span class="err" id="e-twoA" hidden></span></div>
+        <div class="field" style="width:170px" id="f-twoB"><label for="twoB">Schimbare celula 2</label><div class="inrow"><input id="twoB" inputmode="numeric" value="200"><span class="u">s</span></div><span class="err" id="e-twoB" hidden></span></div>
+        <div class="field" style="width:170px" id="f-travel"><label for="travel">Deplasare între celule</label><div class="inrow"><input id="travel" inputmode="numeric" value="30"><span class="u">s</span></div><span class="err" id="e-travel" hidden></span></div>
         <button class="primary" type="button" id="twoRun">Găsește organizarea</button>
       </div>
       <div id="twoOut"></div>
@@ -854,7 +858,7 @@ footer { color: var(--muted); font-size: 13px; display: flex; flex-wrap: wrap; g
         <div class="field" style="width:170px" id="f-lead"><label for="lead">Livrare după comandă</label><div class="inrow"><input id="lead" inputmode="numeric" value="4"><span class="u">luni</span></div></div>
         <div class="field" style="width:170px" id="f-capm"><label for="capm">Instalări posibile</label><div class="inrow"><input id="capm" inputmode="numeric" value="3"><span class="u">celule/lună</span></div></div>
         <div class="field" style="width:170px"><label for="instLag">Instalare după livrare</label><div class="inrow"><input id="instLag" inputmode="numeric" value="0"><span class="u">luni</span></div></div>
-        <div class="field" style="width:200px"><label for="recog">Se numără în an la</label><div class="inrow"><select id="recog"><option value="deliv">livrare (cum cere tema)</option><option value="inst">instalare (ipoteză)</option></select></div></div>
+        <div class="field" style="width:250px"><label for="recog">Se numără în an la</label><div class="inrow"><select id="recog"><option value="deliv">livrare (cum cere tema)</option><option value="inst">instalare (ipoteză)</option></select></div></div>
         <button class="quiet" id="btnFromFunnel" type="button">Repartizează comenzile din pâlnie</button>
       </div>
       <div class="cal"><table class="cal-t" id="calT"></table></div>
@@ -931,7 +935,7 @@ footer { color: var(--muted); font-size: 13px; display: flex; flex-wrap: wrap; g
   <footer><span>PaletScore · prototip pentru AI-Powered Business Challenge 2026</span><span>Nu este un site Tech-Con sau PURATOS. Date fictive; nimic nu se trimite sau se stochează.</span></footer>
 </div>
 
-<script src="model.js?v=1795170003"></script>
+<script src="model.js?v=1795170275"></script>
 <script>
 (function () {
   'use strict';
@@ -942,6 +946,7 @@ footer { color: var(--muted); font-size: 13px; display: flex; flex-wrap: wrap; g
   var fmt = M.fmt;
   var COND = '"Barlow Condensed", "Arial Narrow", Arial, sans-serif';
   var MONTHS = ['Ian', 'Feb', 'Mar', 'Apr', 'Mai', 'Iun', 'Iul', 'Aug', 'Sep', 'Oct', 'Noi', 'Dec'];
+  var MONTHS_FULL = ['ianuarie', 'februarie', 'martie', 'aprilie', 'mai', 'iunie', 'iulie', 'august', 'septembrie', 'octombrie', 'noiembrie', 'decembrie'];
 
   // ---------- Date de intrare ----------
   var state = { format: '13', operators: 1 };
@@ -1719,7 +1724,7 @@ footer { color: var(--muted); font-size: 13px; display: flex; flex-wrap: wrap; g
     [cmp.a, cmp.b].forEach(function (r) { r.view.fit(); r.tl.fit(); });
     cmp.speed = speed || 120; cmp.running = true;
     $('lblA').textContent = 'A · ' + labelA; $('lblB').textContent = 'B · ' + labelB;
-    $('diffLine').innerHTML = diffHtml;
+    $('diffLine').innerHTML = $('diffRep').hidden ? diffHtml : '';
     cmp.finalA = M.runLine(lineA); cmp.finalB = M.runLine(lineB);
   }
   var FIELDS = [
@@ -1841,7 +1846,7 @@ footer { color: var(--muted); font-size: 13px; display: flex; flex-wrap: wrap; g
       return;
     }
     el.className = 'answer';
-    el.innerHTML = '<span class="label">Schimbarea paletului trebuie să dureze cel mult</span><span class="v">' + M.fmtDur(d.tr.c) + (d.tr.capped ? '+' : '') + '</span><p>' + (d.atLimit ? 'La limită: ' + buckets(d.atLimit.placed) + ' pe oră.' : '') + (d.plus30 ? ' Cu 30 s în plus: ' + buckets(d.plus30.placed) + ', sub obiectiv.' : '') + '</p>';
+    el.innerHTML = d.tr.capped ? '<span class="label">Obiectivul e atins oricum</span><span class="v">orice durată</span><p>Până la 30 de minute de schimbare, linia face cel puțin ' + buckets(d.target) + ' pe oră. Schimbul nu e limita pentru acest obiectiv.</p>' : '<span class="label">Schimbarea paletului trebuie să dureze cel mult</span><span class="v">' + M.fmtDur(d.tr.c) + '</span><p>' + (d.atLimit ? 'La limită: ' + buckets(d.atLimit.placed) + ' pe oră.' : '') + (d.plus30 ? ' Cu 30 s în plus: ' + buckets(d.plus30.placed) + ', sub obiectiv.' : '') + '</p>';
   }
   function niceTicks(lo, hi, n) {
     var span = hi - lo || 1, step = Math.pow(10, Math.floor(Math.log10(span / n))), err = span / n / step;
@@ -1892,7 +1897,7 @@ footer { color: var(--muted); font-size: 13px; display: flex; flex-wrap: wrap; g
       c.beginPath(); c.moveTo(lx, ly); c.lineTo(lx, v.h - L.b); c.strokeStyle = T.ink; c.lineWidth = 1; c.stroke();
       c.beginPath(); c.arc(lx, ly, 6, 0, Math.PI * 2); c.fillStyle = T.ink; c.fill();
       c.fillStyle = T.ink; c.textAlign = lx > v.w * 0.75 ? 'right' : 'left'; c.fillText('LIMITĂ ' + mmss(d.tr.c), lx + (lx > v.w * 0.75 ? -10 : 10), ly + 16);
-      if (d.plus30) { var px3 = L.x(d.plus30.c), py3 = L.y(d.plus30.placed); c.beginPath(); c.arc(px3, py3, 5, 0, Math.PI * 2); c.fillStyle = T.risk; c.fill(); c.textAlign = 'left'; c.fillText('+30 s · ' + d.plus30.placed, px3 + 8, py3 + 14); }
+      if (d.plus30) { var px3 = L.x(d.plus30.c), py3 = L.y(d.plus30.placed); c.beginPath(); c.arc(px3, py3, 5, 0, Math.PI * 2); c.fillStyle = T.risk; c.fill(); c.textAlign = 'left'; c.fillText('+30 S · ' + d.plus30.placed, px3 + 10, py3 + 4); }
     }
     if (d.cur) {
       var px = L.x(d.cur.c), py = L.y(d.cur.placed);
@@ -2185,7 +2190,9 @@ footer { color: var(--muted); font-size: 13px; display: flex; flex-wrap: wrap; g
     $('chReq').textContent = fmt(funnelData.requests, 1);
     var sc = $('sumCheck');
     var B = budget();
-    if (Math.abs(funnelData.total - B) < 0.5) { sc.className = 'sumcheck ok'; sc.textContent = 'Bugetul se închide la ' + fmt(B) + ' EUR, fiecare cost numărat o singură dată.'; }
+    $('f-budget').classList.toggle('bad', !B);
+    if (!B) { sc.className = 'sumcheck bad'; sc.textContent = 'Introdu un buget total pozitiv, de exemplu 30.000 EUR.'; }
+    else if (Math.abs(funnelData.total - B) < 0.5) { sc.className = 'sumcheck ok'; sc.textContent = 'Bugetul se închide la ' + fmt(B) + ' EUR, fiecare cost numărat o singură dată.'; }
     else { sc.className = 'sumcheck bad'; sc.textContent = 'Totalul trebuie să fie ' + fmt(B) + ' EUR. Acum: ' + fmt(funnelData.total) + ' EUR (' + (funnelData.total > B ? '+' : '−') + fmt(Math.abs(funnelData.total - B)) + '). Folosește „Ajustează canalele proporțional”.'; }
     var rows = [['Cereri relevante', funnelData.requests, ''], ['Întâlniri tehnice', funnelData.meetings, ''], ['Clienți', funnelData.clients, ''], ['Celule', funnelData.cells, 'cells']];
     var mx = Math.max(1, funnelData.requests);
@@ -2217,7 +2224,7 @@ footer { color: var(--muted); font-size: 13px; display: flex; flex-wrap: wrap; g
     calState = { inYear: counted, delivered: d.inYear, installed: instYear, ordered: d.ordered, deliveredArr: d.delivered.slice(0, 12) };
     renderCommercial(counted);
     var need = neededCells();
-    $('calOut').innerHTML = 'Comandate: ' + d.ordered + ' · livrate în an: <b>' + d.inYear + '</b> · instalate în an: <b>' + instYear + '</b>' + (d.carried ? ' · livrări care trec în anul următor: ' + d.carried : '') + '. Se numără la ' + ($('recog').value === 'inst' ? 'instalare (ipoteză)' : 'livrare') + ': <b>' + counted + '</b>. Comenzile de după ' + MONTHS[Math.max(0, d.lastUsefulOrderMonth)].toLowerCase() + ' nu mai ajung în an.' + (need ? (counted >= need ? ' Ținta cere minimum ' + need + ': atinsă.' : ' Ținta cere minimum ' + need + ': lipsesc ' + (need - counted) + '.') : '');
+    $('calOut').innerHTML = 'Comandate: ' + d.ordered + ' · livrate în an: <b>' + d.inYear + '</b> · instalate în an: <b>' + instYear + '</b>' + (d.carried ? ' · livrări care trec în anul următor: ' + d.carried : '') + '. Se numără la ' + ($('recog').value === 'inst' ? 'instalare (ipoteză)' : 'livrare') + ': <b>' + counted + '</b>. ' + (d.lastUsefulOrderMonth < 0 ? 'Cu acest termen, nicio comandă din an nu mai ajunge livrată până la 31 decembrie.' : d.lastUsefulOrderMonth >= 11 ? 'Toate comenzile din an ajung livrate.' : 'Comenzile de după ' + MONTHS_FULL[d.lastUsefulOrderMonth] + ' nu mai ajung în an.') + (need ? (counted >= need ? ' Ținta cere minimum ' + need + ': atinsă.' : ' Ținta cere minimum ' + need + ': lipsesc ' + (need - counted) + '.') : '');
     renderCapacity(); renderNext();
   }
   function neededCells() {
@@ -2238,7 +2245,8 @@ footer { color: var(--muted); font-size: 13px; display: flex; flex-wrap: wrap; g
     var e = $('e-comm');
     if (bad.length) { e.textContent = 'Corectează câmpurile marcate: numere pozitive, impozit sub 100%.'; e.hidden = false; $('cRes').innerHTML = ''; return; }
     e.hidden = true;
-    var r = M.commercial(c), eur = function (x) { return fmt(x) + ' €'; };
+    var r = M.commercial(c), eur = function (x) { return (x < 0 ? '−' : '') + fmt(Math.abs(x)) + ' €'; };
+    if (r.unit <= 0) { e.textContent = 'Prețul trebuie să fie peste costul direct; altfel fiecare celulă vândută pierde bani.'; e.hidden = false; }
     var html = '<div><span class="l">Celule livrate în an (din calendar)</span><span class="v">' + cells + '</span></div>' +
       '<div><span class="l">Contribuție (' + cells + ' × ' + eur(r.unit) + ')</span><span class="v">' + eur(r.contribution) + '</span></div>' +
       '<div><span class="l">După promovare, înainte de alte costuri și impozit</span><span class="v">' + eur(r.afterPromo) + '</span></div>';
@@ -2305,6 +2313,7 @@ footer { color: var(--muted); font-size: 13px; display: flex; flex-wrap: wrap; g
   $('csvRun').addEventListener('click', runCSV);
   $('csvFile').addEventListener('change', function (ev) {
     var f = ev.target.files && ev.target.files[0]; if (!f) return;
+    $('csvName').textContent = f.name;
     var rd = new FileReader(); rd.onload = function () { $('csvText').value = String(rd.result || ''); runCSV(); }; rd.readAsText(f);
   });
   $('csvScene').addEventListener('click', function () {
@@ -2391,10 +2400,10 @@ footer { color: var(--muted); font-size: 13px; display: flex; flex-wrap: wrap; g
 
   // ---------- Comercial: buget, capacitate, mesaje, oportunități, următorul pas ----------
   var calState = null;
-  function budget() { var b = num($('budget').value); return b > 0 ? b : 30000; }
+  function budget() { var b = num($('budget').value); return b > 0 ? b : null; }
   $('btnScale').addEventListener('click', function () {
     var tot = CHANNELS.reduce(function (a, ch, i) { return a + (num($('chE' + i).value) || 0); }, 0), b = budget();
-    if (tot <= 0) return;
+    if (tot <= 0 || !b) return;
     CHANNELS.forEach(function (ch, i) { $('chE' + i).value = Math.round((num($('chE' + i).value) || 0) * b / tot / 50) * 50; });
     var diff = b - CHANNELS.reduce(function (a, ch, i) { return a + (num($('chE' + i).value) || 0); }, 0);
     $('chE8').value = (num($('chE8').value) || 0) + diff;
@@ -2465,7 +2474,7 @@ footer { color: var(--muted); font-size: 13px; display: flex; flex-wrap: wrap; g
   }
   LOST.forEach(function (l, i) { $('ls' + i).addEventListener('change', renderLost); $('lr' + i).addEventListener('change', renderLost); });
 
-  $('nowM').innerHTML = MONTHS.map(function (m, i) { return '<option value="' + i + '"' + (i === 4 ? ' selected' : '') + '>' + m + '</option>'; }).join('');
+  $('nowM').innerHTML = MONTHS_FULL.map(function (m, i) { return '<option value="' + i + '"' + (i === 4 ? ' selected' : '') + '>' + m.charAt(0).toUpperCase() + m.slice(1) + '</option>'; }).join('');
   var NEXT = [['Reclamă suplimentară (mai multe cereri)', 5000, 6, 10, 2], ['Evaluare tehnică pentru o cerere existentă', 1500, 3, 30, 2], ['Demonstrație pentru un client deja interesat', 2500, 1, 50, 2]];
   $('nextT').innerHTML = '<thead><tr><th>Acțiune</th><th>Cost EUR</th><th>Luni până la decizie</th><th>Probabilitate %</th><th>Celule</th><th>Livrare în an?</th><th>Celule așteptate în an</th><th>EUR / celulă</th></tr></thead><tbody>' + NEXT.map(function (n, i) { return '<tr><td>' + n[0] + '</td>' + [1, 2, 3, 4].map(function (k) { return '<td><input id="nx' + i + k + '" inputmode="numeric" value="' + n[k] + '" aria-label="' + n[0] + '"></td>'; }).join('') + '<td id="nxY' + i + '"></td><td class="n" id="nxE' + i + '"></td><td class="n" id="nxC' + i + '"></td></tr>'; }).join('') + '</tbody>';
   function renderNext() {
@@ -2473,11 +2482,11 @@ footer { color: var(--muted); font-size: 13px; display: flex; flex-wrap: wrap; g
     NEXT.forEach(function (n, i) {
       var cost = num($('nx' + i + '1').value) || 0, mo = num($('nx' + i + '2').value) || 0, pr = (num($('nx' + i + '3').value) || 0) / 100, ce = num($('nx' + i + '4').value) || 0;
       var dm = now + mo + lead, inYear = dm <= 11, exp = inYear ? pr * ce : 0;
-      $('nxY' + i).innerHTML = inYear ? '<span class="status-ok">da, în ' + MONTHS[dm] + '</span>' : '<span class="status-bad">nu, anul următor</span>';
+      $('nxY' + i).innerHTML = inYear ? '<span class="status-ok">da, în ' + MONTHS_FULL[dm] + '</span>' : '<span class="status-bad">nu, anul următor</span>';
       $('nxE' + i).textContent = fmt(exp, 2); $('nxC' + i).textContent = exp > 0 ? fmt(cost / exp) : '—';
       res.push(exp); if (exp > bv) { bv = exp; best = i; }
     });
-    $('nextOut').textContent = bv > 0 ? 'În ' + MONTHS[now].toLowerCase() + ', banii aduc cele mai multe celule livrabile în an prin: ' + NEXT[best][0].toLowerCase() + '. ' + (res[0] === 0 ? 'Reclama aduce cereri, dar acestea nu mai ajung la livrare până la 31 decembrie.' : '') : 'Din ' + MONTHS[now].toLowerCase() + ', nicio acțiune nu mai aduce celule livrate în anul acesta. Banii pregătesc anul următor.';
+    $('nextOut').textContent = bv > 0 ? 'În ' + MONTHS_FULL[now] + ', banii aduc cele mai multe celule livrabile în an prin: ' + NEXT[best][0].toLowerCase() + '. ' + (res[0] === 0 ? 'Reclama aduce cereri, dar acestea nu mai ajung la livrare până la 31 decembrie.' : '') : 'Din ' + MONTHS_FULL[now] + ', nicio acțiune nu mai aduce celule livrate în anul acesta. Banii pregătesc anul următor.';
   }
   NEXT.forEach(function (n, i) { [1, 2, 3, 4].forEach(function (k) { $('nx' + i + k).addEventListener('input', renderNext); }); });
   $('nowM').addEventListener('change', renderNext);

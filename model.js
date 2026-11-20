@@ -338,6 +338,7 @@
       if (!ln || /^tip\s*[,;]/i.test(ln) || ln[0] === '#') return;
       var parts = ln.split(/[,;\t]/).map(function (x) { return x.trim(); });
       var kind = (parts[0] || '').toLowerCase(), v = parseFloat(String(parts[1] || '').replace(',', '.'));
+      if (kind !== 'sosire' && kind !== 'schimbare') { errors.push('Linia ' + (i + 1) + ': tip necunoscut „' + parts[0] + '”. Folosește „sosire” sau „schimbare”.'); return; }
       if (!(v >= 0) || !isFinite(v)) { errors.push('Linia ' + (i + 1) + ': valoarea nu este un număr.'); return; }
       if (kind === 'sosire') { if (v > HOUR) errors.push('Linia ' + (i + 1) + ': sosire după 3600 s, ignorată.'); else arrivals.push(v); }
       else if (kind === 'schimbare') { if (v < 5 || v > 3600) errors.push('Linia ' + (i + 1) + ': schimbare în afara intervalului 5–3600 s.'); else changes.push(v); }
