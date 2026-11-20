@@ -30,6 +30,8 @@ Pe ecranul de intrare sunt afișate conturile publice de demonstrație și două
 - `paletscore.html` — interfața
 - `test.js` — teste numerice (`node test.js`)
 - `build.sh` — generează `dist/` pentru GitHub Pages / Netlify / Vercel
-- `Model_financiar_PaletScore.xlsx` — modelul financiar editabil, cu formule (generat de `build_xlsx.py`)
+- `Model_financiar_PaletScore.xlsx` — modelul financiar curent, editabil, cu formule; aceeași versiune ca în `livrabile/` și în arhiva finală
 
 Reperele PURATOS (7,4 și 8,6 găleți/min; 44 și 100 găleți/palet) sunt rezultate de test, nu garanții. Toate datele sunt fictive.
+
+Modelul financiar curent conține Sinteza, Ipoteze, Comenzi, Marketing și Operatiuni. Scriptul `build_xlsx.py` aparține versiunii anterioare și nu regenerează modelul curent.
