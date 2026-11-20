@@ -302,6 +302,53 @@ table.obs td { font-family: var(--font-display); font-weight: 600; font-size: 18
 .wsplit { height: 18px; display: flex; border-radius: 2px; overflow: hidden; }
 .wsplit i { display: block; height: 100%; }
 
+/* File și carduri */
+.tabs { display: flex; gap: 0; border-bottom: 2px solid var(--ink); overflow-x: auto; }
+.tabs button { border: 0; border-bottom: 5px solid transparent; border-radius: 0; min-height: 46px; padding: 8px 14px; font-size: 16px; white-space: nowrap; }
+.tabs button[aria-selected="true"] { border-bottom-color: var(--accent); background: transparent; }
+.tabp { display: grid; gap: 18px; padding-top: 18px; }
+.torn { display: grid; gap: 10px; }
+.torn .row { display: grid; grid-template-columns: 220px minmax(0, 1fr) 90px; gap: 12px; align-items: center; }
+@media (max-width: 640px) { .torn .row { grid-template-columns: minmax(0, 1fr) 70px; } .torn .row .track { grid-column: 1 / -1; grid-row: 2; } }
+.torn .track { position: relative; height: 26px; background: var(--surface); }
+.torn .span { position: absolute; top: 3px; bottom: 3px; background: var(--blue); }
+.torn .row:first-child .span { background: var(--accent); }
+.torn .base { position: absolute; top: -3px; bottom: -3px; width: 2px; background: var(--ink); }
+.torn .n { font-family: var(--font-display); font-weight: 700; font-size: 18px; text-align: right; font-variant-numeric: tabular-nums; }
+table.grid3 { border-collapse: collapse; width: 100%; min-width: 520px; }
+table.grid3 th, table.grid3 td { border: 1px solid var(--line); padding: 10px; text-align: center; font-size: 14px; }
+table.grid3 th { font-family: var(--font-display); font-weight: 600; letter-spacing: .06em; text-transform: uppercase; color: var(--muted); font-size: 13px; }
+table.grid3 td.same { background: color-mix(in srgb, var(--accent) 25%, transparent); color: var(--ink); }
+table.grid3 td b { display: block; font-family: var(--font-display); font-size: 18px; }
+.diffrep { border-left: 5px solid var(--ink); background: var(--raise); padding: 10px 14px; font-size: 15px; }
+.diffrep.warn { border-left-color: var(--warn); }
+.diffrep ul { margin: 6px 0 0; padding-left: 18px; }
+.cards { display: grid; grid-template-columns: repeat(auto-fit, minmax(260px, 1fr)); gap: 16px; }
+.card { background: var(--raise); padding: 16px; display: grid; gap: 10px; align-content: start; border-top: 4px solid var(--ink); }
+.card h3 { font-size: 22px; font-weight: 700; text-transform: uppercase; line-height: 1.05; }
+.card .opts { display: grid; gap: 6px; }
+.card .opts button { justify-content: flex-start; text-align: left; font-family: var(--font-body); font-weight: 600; text-transform: none; letter-spacing: 0; font-size: 15px; }
+.card .ans { font-size: 15px; border-left: 4px solid var(--accent); padding-left: 10px; }
+textarea.csv { width: 100%; min-height: 160px; font-family: var(--font-code); font-size: 12.5px; border: 2px solid var(--line-2); border-radius: 3px; background: var(--raise); color: var(--ink); padding: 10px; }
+.mini { border-collapse: collapse; width: 100%; }
+.mini th, .mini td { padding: 7px 8px; border-bottom: 1px solid var(--line); text-align: right; font-size: 14px; }
+.mini th:first-child, .mini td:first-child { text-align: left; }
+.mini th { font-family: var(--font-display); font-weight: 600; font-size: 12px; letter-spacing: .08em; text-transform: uppercase; color: var(--muted); }
+.mini td.n { font-family: var(--font-display); font-weight: 700; font-size: 17px; font-variant-numeric: tabular-nums; }
+.mini input, .mini select { width: 100%; min-width: 70px; border: 1px solid var(--line-2); border-radius: 2px; background: var(--raise); color: var(--ink); font: inherit; font-size: 14px; padding: 4px 6px; min-height: 32px; }
+.mini input[type="checkbox"] { width: 20px; min-width: 0; min-height: 20px; }
+.mini tr.over td { background: color-mix(in srgb, var(--risk) 14%, transparent); }
+.status-ok { color: var(--ok); font-weight: 600; } .status-bad { color: var(--risk); font-weight: 600; }
+.plan { display: grid; gap: 10px; grid-template-columns: repeat(auto-fit, minmax(230px, 1fr)); }
+.plan > div { border-top: 3px solid var(--ink); padding-top: 8px; font-size: 15px; }
+.plan > div.yes { border-top-color: var(--ok); } .plan > div.no { border-top-color: var(--risk); }
+.plan h4 { margin: 0 0 4px; font-family: var(--font-display); font-weight: 700; font-size: 15px; letter-spacing: .06em; text-transform: uppercase; }
+.plan ul { margin: 0; padding-left: 18px; display: grid; gap: 4px; }
+.why { color: var(--faint); font-size: 12.5px; }
+.why::before { content: "De ce întrebăm: "; font-weight: 600; color: var(--muted); }
+.rules details { font-size: 13px; color: var(--muted); grid-column: 2; }
+.rules summary { cursor: pointer; font-weight: 600; }
+
 /* Evaluare */
 .know { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 24px; }
 @media (max-width: 860px) { .know { grid-template-columns: minmax(0, 1fr); } }
@@ -376,7 +423,7 @@ footer { color: var(--muted); font-size: 13px; display: flex; flex-wrap: wrap; g
       <svg width="26" height="26" viewBox="0 0 26 26" aria-hidden="true"><rect width="26" height="26" rx="3" fill="var(--accent)"/><g fill="var(--on-accent)"><circle cx="8" cy="8" r="2.6"/><circle cx="13" cy="8" r="2.6"/><circle cx="18" cy="8" r="2.6"/><circle cx="8" cy="13" r="2.6"/><circle cx="13" cy="13" r="2.6"/><circle cx="18" cy="13" r="2.6"/><circle cx="8" cy="18" r="2.6"/><circle cx="13" cy="18" r="2.6"/></g></svg>
       PaletScore
     </div>
-    <nav aria-label="Secțiuni"><a href="#sim">Simulare</a><a href="#interv">Intervenții</a><a href="#tinta">Ținta</a><a href="#var">Variație</a><a href="#cron">Cronometru</a><a href="#eval">Evaluare</a><a href="#biz">Plan comercial</a></nav>
+    <nav aria-label="Secțiuni"><a href="#sim">Simulare</a><a href="#interv">Intervenții</a><a href="#tinta">Ținta</a><a href="#var">Variație</a><a href="#cron">Cronometru</a><a href="#lab2">Laborator</a><a href="#eval">Evaluare</a><a href="#biz">Plan comercial</a></nav>
   </header>
 
   <section class="hero" id="sim">
@@ -454,11 +501,13 @@ footer { color: var(--muted); font-size: 13px; display: flex; flex-wrap: wrap; g
       <div class="field" id="f-feed">
         <label for="feed">Debit de intrare</label>
         <div class="inrow"><input id="feed" inputmode="decimal" value="7,4" autocomplete="off"><span class="u">găleți/min</span></div>
+        <span class="why">arată dacă robotul așteaptă găleți sau găleți așteaptă robotul.</span>
         <span class="err" id="e-feed" hidden></span>
       </div>
       <div class="field" id="f-change">
         <label for="change">Schimbarea unui palet</label>
         <div class="inrow"><input id="change" inputmode="numeric" value="90" autocomplete="off"><span class="u">secunde</span></div>
+        <span class="why">verificăm dacă a doua poziție se umple înainte să fie eliberată prima.</span>
         <span class="err" id="e-change" hidden></span>
       </div>
       <div class="two">
@@ -474,6 +523,11 @@ footer { color: var(--muted); font-size: 13px; display: flex; flex-wrap: wrap; g
             <button type="button" data-op="2" aria-pressed="false">2</button>
           </div>
         </div>
+      </div>
+      <div class="field">
+        <label for="arrivals">Sosirea găleților</label>
+        <div class="inrow"><select id="arrivals"><option value="regulat">Regulat</option><option value="valuri">În valuri: 40 s din fiecare 2 min</option></select></div>
+        <span class="why">aceeași medie pe oră poate ascunde acumulări pe transportor. Bufferul spune cât poate aduna linia înainte să oprească umplerea; al doilea operator separă disponibilitatea omului de durata operației.</span>
       </div>
       <div class="two">
         <div class="field" id="f-minutes">
@@ -514,6 +568,7 @@ footer { color: var(--muted); font-size: 13px; display: flex; flex-wrap: wrap; g
           <button type="button" class="quiet" data-scen="slow">Schimbare lentă</button>
           <button type="button" class="quiet" data-scen="over">Peste reper</button>
           <button type="button" class="quiet" data-scen="buffer">Buffer plin</button>
+          <button type="button" class="quiet" data-scen="waves">Sosiri în valuri</button>
         </div>
       </div>
     </aside>
@@ -533,21 +588,48 @@ footer { color: var(--muted); font-size: 13px; display: flex; flex-wrap: wrap; g
     <p class="iv-verdict" id="ivVerdict"></p>
   </section>
 
+  <section class="block" id="robust">
+    <header>
+      <h2>Cât de sigură e concluzia?</h2>
+      <p>Datele declarate azi nu sunt măsurate. Aplicația mișcă fiecare dată în intervalul ei de incertitudine și arată ce trebuie măsurat întâi, apoi verifică dacă recomandarea rămâne aceeași când ipotezele se schimbă.</p>
+    </header>
+    <div class="biz">
+      <div style="display:grid;gap:12px">
+        <span class="label">Ce mișcă cel mai mult rezultatul orei</span>
+        <div class="torn" id="torn"></div>
+        <p class="iv-verdict" id="tornVerdict"></p>
+      </div>
+      <div style="display:grid;gap:12px">
+        <span class="label">Recomandarea, pentru debit ±10% și schimbare ±30%</span>
+        <div class="tablewrap"><table class="grid3" id="robGrid"></table></div>
+        <p class="iv-verdict" id="robVerdict"></p>
+      </div>
+    </div>
+  </section>
+
   <section class="block" id="compare">
     <header>
       <h2>A față de B, pe aceeași oră</h2>
-      <p>Salvează linia curentă ca A și alege alt timp de schimbare pentru B, sau pornește comparația direct din tabelul de intervenții.</p>
+      <p>Salvează linia ca A, schimbă orice în „Linia ta” și compară. Raportul de schimbări spune exact ce ai modificat, ca diferența să nu fie atribuită greșit.</p>
     </header>
     <div class="cmp-ctrl">
-      <button id="btnSaveA" type="button" class="quiet">Salvează ca A</button>
+      <button id="btnSaveA" type="button" class="quiet">1. Salvează linia ca A</button>
       <span class="chip-a" id="chipA">A: nesalvată</span>
-      <div class="field" id="f-changeB">
-        <label for="changeB">B: schimbarea unui palet</label>
-        <div class="inrow"><input id="changeB" inputmode="numeric" value="90" autocomplete="off"><span class="u">secunde</span></div>
-        <span class="err" id="e-changeB" hidden></span>
-      </div>
-      <button class="primary" id="btnCompare" type="button" disabled>Compară</button>
+      <span class="hint" style="align-self:center">2. Modifică orice în „Linia ta”</span>
+      <button class="primary" id="btnCompare" type="button" disabled>3. Compară A cu linia curentă</button>
+      <button class="quiet" id="btnFactories" type="button">Două fabrici, aceeași ofertă</button>
     </div>
+    <div class="diffrep" id="diffRep" hidden></div>
+    <details class="sub">
+      <summary>Cod de scenariu: trimite exact această linie unui coleg</summary>
+      <p class="hint" style="margin-top:8px">Pagina publicată nu poate păstra parametrii în link, așa că scenariul se copiază ca text. Conține doar datele din „Linia ta”, toate fictive.</p>
+      <div class="cmp-ctrl" style="margin-top:8px">
+        <button class="quiet" id="btnCode" type="button">Copiază codul</button>
+        <div class="field" style="width:320px" id="f-code"><label for="codeIn">Lipește un cod primit</label><div class="inrow"><input id="codeIn" autocomplete="off" placeholder="PS1:…"></div><span class="err" id="e-code" hidden></span></div>
+        <button class="quiet" id="btnLoadCode" type="button">Încarcă</button>
+        <span class="copied" id="codeMsg" hidden></span>
+      </div>
+    </details>
     <div id="cmpOut" hidden>
       <p class="diffline" id="diffLine"></p>
       <div class="transport" style="margin-top:10px">
@@ -643,6 +725,50 @@ footer { color: var(--muted); font-size: 13px; display: flex; flex-wrap: wrap; g
     </div>
   </section>
 
+  <section class="block" id="lab2">
+    <header>
+      <h2>Laborator avansat</h2>
+      <p>Patru teste care duc simularea mai aproape de fabrică: o oră reală, un operator pentru două celule, o zi cu două formate și provocarea juriului.</p>
+    </header>
+    <div class="tabs" role="tablist" id="labTabs">
+      <button type="button" role="tab" aria-selected="true" data-tab="tp-csv">Ora reală (CSV)</button>
+      <button type="button" role="tab" aria-selected="false" data-tab="tp-two">Două celule, un operator</button>
+      <button type="button" role="tab" aria-selected="false" data-tab="tp-day">Zi cu două formate</button>
+      <button type="button" role="tab" aria-selected="false" data-tab="tp-jury">Provocarea juriului</button>
+    </div>
+    <div class="tabp" id="tp-csv" role="tabpanel">
+      <p>Un rând pe eveniment: <code>sosire,&lt;secunda din oră&gt;</code> sau <code>schimbare,&lt;durata în secunde&gt;</code>. Schimbările se folosesc în ordinea din fișier. Restul liniei (format, buffer, operatori) vine din „Linia ta”.</p>
+      <div class="cmp-ctrl"><button class="quiet" type="button" id="csvSample">Încarcă ora demonstrativă</button><label class="quiet" style="display:inline-flex;align-items:center;gap:8px;font-weight:600"><input type="file" id="csvFile" accept=".csv,.txt,text/csv,text/plain"> Fișier CSV</label></div>
+      <textarea class="csv" id="csvText" spellcheck="false" aria-label="Datele orei în format CSV"></textarea>
+      <div class="cmp-ctrl"><button class="primary" type="button" id="csvRun">Reconstituie ora</button><button type="button" id="csvScene" disabled>Rulează în scenă</button></div>
+      <div id="csvOut"></div>
+    </div>
+    <div class="tabp" id="tp-two" role="tabpanel" hidden>
+      <p>Fiecare celulă merge bine cu propriul operator. Cu un singur om pentru amândouă apar conflicte. Aplicația încearcă trei reguli de prioritate și decalări ale pornirii, cu timpul de deplasare dat ca ipoteză.</p>
+      <div class="cmp-ctrl">
+        <div class="field" style="width:170px" id="f-twoA"><label for="twoA">Schimbare celula 1</label><div class="inrow"><input id="twoA" inputmode="numeric" value="200"><span class="u">s</span></div></div>
+        <div class="field" style="width:170px" id="f-twoB"><label for="twoB">Schimbare celula 2</label><div class="inrow"><input id="twoB" inputmode="numeric" value="200"><span class="u">s</span></div></div>
+        <div class="field" style="width:170px" id="f-travel"><label for="travel">Deplasare între celule</label><div class="inrow"><input id="travel" inputmode="numeric" value="30"><span class="u">s</span></div></div>
+        <button class="primary" type="button" id="twoRun">Găsește organizarea</button>
+      </div>
+      <div id="twoOut"></div>
+    </div>
+    <div class="tabp" id="tp-day" role="tabpanel" hidden>
+      <p>Dimineața găleți de 5 kg, după-amiaza de 13 kg. Trecerea de la un format la altul oprește celula; durata ei e o ipoteză. Fiecare format pornește cu transportorul gol.</p>
+      <div class="cmp-ctrl">
+        <div class="field" style="width:170px"><label for="dayM">5 kg, dimineața</label><div class="inrow"><input id="dayM" inputmode="numeric" value="240"><span class="u">min</span></div></div>
+        <div class="field" style="width:170px"><label for="dayC">Schimbare de format</label><div class="inrow"><input id="dayC" inputmode="numeric" value="30"><span class="u">min</span></div></div>
+        <div class="field" style="width:170px"><label for="dayA">13 kg, după-amiaza</label><div class="inrow"><input id="dayA" inputmode="numeric" value="210"><span class="u">min</span></div></div>
+        <button class="primary" type="button" id="dayRun">Simulează ziua</button>
+      </div>
+      <div id="dayOut"></div>
+    </div>
+    <div class="tabp" id="tp-jury" role="tabpanel" hidden>
+      <p>Trei situații de pe linie. Alege ce ai modifica; simularea verifică efectul pe aceeași oră și explică de ce. Nu există punctaj.</p>
+      <div class="cards" id="jury"></div>
+    </div>
+  </section>
+
   <section class="block" id="eval">
     <header>
       <h2>Ce știm, ce presupunem, ce lipsește</h2>
@@ -652,6 +778,21 @@ footer { color: var(--muted); font-size: 13px; display: flex; flex-wrap: wrap; g
     <div class="eval-grid">
       <ul class="rules" id="rules"></ul>
       <div class="ergo" id="ergo"></div>
+    </div>
+    <div style="display:grid;gap:12px">
+      <span class="label">Aceleași fapte, trei decidenți</span>
+      <div class="tabs" role="tablist" id="viewTabs">
+        <button type="button" role="tab" aria-selected="true" data-view="prod">Director de producție</button>
+        <button type="button" role="tab" aria-selected="false" data-view="fin">Director financiar</button>
+        <button type="button" role="tab" aria-selected="false" data-view="ssm">Responsabil SSM</button>
+      </div>
+      <div id="viewOut" class="plan" style="padding-top:8px"></div>
+    </div>
+    <div class="final" style="border-left-color:var(--accent)">
+      <h3>Demonstrația care ne poate contrazice</h3>
+      <p style="color:var(--muted)">Clientul alege ce vrea să valideze. Aplicația pregătește experimentul: ce măsurăm, ce condiții păstrăm, ce rezultat susține propunerea și ce rezultat ne obligă să o revizuim.</p>
+      <div class="cmp-ctrl"><div class="field" style="width:320px"><label for="concern">Clientul vrea să valideze</label><div class="inrow"><select id="concern"><option value="pack">Ambalajul: prinderea și camera</option><option value="rate">Debitul: ritmul pe produsul lui</option><option value="org">Organizarea schimbului de paleți</option></select></div></div></div>
+      <div class="plan" id="demoPlan"></div>
     </div>
     <div class="final">
       <h3>Ce măsurăm mâine în fabrică</h3>
@@ -666,6 +807,20 @@ footer { color: var(--muted); font-size: 13px; display: flex; flex-wrap: wrap; g
       <h2>De la 30.000 EUR la celule livrate</h2>
       <p>Bugetul de promovare aduce cereri, cererile devin întâlniri tehnice, întâlnirile devin comenzi. Contează doar celulele livrate până la 31 decembrie. Costurile pe cerere și ratele sunt ipoteze de lucru, nu tarife de piață.</p>
     </header>
+    <div class="tabs" role="tablist" id="bizTabs">
+      <button type="button" role="tab" aria-selected="true" data-tab="tb-plan">Buget, pâlnie, livrări</button>
+      <button type="button" role="tab" aria-selected="false" data-tab="tb-cap">Capacitatea Tech-Con</button>
+      <button type="button" role="tab" aria-selected="false" data-tab="tb-msg">Experiment de mesaje</button>
+      <button type="button" role="tab" aria-selected="false" data-tab="tb-opp">Oportunități</button>
+      <button type="button" role="tab" aria-selected="false" data-tab="tb-next">Banii sau timpul?</button>
+    </div>
+    <div class="tabp" id="tb-plan" role="tabpanel">
+    <div class="cmp-ctrl">
+      <div class="field" style="width:200px" id="f-budget"><label for="budget">Buget total de promovare</label><div class="inrow"><input id="budget" inputmode="numeric" value="30000"><span class="u">EUR</span></div></div>
+      <button class="quiet" type="button" id="btnScale">Ajustează canalele proporțional</button>
+      <button class="quiet" type="button" id="btnCut">Juriul taie la 20.000 EUR</button>
+    </div>
+    <p class="iv-verdict" id="cutMsg" hidden></p>
     <div class="biz">
       <div class="tablewrap">
         <table class="ch">
@@ -690,6 +845,8 @@ footer { color: var(--muted); font-size: 13px; display: flex; flex-wrap: wrap; g
       <div class="cmp-ctrl">
         <div class="field" style="width:170px" id="f-lead"><label for="lead">Livrare după comandă</label><div class="inrow"><input id="lead" inputmode="numeric" value="4"><span class="u">luni</span></div></div>
         <div class="field" style="width:170px" id="f-capm"><label for="capm">Instalări posibile</label><div class="inrow"><input id="capm" inputmode="numeric" value="3"><span class="u">celule/lună</span></div></div>
+        <div class="field" style="width:170px"><label for="instLag">Instalare după livrare</label><div class="inrow"><input id="instLag" inputmode="numeric" value="0"><span class="u">luni</span></div></div>
+        <div class="field" style="width:200px"><label for="recog">Se numără în an la</label><div class="inrow"><select id="recog"><option value="deliv">livrare (cum cere tema)</option><option value="inst">instalare (ipoteză)</option></select></div></div>
         <button class="quiet" id="btnFromFunnel" type="button">Repartizează comenzile din pâlnie</button>
       </div>
       <div class="cal"><table class="cal-t" id="calT"></table></div>
@@ -707,6 +864,43 @@ footer { color: var(--muted); font-size: 13px; display: flex; flex-wrap: wrap; g
       </div>
       <span class="err" id="e-comm" hidden></span>
       <div class="res" id="cRes"></div>
+    </div>
+    </div>
+
+    <div class="tabp" id="tb-cap" role="tabpanel" hidden>
+      <p>Fiecare client înseamnă o evaluare tehnică și o demonstrație, iar fiecare celulă o instalare. Planul din pâlnie și din calendar se transformă în zile de lucru ale echipelor Tech-Con. Toate duratele sunt ipoteze.</p>
+      <div class="cmp-ctrl">
+        <div class="field" style="width:140px"><label for="teams">Echipe</label><div class="inrow"><input id="teams" inputmode="numeric" value="2"></div></div>
+        <div class="field" style="width:160px"><label for="wdays">Zile lucrătoare</label><div class="inrow"><input id="wdays" inputmode="numeric" value="20"><span class="u">/lună</span></div></div>
+        <div class="field" style="width:160px"><label for="dEval">Evaluare tehnică</label><div class="inrow"><input id="dEval" inputmode="decimal" value="2"><span class="u">zile</span></div></div>
+        <div class="field" style="width:160px"><label for="dDemo">Demonstrație</label><div class="inrow"><input id="dDemo" inputmode="decimal" value="1"><span class="u">zile</span></div></div>
+        <div class="field" style="width:160px"><label for="dInst">Instalare / celulă</label><div class="inrow"><input id="dInst" inputmode="decimal" value="10"><span class="u">zile</span></div></div>
+      </div>
+      <div class="tablewrap"><table class="mini" id="capT"></table></div>
+      <p class="iv-verdict" id="capOut"></p>
+    </div>
+
+    <div class="tabp" id="tb-msg" role="tabpanel" hidden>
+      <p>Două campanii cu același buget: una vorbește despre ergonomie, cealaltă despre continuitatea fluxului. Introdu rezultate fictive acum sau reale mai târziu. Câștigă campania cu costul cel mai mic pe cerere calificată, nu pe click.</p>
+      <div class="tablewrap"><table class="mini" id="msgT"></table></div>
+      <p class="iv-verdict" id="msgOut"></p>
+    </div>
+
+    <div class="tabp" id="tb-opp" role="tabpanel" hidden>
+      <span class="label">Calificarea cererilor</span>
+      <p class="hint">O cerere e pregătită pentru evaluare tehnică doar când are toate cele cinci informații. Fără scor: aplicația arată ce lipsește și pasul următor.</p>
+      <div class="tablewrap"><table class="mini" id="qualT"></table></div>
+      <span class="label" style="margin-top:12px">Comenzi pierdute</span>
+      <p class="hint">Oportunități fictive pierdute, cu etapa și motivul. Aplicația arată unde se pierde procesul și ce merită testat.</p>
+      <div class="tablewrap"><table class="mini" id="lostT"></table></div>
+      <p class="iv-verdict" id="lostOut"></p>
+    </div>
+
+    <div class="tabp" id="tb-next" role="tabpanel" hidden>
+      <p>Următorii bani merg în reclamă, într-o evaluare tehnică sau într-o demonstrație? Contează doar celulele care pot fi livrate până la 31 decembrie. Probabilitățile și termenele sunt ipoteze declarate.</p>
+      <div class="cmp-ctrl"><div class="field" style="width:200px"><label for="nowM">Luna curentă</label><div class="inrow"><select id="nowM"></select></div></div></div>
+      <div class="tablewrap"><table class="mini" id="nextT"></table></div>
+      <p class="iv-verdict" id="nextOut"></p>
     </div>
   </section>
 
@@ -775,7 +969,7 @@ footer { color: var(--muted); font-size: 13px; display: flex; flex-wrap: wrap; g
     return {
       format: state.format, feed: feed.v, changeSec: change.v, minutes: minutes.v, buffer: buffer.v ? Math.round(buffer.v) : null,
       operators: state.operators, shifts: parseInt($('shifts').value, 10), perPallet: per.v, weight: weight.v,
-      handle: $('handle').value, material: $('material').value.trim()
+      handle: $('handle').value, material: $('material').value.trim(), arrivals: $('arrivals').value
     };
   }
   function renderRef() {
@@ -1395,7 +1589,7 @@ footer { color: var(--muted); font-size: 13px; display: flex; flex-wrap: wrap; g
     if (resetSim) { reset(main, line); main.running = false; hideCallout(); closeInspector(); setPlayLabel(); }
     lastFinal = M.runLine(line);
     renderEval();
-    clearTimeout(slowTimer); slowTimer = setTimeout(function () { computeInterventions(); computeSens(); if (!$('summary').hidden) buildSummary(); }, 140);
+    clearTimeout(slowTimer); slowTimer = setTimeout(function () { computeInterventions(); computeSens(); computeRobust(); renderView(); renderDemoPlan(); if (!$('summary').hidden) buildSummary(); }, 140);
     updateKpis();
   }
 
@@ -1404,7 +1598,7 @@ footer { color: var(--muted); font-size: 13px; display: flex; flex-wrap: wrap; g
   function renderEval() {
     var ev = M.evaluate(line, lastFinal);
     $('rules').innerHTML = ev.map(function (e) {
-      return '<li><span class="dot ' + (e.level === 'info' ? 'ok' : e.level) + '"></span><span class="r"><span class="tag ' + TAGCLS[e.tag] + '">' + e.tag + '</span>' + esc(e.rule) + '</span><p>' + esc(e.text) + '</p></li>';
+      return '<li><span class="dot ' + (e.level === 'info' ? 'ok' : e.level) + '"></span><span class="r"><span class="tag ' + TAGCLS[e.tag] + '">' + e.tag + '</span>' + esc(e.rule) + '</span><p>' + esc(e.text) + '</p>' + (e.src ? '<details><summary>Sursa sau formula</summary>' + esc(e.src) + '</details>' : '') + '</li>';
     }).join('');
     var er = M.ergonomics(line), ergo = $('ergo');
     if (!er) ergo.innerHTML = '<span class="label">Ergonomie</span><p>Introdu greutatea găleții ca să calculezi masa cumulată.</p>';
@@ -1480,7 +1674,7 @@ footer { color: var(--muted); font-size: 13px; display: flex; flex-wrap: wrap; g
     [].forEach.call($('ivBody').querySelectorAll('[data-iv]'), function (b) {
       b.addEventListener('click', function () {
         var o = ivData.options.filter(function (x) { return x.id === b.dataset.iv; })[0];
-        compareLines(line, o.line, 'Acum', o.label, 'Singura diferență: <b>' + esc(o.label.toLowerCase()) + '</b> (' + esc(o.detail) + ').', 120);
+        compareLines(line, o.line, 'Acum', o.label, diffReport(line, o.line), 120);
         $('compare').scrollIntoView({ behavior: reduceMotion ? 'auto' : 'smooth', block: 'start' });
       });
     });
@@ -1520,13 +1714,76 @@ footer { color: var(--muted); font-size: 13px; display: flex; flex-wrap: wrap; g
     $('diffLine').innerHTML = diffHtml;
     cmp.finalA = M.runLine(lineA); cmp.finalB = M.runLine(lineB);
   }
+  var FIELDS = [
+    ['format', 'formatul', function (v) { return v === 'alt' ? 'alt ambalaj' : v + ' kg'; }],
+    ['feed', 'debitul', function (v) { return fmt(v, 1) + ' găleți/min'; }],
+    ['changeSec', 'durata schimbării', function (v) { return fmt(v) + ' s'; }],
+    ['buffer', 'bufferul', function (v) { return v ? v + ' găleți' : 'nelimitat'; }],
+    ['operators', 'numărul de operatori', function (v) { return String(v || 1); }],
+    ['arrivals', 'sosirea găleților', function (v) { return v === 'valuri' ? 'în valuri' : 'regulat'; }],
+    ['perPallet', 'găleți pe palet', function (v) { return v ? String(v) : '—'; }],
+    ['capMul', 'ritmul robotului', function (v) { return v ? '+' + Math.round((v - 1) * 100) + '% (ipoteză)' : 'reper'; }]
+  ];
+  function diffLines(a, b) {
+    var out = [];
+    FIELDS.forEach(function (f) {
+      var va = a[f[0]] == null ? null : a[f[0]], vb = b[f[0]] == null ? null : b[f[0]];
+      if (f[0] === 'operators') { va = va || 1; vb = vb || 1; }
+      if (f[0] === 'arrivals') { va = va || 'regulat'; vb = vb || 'regulat'; }
+      if (f[0] === 'capMul') { va = va && va !== 1 ? va : null; vb = vb && vb !== 1 ? vb : null; }
+      if (String(va) !== String(vb)) out.push({ label: f[1], from: f[2](va), to: f[2](vb) });
+    });
+    return out;
+  }
+  function diffReport(a, b, factories) {
+    var d = diffLines(a, b), el = $('diffRep');
+    el.hidden = false;
+    if (!d.length) { el.className = 'diffrep warn'; el.innerHTML = 'Variantele sunt identice. Modifică ceva în „Linia ta” înainte de comparație.'; return 'Variantele sunt identice.'; }
+    var items = d.map(function (x) { return '<li>' + x.label + ': <b>' + esc(x.from) + '</b> → <b>' + esc(x.to) + '</b></li>'; }).join('');
+    if (d.length === 1) { el.className = 'diffrep'; el.innerHTML = 'Ai modificat ' + d[0].label + ' de la ' + esc(d[0].from) + ' la ' + esc(d[0].to) + '. Restul parametrilor au rămas identici, deci diferența de rezultat vine din această schimbare.'; }
+    else { el.className = 'diffrep warn'; el.innerHTML = (factories ? 'Comparație între două fabrici, nu o singură intervenție. ' : '') + 'Ai modificat ' + d.length + ' parametri. Efectul nu poate fi atribuit unuia singur:<ul>' + items + '</ul>'; }
+    return d.length === 1 ? 'Singura diferență: <b>' + d[0].label + ' ' + esc(d[0].from) + ' → ' + esc(d[0].to) + '</b>.' : d.length + ' diferențe: ' + d.map(function (x) { return x.label; }).join(', ') + '.';
+  }
   function startCompare(speed) {
-    if (!savedA) return false;
-    var cb = checkRange('changeB', 'un timp de schimbare', 's', 10, 1800, true, '90');
-    if (!cb.ok) return false;
-    compareLines(savedA, M.with_(savedA, { changeSec: cb.v }), 'schimbare ' + fmt(savedA.changeSec) + ' s', 'schimbare ' + fmt(cb.v) + ' s',
-      savedA.changeSec === cb.v ? 'Variantele sunt identice. Alege alt timp pentru B.' : 'Singura diferență: <b>schimbarea ' + fmt(savedA.changeSec) + ' s → ' + fmt(cb.v) + ' s</b>. Restul liniei e identic.', speed);
+    if (!savedA || !line) return false;
+    var cur = JSON.parse(JSON.stringify(line));
+    var html = diffReport(savedA, cur);
+    compareLines(savedA, cur, 'salvată', 'curentă', html, speed);
     return true;
+  }
+  function compareFactories() {
+    var fa = { format: '13', feed: 7.4, changeSec: 240, minutes: 420, shifts: 2, buffer: null, operators: 1, arrivals: 'regulat', handle: 'da' };
+    var fb = { format: '13', feed: 7.4, changeSec: 420, minutes: 420, shifts: 2, buffer: 10, operators: 1, arrivals: 'valuri', handle: 'da' };
+    savedA = fa; $('chipA').textContent = 'A: Fabrica 1 · sosiri regulate · schimbare 240 s';
+    $('btnCompare').disabled = false;
+    var html = diffReport(fa, fb, true);
+    compareLines(fa, fb, 'Fabrica 1', 'Fabrica 2', html, 120);
+    var a = M.runLine(fa), b = M.runLine(fb);
+    $('cmpVerdict').textContent = '';
+    setTimeout(function () { $('cmpVerdict').textContent = 'Același robot, același debit mediu: Fabrica 1 face ' + buckets(a.placed) + ' pe oră, Fabrica 2 doar ' + buckets(b.placed) + '. Oferta nu se transferă automat între clienți; fiecare fabrică are nevoie de propria evaluare.'; }, 50);
+    $('compare').scrollIntoView({ behavior: reduceMotion ? 'auto' : 'smooth', block: 'start' });
+  }
+  function scenarioCode() {
+    if (!line) return '';
+    var keep = {}; ['format', 'feed', 'changeSec', 'minutes', 'shifts', 'buffer', 'operators', 'arrivals', 'perPallet', 'weight', 'handle'].forEach(function (k) { if (line[k] != null && line[k] !== '') keep[k] = line[k]; });
+    return 'PS1:' + btoa(unescape(encodeURIComponent(JSON.stringify(keep))));
+  }
+  function loadCode(code) {
+    try {
+      if (!/^PS1:/.test(code)) throw new Error();
+      var o = JSON.parse(decodeURIComponent(escape(atob(code.slice(4)))));
+      if (!o.format || !(o.feed > 0) || !(o.changeSec > 0)) throw new Error();
+      state.format = o.format; [].forEach.call($('fmtSeg').children, function (b) { b.setAttribute('aria-pressed', String(b.dataset.fmt === o.format)); });
+      $('feed').value = String(o.feed).replace('.', ','); $('change').value = String(o.changeSec);
+      $('buffer').value = o.buffer ? String(o.buffer) : ''; $('arrivals').value = o.arrivals || 'regulat';
+      if (o.minutes) $('minutes').value = String(o.minutes); if (o.shifts) $('shifts').value = String(o.shifts);
+      if (o.perPallet) $('perpallet').value = String(o.perPallet); if (o.weight) $('weight').value = String(o.weight).replace('.', ',');
+      if (o.handle) $('handle').value = o.handle;
+      state.operators = o.operators || 1; [].forEach.call($('opSeg').children, function (b) { b.setAttribute('aria-pressed', String(+b.dataset.op === state.operators)); });
+      setErr('code', ''); applyInputs(true);
+      $('codeMsg').textContent = 'Scenariu încărcat'; $('codeMsg').hidden = false;
+      $('sim').scrollIntoView({ behavior: reduceMotion ? 'auto' : 'smooth', block: 'start' });
+    } catch (e) { setErr('code', 'Codul nu e valid. Trebuie să înceapă cu PS1: și să fie copiat întreg.'); }
   }
   function cmpRow(label, a, b, f, higherBetter) {
     var d = b - a, cls = Math.abs(d) < 1e-6 ? 'same' : ((d > 0) === higherBetter ? 'better' : 'worse');
@@ -1728,8 +1985,11 @@ footer { color: var(--muted); font-size: 13px; display: flex; flex-wrap: wrap; g
   // ---------- Demo ----------
   var demo = null;
   function sleep(ms) { return new Promise(function (res) { setTimeout(res, ms); }); }
-  function setInputs(fmtv, feed, change, buffer) {
+  function setInputs(fmtv, feed, change, buffer, arrivals, operators) {
     state.format = fmtv;
+    $('arrivals').value = arrivals || 'regulat';
+    state.operators = operators || 1;
+    [].forEach.call($('opSeg').children, function (b) { b.setAttribute('aria-pressed', String(+b.dataset.op === state.operators)); });
     [].forEach.call($('fmtSeg').children, function (b) { b.setAttribute('aria-pressed', String(b.dataset.fmt === fmtv)); });
     $('feed').value = String(feed).replace('.', ','); $('change').value = String(change); $('buffer').value = buffer ? String(buffer) : '';
   }
@@ -1859,6 +2119,14 @@ footer { color: var(--muted); font-size: 13px; display: flex; flex-wrap: wrap; g
     if (varData) L.push('- Cu schimbări între ' + varData.range[0] + ' și ' + varData.range[1] + ' s: mediană ' + varData.median + ', cele mai slabe 10% ≤ ' + varData.p10 + ' găleți/oră');
     ev.forEach(function (e) { L.push('- [' + e.tag + '] ' + e.text); });
     if (er) L.push('- Masă cumulată teoretică manipulată manual: ' + fmt(er.tonnes, 1) + ' t/zi');
+    if (demoPlanData) {
+      L.push('');
+      L.push('DEMONSTRAȚIA PROPUSĂ: ' + demoPlanData.label.toUpperCase());
+      L.push('- Măsurăm: ' + demoPlanData.m.join('; '));
+      L.push('- Constant: ' + demoPlanData.k.join('; '));
+      L.push('- Susține propunerea dacă: ' + demoPlanData.yes.join('; '));
+      L.push('- O revizuim dacă: ' + demoPlanData.no.join('; '));
+    }
     L.push('');
     L.push('CE MĂSURĂM MÂINE ÎN FABRICĂ');
     L.push('[ ] Debitul real la ieșirea din umplere: găleți/min, pe fiecare schimb, minim și maxim');
@@ -1895,7 +2163,7 @@ footer { color: var(--muted); font-size: 13px; display: flex; flex-wrap: wrap; g
     return '<tr><td>' + ch[0] + '</td><td><input id="chE' + i + '" inputmode="numeric" value="' + ch[1] + '" aria-label="' + ch[0] + ', EUR pe an"></td><td><input id="chC' + i + '" inputmode="numeric" value="' + (ch[2] || '') + '" placeholder="—" aria-label="' + ch[0] + ', EUR pe cerere"></td><td class="n" id="chR' + i + '">—</td></tr>';
   }).join('');
   var funnelData = null, calOrders = new Array(12).fill(0);
-  $('calT').innerHTML = '<thead><tr><th></th>' + MONTHS.map(function (m) { return '<th>' + m + '</th>'; }).join('') + '<th>Anul următor</th></tr></thead><tbody><tr><td>Comenzi (celule)</td>' + MONTHS.map(function (m, i) { return '<td id="calC' + i + '"><input id="calI' + i + '" inputmode="numeric" value="0" aria-label="Comenzi în ' + m + '"></td>'; }).join('') + '<td></td></tr><tr><td>Livrate</td>' + MONTHS.map(function (m, i) { return '<td class="dl" id="calD' + i + '">0</td>'; }).join('') + '<td class="dl" id="calNext">0</td></tr></tbody>';
+  $('calT').innerHTML = '<thead><tr><th></th>' + MONTHS.map(function (m) { return '<th>' + m + '</th>'; }).join('') + '<th>Anul următor</th></tr></thead><tbody><tr><td>Comandate</td>' + MONTHS.map(function (m, i) { return '<td id="calC' + i + '"><input id="calI' + i + '" inputmode="numeric" value="0" aria-label="Comenzi în ' + m + '"></td>'; }).join('') + '<td></td></tr><tr><td>Livrate</td>' + MONTHS.map(function (m, i) { return '<td class="dl" id="calD' + i + '">0</td>'; }).join('') + '<td class="dl" id="calNext">0</td></tr><tr><td>Instalate</td>' + MONTHS.map(function (m, i) { return '<td class="dl" id="calS' + i + '">0</td>'; }).join('') + '<td class="dl" id="calSN">0</td></tr></tbody>';
   function renderFunnel() {
     var chs = CHANNELS.map(function (ch, i) {
       var e = num($('chE' + i).value), c = num($('chC' + i).value);
@@ -1908,8 +2176,9 @@ footer { color: var(--muted); font-size: 13px; display: flex; flex-wrap: wrap; g
     $('chTotal').textContent = fmt(funnelData.total) + ' €';
     $('chReq').textContent = fmt(funnelData.requests, 1);
     var sc = $('sumCheck');
-    if (Math.abs(funnelData.total - 30000) < 0.5) { sc.className = 'sumcheck ok'; sc.textContent = 'Bugetul se închide la 30.000 EUR, fiecare cost numărat o singură dată.'; }
-    else { sc.className = 'sumcheck bad'; sc.textContent = 'Totalul trebuie să fie 30.000 EUR. Acum: ' + fmt(funnelData.total) + ' EUR (' + (funnelData.total > 30000 ? '+' : '−') + fmt(Math.abs(funnelData.total - 30000)) + ').'; }
+    var B = budget();
+    if (Math.abs(funnelData.total - B) < 0.5) { sc.className = 'sumcheck ok'; sc.textContent = 'Bugetul se închide la ' + fmt(B) + ' EUR, fiecare cost numărat o singură dată.'; }
+    else { sc.className = 'sumcheck bad'; sc.textContent = 'Totalul trebuie să fie ' + fmt(B) + ' EUR. Acum: ' + fmt(funnelData.total) + ' EUR (' + (funnelData.total > B ? '+' : '−') + fmt(Math.abs(funnelData.total - B)) + '). Folosește „Ajustează canalele proporțional”.'; }
     var rows = [['Cereri relevante', funnelData.requests, ''], ['Întâlniri tehnice', funnelData.meetings, ''], ['Clienți', funnelData.clients, ''], ['Celule', funnelData.cells, 'cells']];
     var mx = Math.max(1, funnelData.requests);
     $('funnel').innerHTML = rows.map(function (r) { return '<div class="row"><span>' + r[0] + '</span><div class="bar ' + r[2] + '" style="width:' + Math.max(12, r[1] / mx * 100) + '%">' + fmt(r[1], 1) + '</div></div>'; }).join('') +
@@ -1931,9 +2200,17 @@ footer { color: var(--muted); font-size: 13px; display: flex; flex-wrap: wrap; g
       var el = $('calD' + i); el.textContent = d.delivered[i]; el.classList.toggle('has', d.delivered[i] > 0);
     });
     $('calNext').textContent = d.carried;
-    renderCommercial(d.inYear);
+    var lag = Math.max(0, Math.round(num($('instLag').value) || 0)), inst = new Array(24).fill(0);
+    d.delivered.forEach(function (n, m) { if (m + lag < 24) inst[m + lag] += n; });
+    MONTHS.forEach(function (m, i) { var el = $('calS' + i); el.textContent = inst[i]; el.classList.toggle('has', inst[i] > 0); });
+    var instYear = inst.slice(0, 12).reduce(function (a, b) { return a + b; }, 0);
+    $('calSN').textContent = d.ordered - instYear;
+    var counted = $('recog').value === 'inst' ? instYear : d.inYear;
+    calState = { inYear: counted, delivered: d.inYear, installed: instYear, ordered: d.ordered, deliveredArr: d.delivered.slice(0, 12) };
+    renderCommercial(counted);
     var need = neededCells();
-    $('calOut').innerHTML = 'Comandate: ' + d.ordered + ' celule · livrate în an: <b>' + d.inYear + '</b>' + (d.carried ? ' · trec în anul următor: ' + d.carried : '') + '. Comenzile de după ' + MONTHS[Math.max(0, d.lastUsefulOrderMonth)].toLowerCase() + ' nu mai ajung în an.' + (need ? (d.inYear >= need ? ' Ținta cere minimum ' + need + ': atinsă.' : ' Ținta cere minimum ' + need + ': lipsesc ' + (need - d.inYear) + '.') : '');
+    $('calOut').innerHTML = 'Comandate: ' + d.ordered + ' · livrate în an: <b>' + d.inYear + '</b> · instalate în an: <b>' + instYear + '</b>' + (d.carried ? ' · livrări care trec în anul următor: ' + d.carried : '') + '. Se numără la ' + ($('recog').value === 'inst' ? 'instalare (ipoteză)' : 'livrare') + ': <b>' + counted + '</b>. Comenzile de după ' + MONTHS[Math.max(0, d.lastUsefulOrderMonth)].toLowerCase() + ' nu mai ajung în an.' + (need ? (counted >= need ? ' Ținta cere minimum ' + need + ': atinsă.' : ' Ținta cere minimum ' + need + ': lipsesc ' + (need - counted) + '.') : '');
+    renderCapacity(); renderNext();
   }
   function neededCells() {
     var price = num($('cPrice').value), cost = num($('cCost').value), other = num($('cOther').value), tax = num($('cTax').value), tgt = num($('cTarget').value);
@@ -1958,10 +2235,244 @@ footer { color: var(--muted); font-size: 13px; display: flex; flex-wrap: wrap; g
       '<div><span class="l">Contribuție (' + cells + ' × ' + eur(r.unit) + ')</span><span class="v">' + eur(r.contribution) + '</span></div>' +
       '<div><span class="l">După promovare, înainte de alte costuri și impozit</span><span class="v">' + eur(r.afterPromo) + '</span></div>';
     if (r.missing.length) html += '<div class="miss"><span class="l">Profit net</span><span class="v">Nu poate fi verificat. Lipsesc: ' + r.missing.join(', ') + '.</span></div>';
-    else html += '<div><span class="l">Profit net</span><span class="v" style="color:var(--' + (r.net >= c.target ? 'ok' : 'risk') + ')">' + eur(Math.round(r.net)) + '</span></div><div><span class="l">Celule necesare pentru ' + eur(c.target) + '</span><span class="v">' + (r.needed !== null ? r.needed : '—') + '</span></div>';
+    if (!r.missing.length && cells > 0) {
+      var maxCost = c.price - (c.target / (1 - c.tax / 100) + c.other + c.promo) / cells;
+      html += '<div><span class="l">Cost direct maxim acceptabil pe celulă, la ' + cells + ' celule și preț neschimbat</span><span class="v" style="color:var(--' + (maxCost >= c.cost ? 'ok' : 'risk') + ')">' + eur(Math.floor(maxCost)) + '</span></div>';
+    }
+    if (!r.missing.length) html += '<div><span class="l">Profit net</span><span class="v" style="color:var(--' + (r.net >= c.target ? 'ok' : 'risk') + ')">' + eur(Math.round(r.net)) + '</span></div><div><span class="l">Celule necesare pentru ' + eur(c.target) + '</span><span class="v">' + (r.needed !== null ? r.needed : '—') + '</span></div>';
+    else html += '<div class="miss"><span class="l">Mod director financiar</span><span class="v">Completează alte costuri și impozitul ca să vezi costul direct maxim acceptabil.</span></div>';
     $('cRes').innerHTML = html;
   }
   function renderBiz() { renderFunnel(); renderCalendar(); }
+
+  // ---------- Robustețe ----------
+  var IV_SHORT = { faster: 'Schimbare mai rapidă', operator: 'Al doilea operator', capacity: 'Robot mai rapid', buffer: 'Buffer mai mare', regular: 'Sosiri regulate' };
+  var MEASURE = { feed: 'debitul real, cronometrat pe fiecare schimb', change: 'durata schimbării, de 10 ori, cu cronometrul din pagină', arrivals: 'modul în care vin gălețile de la umplere (regulat sau în rafale)', operators: 'cine e disponibil să schimbe paletul și cât durează până vine', buffer: 'câte găleți încap fizic pe transportor' };
+  function computeRobust() {
+    if (!line) return;
+    var t = M.tornado(line), lo = t.items.reduce(function (a, i) { return Math.min(a, i.min); }, t.base), hi = t.items.reduce(function (a, i) { return Math.max(a, i.max); }, t.base);
+    var span = Math.max(1, hi - lo);
+    $('torn').innerHTML = t.items.map(function (it) {
+      return '<div class="row"><span>' + it.label + '</span><div class="track"><span class="span" style="left:' + ((it.min - lo) / span * 100) + '%;width:' + Math.max(0.6, (it.max - it.min) / span * 100) + '%"></span><span class="base" style="left:' + ((t.base - lo) / span * 100) + '%"></span></div><span class="n">' + (it.span ? '±' + fmt(it.span / 2, it.span % 2 ? 1 : 0) : '0') + '</span></div>';
+    }).join('') + '<p class="hint">Bara arată intervalul de găleți pe oră; linia neagră e linia ta, cu ' + buckets(t.base) + '.</p>';
+    var top = t.items[0];
+    $('tornVerdict').textContent = top.span > 1 ? 'Măsoară întâi ' + MEASURE[top.id] + '. Incertitudinea acestei date mută rezultatul cu până la ' + buckets(top.span) + ' pe oră.' : 'Nicio dată incertă nu mută vizibil rezultatul: concluzia e stabilă în intervalele declarate.';
+    var r = M.robustness(line), html = '<thead><tr><th>Debit \\ schimbare</th><th>−30%</th><th>ca acum</th><th>+30%</th></tr></thead><tbody>';
+    r.grid.forEach(function (row, i) {
+      html += '<tr><th>' + ['−10%', 'ca acum', '+10%'][i] + '</th>' + row.map(function (c) { return '<td class="' + (c.best === r.ref ? 'same' : '') + '"><b>' + (c.best ? IV_SHORT[c.best] : 'Nimic') + '</b>' + (c.best ? '+' + fmt(c.gain) + ' găl./oră' : 'nu aduce câștig') + '</td>'; }).join('') + '</tr>';
+    });
+    $('robGrid').innerHTML = html + '</tbody>';
+    $('robVerdict').textContent = r.ref ? 'Recomandarea „' + r.refLabel.toLowerCase() + '” rămâne valabilă în ' + r.same + ' din 9 combinații.' + (r.same < 9 ? ' Unde se schimbă, decide măsurătoarea din stânga.' : ' Concluzia e robustă.') : 'Nicio intervenție nu aduce câștig în ' + r.same + ' din 9 combinații: linia nu e limitată de schimb.';
+  }
+
+  // ---------- Laborator avansat ----------
+  function bindTabs(bar) {
+    [].forEach.call($(bar).children, function (b) {
+      b.addEventListener('click', function () {
+        [].forEach.call($(bar).children, function (x) { x.setAttribute('aria-selected', String(x === b)); $(x.dataset.tab).hidden = x !== b; });
+      });
+    });
+  }
+  bindTabs('labTabs'); bindTabs('bizTabs');
+  var csvData = null;
+  function kpiRow(label, r) { return '<tr><td>' + label + '</td><td class="n">' + fmt(r.placed) + '</td><td class="n">' + mmss(r.waitPos) + '</td><td class="n">' + fmt(r.queue) + '</td><td class="n">' + mmss(r.opWait) + '</td></tr>'; }
+  function runCSV() {
+    if (!line) return;
+    var d = M.parseCSV($('csvText').value);
+    if (!d.arrivals.length) { $('csvOut').innerHTML = '<p class="err">Nu am găsit nicio sosire. ' + esc(d.errors.slice(0, 3).join(' ')) + '</p>'; $('csvScene').disabled = true; return; }
+    csvData = d;
+    var real = M.with_(line, { arrivalTimes: d.arrivals, changeList: d.changes.length ? d.changes : null });
+    var faster = M.with_(real, { changeList: d.changes.length ? d.changes.map(function (x) { return Math.round(x * 0.7); }) : null, changeSec: Math.round(line.changeSec * 0.7) });
+    var two = M.with_(real, { operators: 2 });
+    var a = M.runLine(real), b = M.runLine(faster), c = M.runLine(two);
+    var gaps = []; for (var i = 1; i < d.arrivals.length; i++) gaps.push(d.arrivals[i] - d.arrivals[i - 1]);
+    var bigGap = gaps.length ? Math.max.apply(null, gaps) : 0;
+    $('csvOut').innerHTML = (d.errors.length ? '<p class="err">' + d.errors.length + ' rânduri ignorate: ' + esc(d.errors.slice(0, 2).join(' ')) + '</p>' : '') +
+      '<p>' + d.arrivals.length + ' sosiri (' + fmt(d.arrivals.length / 60, 1) + ' găleți/min în medie), ' + d.changes.length + ' durate de schimbare' + (d.changes.length ? ' între ' + Math.round(Math.min.apply(null, d.changes)) + ' și ' + Math.round(Math.max.apply(null, d.changes)) + ' s' : '') + '. Cea mai lungă pauză între sosiri: ' + Math.round(bigGap) + ' s.</p>' +
+      '<div class="tablewrap"><table class="mini"><thead><tr><th>Varianta</th><th>Găleți</th><th>Robotul așteaptă</th><th>Pe transportor</th><th>Fără operator</th></tr></thead><tbody>' + kpiRow('Ora reconstituită', a) + kpiRow('Aceeași oră, schimbări cu 30% mai rapide', b) + kpiRow('Aceeași oră, al doilea operator', c) + '</tbody></table></div>' +
+      '<p class="iv-verdict">' + (Math.max(b.placed, c.placed) - a.placed > 1 ? 'Pe ora reală, ' + (b.placed >= c.placed ? 'schimbările mai rapide' : 'al doilea operator') + ' aduc +' + buckets(Math.max(b.placed, c.placed) - a.placed) + '.' : 'Pe ora reală, nicio intervenție de schimb nu aduce găleți în plus: limita a fost alimentarea, inclusiv pauzele ei.') + '</p>';
+    $('csvScene').disabled = false;
+  }
+  $('csvSample').addEventListener('click', function () { $('csvText').value = M.sampleCSV(2026); runCSV(); });
+  $('csvRun').addEventListener('click', runCSV);
+  $('csvFile').addEventListener('change', function (ev) {
+    var f = ev.target.files && ev.target.files[0]; if (!f) return;
+    var rd = new FileReader(); rd.onload = function () { $('csvText').value = String(rd.result || ''); runCSV(); }; rd.readAsText(f);
+  });
+  $('csvScene').addEventListener('click', function () {
+    if (!csvData || !line) return;
+    reset(main, M.with_(line, { arrivalTimes: csvData.arrivals, changeList: csvData.changes.length ? csvData.changes : null }));
+    setSpeed(60); main.running = true; setPlayLabel(); hideCallout();
+    showCallout('<b>Ora reală din CSV rulează în scenă.</b> Orice modificare în „Linia ta” revine la simularea obișnuită.', true);
+    $('sim').scrollIntoView({ behavior: reduceMotion ? 'auto' : 'smooth', block: 'start' });
+  });
+  $('twoRun').addEventListener('click', function () {
+    if (!line) return;
+    var ca = checkRange('twoA', 'durata', 's', 10, 1800, true, '200'), cb = checkRange('twoB', 'durata', 's', 10, 1800, true, '200'), tr = checkRange('travel', 'deplasarea', 's', 0, 600, true, '30');
+    if (!ca.ok || !cb.ok || !tr.ok) return;
+    var la = M.with_(line, { changeSec: ca.v, operators: 1, buffer: line.buffer }), lb = M.with_(line, { changeSec: cb.v, operators: 1 });
+    var o = M.bestOrganization(la, lb, tr.v), best = o.best, base = o.baseline;
+    var rows = o.options.slice(0, 5).map(function (x, i) { return '<tr' + (i === 0 ? ' style="background:color-mix(in srgb, var(--accent) 22%, transparent)"' : '') + '><td>' + x.label + (x.offset ? ', celula 2 pornește cu ' + x.offset + ' s mai târziu' : '') + '</td><td class="n">' + fmt(x.placed) + '</td><td class="n">' + mmss(x.waitPos) + '</td><td class="n">' + mmss(x.opWait) + '</td></tr>'; }).join('');
+    $('twoOut').innerHTML = '<div class="res"><div><span class="l">Fiecare celulă cu operatorul ei</span><span class="v">' + fmt(o.alone) + '</span></div><div><span class="l">Un operator, primul palet complet, fără decalaj</span><span class="v">' + fmt(base.placed) + '</span></div><div><span class="l">Cea mai bună organizare găsită</span><span class="v">' + fmt(best.placed) + '</span></div></div>' +
+      '<div class="tablewrap"><table class="mini"><thead><tr><th>Organizare (primele 5 din 15)</th><th>Găleți / oră, ambele celule</th><th>Roboții așteaptă</th><th>Timp cumulat al paleților fără operator</th></tr></thead><tbody>' + rows + '</tbody></table></div>' +
+      '<p class="iv-verdict">Separat, cele două celule fac ' + buckets(o.alone) + '. Cu un singur operator apar conflicte și pierzi ' + buckets(o.alone - base.placed) + '. ' + (best.placed > base.placed ? 'Regula „' + best.label.toLowerCase() + '”' + (best.offset ? ' cu pornirea decalată ' + best.offset + ' s' : '') + ' recuperează ' + buckets(best.placed - base.placed) + '.' : 'Nicio regulă nu recuperează găleți: al doilea operator e singura soluție.') + ' Deplasarea de ' + tr.v + ' s e o ipoteză.</p>';
+  });
+  $('dayRun').addEventListener('click', function () {
+    if (!line) return;
+    var m = Math.max(0, Math.round(num($('dayM').value) || 0)), c = Math.max(0, Math.round(num($('dayC').value) || 0)), a = Math.max(0, Math.round(num($('dayA').value) || 0));
+    var base = { changeSec: line.changeSec, buffer: line.buffer, operators: line.operators, arrivals: line.arrivals, minutes: 420, shifts: 1 };
+    var d = M.daySchedule([{ line: Object.assign({ format: '5', feed: 8.6 }, base), minutes: m }, { line: Object.assign({ format: '13', feed: 7.4 }, base), minutes: a }], c);
+    var lost = c * (8.6 + 7.4) / 2;
+    $('dayOut').innerHTML = '<div class="tablewrap"><table class="mini"><thead><tr><th>Segment</th><th>Minute</th><th>Găleți</th><th>Paleți</th><th>Robotul așteaptă</th></tr></thead><tbody>' +
+      d.per.map(function (x) { return '<tr><td>Găleată ' + x.format + ' kg</td><td class="n">' + x.minutes + '</td><td class="n">' + fmt(x.placed) + '</td><td class="n">' + fmt(x.pallets) + '</td><td class="n">' + mmss(x.waitPos) + '</td></tr>'; }).join('') +
+      '<tr><td>Schimbare de format</td><td class="n">' + c + '</td><td class="n">0</td><td class="n">—</td><td class="n">—</td></tr></tbody></table></div>' +
+      '<div class="res"><div><span class="l">Găleți pe zi</span><span class="v">' + fmt(d.total) + '</span></div><div><span class="l">Tone paletizate</span><span class="v">' + fmt(d.tonnes, 1) + ' t</span></div><div><span class="l">Producție pierdută la schimbarea de format</span><span class="v">≈ ' + fmt(lost) + '</span></div></div>' +
+      '<p class="hint">Durata schimbării de format e o ipoteză. Ora ideală înmulțită cu ' + Math.round(d.minutes / 60 * 10) / 10 + ' ore ar supraestima ziua: fiecare format pornește cu transportorul gol, iar schimbarea de format nu produce nimic.</p>';
+  });
+  var JURY = [
+    { t: 'Coada crește, dar robotul nu așteaptă după palet. Ce modifici?', line: { format: '5', feed: 11, changeSec: 90 },
+      opts: [['Schimbăm paletul mai repede', { changeSec: 45 }], ['Aducem al doilea operator', { operators: 2 }], ['Aducem debitul la reperul testat, 8,6/min', { feed: 8.6 }], ['Mărim bufferul la 30 de găleți', { buffer: 30 }]],
+      why: 'Robotul lucrează non-stop la ritmul lui. Coada vine dintr-un debit peste reper, deci intervențiile la schimb nu ajută. Bufferul doar mută oprirea mai târziu.' },
+    { t: 'Robotul stă la fiecare palet. Ce modifici?', line: { format: '13', feed: 7.4, changeSec: 420 },
+      opts: [['Schimbăm paletul cu 30% mai repede', { changeSec: 294 }], ['Aducem al doilea operator', { operators: 2 }], ['Robot cu 10% mai rapid (ipoteză)', { capMul: 1.1 }], ['Buffer de 30 de găleți', { buffer: 30 }]],
+      why: 'Schimbarea durează mai mult decât umplerea unui palet. Doar sub prag robotul nu mai așteaptă. Un robot mai rapid umple paletul mai repede și așteaptă mai mult.' },
+    { t: 'Debitul mediu e același, dar transportorul se umple. Ce modifici?', line: { format: '13', feed: 7.4, changeSec: 90, buffer: 8, arrivals: 'valuri' },
+      opts: [['Sosiri regulate de la umplere', { arrivals: 'regulat' }], ['Buffer de 20 de găleți', { buffer: 20 }], ['Schimbare de palet în 45 s', { changeSec: 45 }], ['Al doilea operator', { operators: 2 }]],
+      why: 'Media pe oră ascunde rafalele. Problema e înainte de robot: fie netezești sosirile, fie dai spațiu rafalei. Schimbul de paleți nu e limita aici.' }
+  ];
+  $('jury').innerHTML = JURY.map(function (j, i) { return '<div class="card"><h3>' + j.t + '</h3><div class="opts">' + j.opts.map(function (o, k) { return '<button class="quiet" type="button" data-j="' + i + '" data-k="' + k + '">' + o[0] + '</button>'; }).join('') + '</div><div class="ans" id="jAns' + i + '" hidden></div></div>'; }).join('');
+  [].forEach.call($('jury').querySelectorAll('[data-j]'), function (b) {
+    b.addEventListener('click', function () {
+      var j = JURY[+b.dataset.j], o = j.opts[+b.dataset.k], baseL = Object.assign({ minutes: 420, shifts: 2, operators: 1 }, j.line);
+      var base = M.runLine(baseL), after = M.runLine(M.with_(baseL, o[1])), d = after.placed - base.placed;
+      var held = base.held || after.held ? ' Reținute în amonte: ' + fmt(base.held) + ' → ' + fmt(after.held) + '.' : '';
+      var el = $('jAns' + b.dataset.j); el.hidden = false;
+      el.innerHTML = '<b>' + o[0] + ':</b> ' + fmt(base.placed) + ' → ' + fmt(after.placed) + ' găleți pe oră (' + (d > 0 ? '+' : d < 0 ? '−' : '±') + fmt(Math.abs(d)) + '), coada ' + fmt(base.queue) + ' → ' + fmt(after.queue) + ', robotul așteaptă ' + mmss(base.waitPos) + ' → ' + mmss(after.waitPos) + '.' + held + '<br><span class="hint">' + j.why + '</span>';
+    });
+  });
+
+  // ---------- Trei decidenți și planul de demonstrație ----------
+  var view = 'prod';
+  [].forEach.call($('viewTabs').children, function (b) { b.addEventListener('click', function () { view = b.dataset.view; [].forEach.call($('viewTabs').children, function (x) { x.setAttribute('aria-selected', String(x === b)); }); renderView(); }); });
+  function ul2(a) { return '<ul>' + a.map(function (x) { return '<li>' + x + '</li>'; }).join('') + '</ul>'; }
+  function renderView() {
+    if (!line || !lastFinal) return;
+    var f = lastFinal, d = sens.data, iv = ivData && ivData.best, er = M.ergonomics(line);
+    var facts = [buckets(f.placed) + ' paletizate într-o oră', 'robotul așteaptă o poziție ' + mmss(f.waitPos), d && d.crit ? 'prag de schimbare ' + M.fmtDur(d.crit) : 'schimbul nu limitează linia'];
+    var html = '<div><h4>Faptele, identice pentru toți</h4>' + ul2(facts) + '</div>';
+    if (view === 'prod') html += '<div><h4>Ce îl interesează</h4>' + ul2([iv ? 'Intervenția cu efect: ' + iv.label.toLowerCase() + ' (+' + buckets(iv.dPlaced) + ' pe oră)' : 'Nicio intervenție de schimb nu aduce găleți', 'Coada maximă și dacă trebuie oprită umplerea', 'Cât durează instalarea și cât stă linia']) + '</div><div><h4>Întrebări pentru Tech-Con</h4>' + ul2(['Ce ritm garantați pe găleata noastră, nu pe cea PURATOS?', 'Ce se întâmplă la o oprire a umplerii?', 'Cât durează punerea în funcțiune?']) + '</div>';
+    if (view === 'fin') {
+      var cells = calState ? calState.inYear : null, need = neededCells();
+      html += '<div><h4>Ce îl interesează</h4>' + ul2([(cells != null ? cells + ' celule livrate în an' : 'celule livrate în an') + (need ? ', minimum ' + need + ' pentru țintă' : ''), funnelData && funnelData.costPerClient ? fmt(funnelData.costPerClient) + ' EUR promovare pe client câștigat' : 'costul pe client câștigat', 'Profitul net depinde de alte costuri și de impozit, încă neconfirmate']) + '</div><div><h4>Întrebări pentru Tech-Con</h4>' + ul2(['Care sunt celelalte costuri anuale ale proiectului?', 'Ce termen de livrare e confirmat pentru comenzile din vară?', 'Câte instalări pot rula în paralel?']) + '</div>';
+    }
+    if (view === 'ssm') html += '<div><h4>Ce îl interesează</h4>' + ul2([er ? fmt(er.tonnes, 1) + ' t/zi masă manipulată manual azi (calcul teoretic)' : 'masa manipulată manual azi', fmt(f.pallets) + ' schimbări de palet pe oră: de atâtea ori intră operatorul lângă celulă', 'Trei scanere pe celulă în aplicația de referință; logica lor nu e simulată']) + '</div><div><h4>Întrebări pentru Tech-Con</h4>' + ul2(['Cum arată evaluarea riscurilor pentru zona de schimb?', 'Ce se întâmplă când operatorul intră în zona monitorizată?', 'Ce instruire primesc operatorii?']) + '</div>';
+    $('viewOut').innerHTML = html;
+  }
+  function renderDemoPlan() {
+    if (!line) return;
+    var c = $('concern').value, d = sens.data, ref = M.REF[line.format], plan;
+    var crit = d && d.crit ? M.fmtDur(d.crit) : 'pragul calculat';
+    if (c === 'pack') plan = { m: ['Preluări reușite din 200 de găleți reale, pline', 'Orientarea mânerului citită de cameră', 'Sarcina totală cu gripperul'], k: ['Găleți din producția curentă, trei loturi', 'Mânerul în poziții aleatoare pe transportor', 'Aceeași iluminare ca în fabrică'], yes: ['Nicio preluare nereușită din 200, ca la testul FAT PURATOS', 'Nicio intervenție manuală pe durata testului'], no: ['Preluări nereușite repetate pe același tip de mâner', 'Sarcina totală peste limita robotului: alt gripper sau altă probă'] };
+    else if (c === 'rate') plan = { m: ['Găleți pe minut, 30 de minute continuu, pe formatul clientului', 'Coada pe transportor la fiecare 5 minute'], k: ['Alimentare la debitul declarat: ' + fmt(line.feed, 1) + ' găleți/min', 'Modelul de paletizare final', 'Fără opriri planificate'], yes: ['Ritm ≥ ' + fmt(line.feed, 1) + ' găleți/min pe tot intervalul', 'Coada nu crește de la un control la altul'], no: ['Ritm sub debitul declarat' + (ref ? ' sau sub reperul de ' + fmt(ref.cap, 1) : ''), 'Coadă în creștere: e necesară validarea capacității'] };
+    else plan = { m: ['10 schimbări cronometrate, separat așteptarea și operația', 'Câte separatoare pe palet și cât durează fiecare'], k: ['Operatorii din tura normală, fără pregătire specială', 'Transpaletul și accesul de azi'], yes: ['Total schimbare sub ' + crit + ' în cel puțin 9 din 10 cazuri', 'Robotul nu așteaptă o poziție pe durata testului'], no: ['Peste ' + crit + ' în mai mult de un caz: organizarea trebuie schimbată', 'Așteptarea operatorului mai mare decât operația: al doilea operator sau alt program'] };
+    $('demoPlan').innerHTML = '<div><h4>Ce măsurăm</h4>' + ul2(plan.m) + '</div><div><h4>Ce păstrăm constant</h4>' + ul2(plan.k) + '</div><div class="yes"><h4>Susține propunerea dacă</h4>' + ul2(plan.yes) + '</div><div class="no"><h4>O revizuim dacă</h4>' + ul2(plan.no) + '</div><div><h4>Dovezi insuficiente dacă</h4>' + ul2(['Mai puțin de 10 observații', 'Datele vin de pe altă linie sau alt produs', 'Testul a avut opriri neplanificate']) + '</div>';
+    plan.label = $('concern').selectedOptions[0].textContent; demoPlanData = plan;
+  }
+  var demoPlanData = null;
+  $('concern').addEventListener('change', function () { renderDemoPlan(); if (!$('summary').hidden) buildSummary(); });
+
+  // ---------- Comercial: buget, capacitate, mesaje, oportunități, următorul pas ----------
+  var calState = null;
+  function budget() { var b = num($('budget').value); return b > 0 ? b : 30000; }
+  $('btnScale').addEventListener('click', function () {
+    var tot = CHANNELS.reduce(function (a, ch, i) { return a + (num($('chE' + i).value) || 0); }, 0), b = budget();
+    if (tot <= 0) return;
+    CHANNELS.forEach(function (ch, i) { $('chE' + i).value = Math.round((num($('chE' + i).value) || 0) * b / tot / 50) * 50; });
+    var diff = b - CHANNELS.reduce(function (a, ch, i) { return a + (num($('chE' + i).value) || 0); }, 0);
+    $('chE8').value = (num($('chE8').value) || 0) + diff;
+    renderBiz();
+  });
+  $('btnCut').addEventListener('click', function () {
+    var before = funnelData ? funnelData : null, beforeCells = calState ? calState.inYear : null;
+    $('budget').value = '20000';
+    var keep = [0, 5, 6, 2], plan = {}; // păstrăm canalele cu cost mic pe cerere și conținutul care le susține
+    var amounts = [5000, 3000, 2000, 2000, 2000, 2250, 2250, 0, 1500];
+    CHANNELS.forEach(function (ch, i) { $('chE' + i).value = amounts[i]; });
+    renderBiz(); fillCalendarFromFunnel();
+    var m = $('cutMsg'); m.hidden = false;
+    m.textContent = 'Cu 20.000 EUR: ' + fmt(funnelData.requests, 0) + ' cereri în loc de ' + (before ? fmt(before.requests, 0) : '—') + ', ' + fmt(funnelData.cells, 1) + ' celule din pâlnie' + (beforeCells != null ? ', ' + calState.inYear + ' livrate în an în loc de ' + beforeCells : '') + '. Am tăiat YouTube și am redus LinkedIn și pagina web; marketingul direct și webinarele rămân, pentru că aduc cereri cel mai ieftin.';
+  });
+  $('budget').addEventListener('input', renderBiz);
+
+  function renderCapacity() {
+    if (!calState) return;
+    var teams = Math.max(1, num($('teams').value) || 1), wd = Math.max(1, num($('wdays').value) || 20), dE = num($('dEval').value) || 0, dD = num($('dDemo').value) || 0, dI = num($('dInst').value) || 0;
+    var avail = teams * wd, meetings = funnelData ? funnelData.meetings : 0, clients = funnelData ? funnelData.clients : 0;
+    var orders = calOrders, totalOrd = orders.reduce(function (a, b) { return a + b; }, 0) || 1, over = 0, rows = '';
+    MONTHS.forEach(function (m, i) {
+      // evaluările și demonstrațiile preced comenzile cu o lună
+      var nxt = i + 1 < 12 ? orders[i + 1] : 0, ev = meetings * nxt / totalOrd, de = clients * nxt / totalOrd, ins = calState.deliveredArr[i];
+      var need = ev * dE + de * dD + ins * dI, bad = need > avail;
+      if (bad) over++;
+      rows += '<tr' + (bad ? ' class="over"' : '') + '><td>' + m + '</td><td class="n">' + fmt(ev, 1) + '</td><td class="n">' + fmt(de, 1) + '</td><td class="n">' + ins + '</td><td class="n">' + fmt(need, 0) + '</td><td class="n">' + avail + '</td><td>' + (bad ? '<span class="status-bad">suprapunere</span>' : '<span class="status-ok">ok</span>') + '</td></tr>';
+    });
+    $('capT').innerHTML = '<thead><tr><th>Luna</th><th>Evaluări</th><th>Demonstrații</th><th>Instalări</th><th>Zile necesare</th><th>Zile disponibile</th><th></th></tr></thead><tbody>' + rows + '</tbody>';
+    $('capOut').textContent = over ? 'În ' + over + (over === 1 ? ' lună' : ' luni') + ' planul cere mai multe zile decât au echipele. Promisiunea de ' + calState.ordered + ' celule are nevoie de mai multe echipe sau de comenzi mai devreme.' : 'Cu ' + teams + (teams === 1 ? ' echipă' : ' echipe') + ', planul de ' + calState.ordered + ' celule încape în fiecare lună.';
+  }
+  ['teams', 'wdays', 'dEval', 'dDemo', 'dInst'].forEach(function (id) { $(id).addEventListener('input', renderCapacity); });
+
+  var MSG = [['Ergonomie: „46 de tone pe tură. Lasă găleata la robot.”', 1500, 900, 6, 2], ['Continuitate: „Robotul ține pasul. Testează-ți linia.”', 1500, 500, 10, 4]];
+  $('msgT').innerHTML = '<thead><tr><th>Campanie</th><th>EUR</th><th>Click-uri</th><th>Cereri calificate</th><th>Întâlniri</th><th>EUR / click</th><th>EUR / cerere</th><th>EUR / întâlnire</th></tr></thead><tbody>' + MSG.map(function (m, i) { return '<tr><td>' + m[0] + '</td>' + [1, 2, 3, 4].map(function (k) { return '<td><input id="msg' + i + k + '" inputmode="numeric" value="' + m[k] + '" aria-label="' + m[0] + '"></td>'; }).join('') + '<td class="n" id="msgC' + i + '"></td><td class="n" id="msgR' + i + '"></td><td class="n" id="msgM' + i + '"></td></tr>'; }).join('') + '</tbody>';
+  function renderMsg() {
+    var r = MSG.map(function (m, i) { var e = num($('msg' + i + '1').value) || 0, c = num($('msg' + i + '2').value) || 0, q = num($('msg' + i + '3').value) || 0, mt = num($('msg' + i + '4').value) || 0; return { e: e, cpc: c ? e / c : null, cpr: q ? e / q : null, cpm: mt ? e / mt : null }; });
+    r.forEach(function (x, i) { $('msgC' + i).textContent = x.cpc ? fmt(x.cpc, 2) : '—'; $('msgR' + i).textContent = x.cpr ? fmt(x.cpr) : '—'; $('msgM' + i).textContent = x.cpm ? fmt(x.cpm) : '—'; });
+    if (!r[0].cpr || !r[1].cpr) { $('msgOut').textContent = 'Fără cereri calificate, campania nu poate fi judecată.'; return; }
+    var w = r[0].cpr <= r[1].cpr ? 0 : 1, clickW = (r[0].cpc || 1e9) <= (r[1].cpc || 1e9) ? 0 : 1;
+    $('msgOut').textContent = 'Câștigă mesajul despre ' + (w === 0 ? 'ergonomie' : 'continuitatea fluxului') + ': ' + fmt(r[w].cpr) + ' EUR pe cerere calificată, față de ' + fmt(r[1 - w].cpr) + '.' + (clickW !== w ? ' După click-uri ar fi părut invers: un click nu e o cerere.' : '');
+  }
+  MSG.forEach(function (m, i) { [1, 2, 3, 4].forEach(function (k) { $('msg' + i + k).addEventListener('input', renderMsg); }); });
+
+  var QUAL = [['Fabrica Demo 1 (fictiv)', 1, 1, 1, 1, 1], ['Fabrica Demo 2 (fictiv)', 1, 0, 1, 0, 1], ['Fabrica Demo 3 (fictiv)', 0, 1, 0, 1, 0], ['Fabrica Demo 4 (fictiv)', 1, 1, 1, 0, 1]];
+  var QCOLS = ['Ambalaj descris', 'Debit măsurat', 'Spațiu verificat', 'Calendar de investiție', 'Decident identificat'];
+  var QNEXT = ['Cerem greutatea, mânerul și materialul găleții', 'Trimitem cronometrul PaletScore pentru o tură', 'Programăm o vizită pentru spațiu și acces', 'Întrebăm când se aprobă bugetul', 'Aflăm cine semnează investiția'];
+  $('qualT').innerHTML = '<thead><tr><th>Cerere</th>' + QCOLS.map(function (c) { return '<th>' + c + '</th>'; }).join('') + '<th>Stare și pasul următor</th></tr></thead><tbody>' + QUAL.map(function (q, i) { return '<tr><td>' + q[0] + '</td>' + [1, 2, 3, 4, 5].map(function (k) { return '<td style="text-align:center"><input type="checkbox" id="q' + i + k + '"' + (q[k] ? ' checked' : '') + ' aria-label="' + QCOLS[k - 1] + '"></td>'; }).join('') + '<td id="qs' + i + '"></td></tr>'; }).join('') + '</tbody>';
+  function renderQual() {
+    QUAL.forEach(function (q, i) {
+      var miss = []; [1, 2, 3, 4, 5].forEach(function (k) { if (!$('q' + i + k).checked) miss.push(k - 1); });
+      $('qs' + i).innerHTML = miss.length ? '<span class="status-bad">Incompletă</span> · lipsește: ' + miss.map(function (k) { return QCOLS[k].toLowerCase(); }).join(', ') + '. Pas: ' + QNEXT[miss[0]].charAt(0).toLowerCase() + QNEXT[miss[0]].slice(1) + '.' : '<span class="status-ok">Pregătită pentru evaluare tehnică</span> · Pas: programăm evaluarea.';
+    });
+  }
+  QUAL.forEach(function (q, i) { [1, 2, 3, 4, 5].forEach(function (k) { $('q' + i + k).addEventListener('change', renderQual); }); });
+
+  var STAGES = ['Cerere', 'Evaluare tehnică', 'Demonstrație', 'Ofertă'], REASONS = ['Termen de livrare', 'Buget', 'Incompatibilitate tehnică', 'Informații insuficiente'];
+  var REASON_TEST = { 'Termen de livrare': 'testați un mesaj despre termene și comenzile până în august', 'Buget': 'testați o ofertă eșalonată sau o singură celulă la început', 'Incompatibilitate tehnică': 'calificați mai devreme ambalajul, înainte de evaluare', 'Informații insuficiente': 'trimiteți fișa de măsurători și cronometrul înainte de vizită' };
+  var LOST = [['Demo A', 0, 3], ['Demo B', 1, 2], ['Demo C', 3, 1], ['Demo D', 1, 3], ['Demo E', 2, 0], ['Demo F', 0, 3], ['Demo G', 3, 0]];
+  function sel(id, arr, v) { return '<select id="' + id + '">' + arr.map(function (x, k) { return '<option value="' + k + '"' + (k === v ? ' selected' : '') + '>' + x + '</option>'; }).join('') + '</select>'; }
+  $('lostT').innerHTML = '<thead><tr><th>Oportunitate (fictivă)</th><th>Pierdută la etapa</th><th>Motiv</th></tr></thead><tbody>' + LOST.map(function (l, i) { return '<tr><td>' + l[0] + '</td><td>' + sel('ls' + i, STAGES, l[1]) + '</td><td>' + sel('lr' + i, REASONS, l[2]) + '</td></tr>'; }).join('') + '</tbody>';
+  function renderLost() {
+    var byS = STAGES.map(function () { return 0; }), byR = REASONS.map(function () { return 0; });
+    LOST.forEach(function (l, i) { byS[+$('ls' + i).value]++; byR[+$('lr' + i).value]++; });
+    var s = byS.indexOf(Math.max.apply(null, byS)), r = byR.indexOf(Math.max.apply(null, byR));
+    $('lostOut').textContent = 'Cele mai multe oportunități se pierd la etapa „' + STAGES[s].toLowerCase() + '” (' + byS[s] + ' din ' + LOST.length + '). Motivul cel mai des: ' + REASONS[r].toLowerCase() + ' (' + byR[r] + '). Merită testat: ' + REASON_TEST[REASONS[r]] + '.';
+  }
+  LOST.forEach(function (l, i) { $('ls' + i).addEventListener('change', renderLost); $('lr' + i).addEventListener('change', renderLost); });
+
+  $('nowM').innerHTML = MONTHS.map(function (m, i) { return '<option value="' + i + '"' + (i === 4 ? ' selected' : '') + '>' + m + '</option>'; }).join('');
+  var NEXT = [['Reclamă suplimentară (mai multe cereri)', 5000, 6, 10, 2], ['Evaluare tehnică pentru o cerere existentă', 1500, 3, 30, 2], ['Demonstrație pentru un client deja interesat', 2500, 1, 50, 2]];
+  $('nextT').innerHTML = '<thead><tr><th>Acțiune</th><th>Cost EUR</th><th>Luni până la decizie</th><th>Probabilitate %</th><th>Celule</th><th>Livrare în an?</th><th>Celule așteptate în an</th><th>EUR / celulă</th></tr></thead><tbody>' + NEXT.map(function (n, i) { return '<tr><td>' + n[0] + '</td>' + [1, 2, 3, 4].map(function (k) { return '<td><input id="nx' + i + k + '" inputmode="numeric" value="' + n[k] + '" aria-label="' + n[0] + '"></td>'; }).join('') + '<td id="nxY' + i + '"></td><td class="n" id="nxE' + i + '"></td><td class="n" id="nxC' + i + '"></td></tr>'; }).join('') + '</tbody>';
+  function renderNext() {
+    var now = +$('nowM').value, lead = Math.max(0, Math.round(num($('lead').value) || 0)), best = -1, bv = -1, res = [];
+    NEXT.forEach(function (n, i) {
+      var cost = num($('nx' + i + '1').value) || 0, mo = num($('nx' + i + '2').value) || 0, pr = (num($('nx' + i + '3').value) || 0) / 100, ce = num($('nx' + i + '4').value) || 0;
+      var dm = now + mo + lead, inYear = dm <= 11, exp = inYear ? pr * ce : 0;
+      $('nxY' + i).innerHTML = inYear ? '<span class="status-ok">da, în ' + MONTHS[dm] + '</span>' : '<span class="status-bad">nu, anul următor</span>';
+      $('nxE' + i).textContent = fmt(exp, 2); $('nxC' + i).textContent = exp > 0 ? fmt(cost / exp) : '—';
+      res.push(exp); if (exp > bv) { bv = exp; best = i; }
+    });
+    $('nextOut').textContent = bv > 0 ? 'În ' + MONTHS[now].toLowerCase() + ', banii aduc cele mai multe celule livrabile în an prin: ' + NEXT[best][0].toLowerCase() + '. ' + (res[0] === 0 ? 'Reclama aduce cereri, dar acestea nu mai ajung la livrare până la 31 decembrie.' : '') : 'Din ' + MONTHS[now].toLowerCase() + ', nicio acțiune nu mai aduce celule livrate în anul acesta. Banii pregătesc anul următor.';
+  }
+  NEXT.forEach(function (n, i) { [1, 2, 3, 4].forEach(function (k) { $('nx' + i + k).addEventListener('input', renderNext); }); });
+  $('nowM').addEventListener('change', renderNext);
 
   // ---------- Evenimente ----------
   function bindSeg(seg, attr, fn) {
@@ -1976,6 +2487,7 @@ footer { color: var(--muted); font-size: 13px; display: flex; flex-wrap: wrap; g
   bindSeg('opSeg', 'op', function (v) { state.operators = +v; applyInputs(true); });
   ['feed', 'change', 'minutes', 'perpallet', 'weight', 'material', 'buffer'].forEach(function (id) { $(id).addEventListener('input', function () { applyInputs(id !== 'material' && id !== 'weight'); }); });
   ['shifts', 'handle'].forEach(function (id) { $(id).addEventListener('change', function () { applyInputs(false); }); });
+  $('arrivals').addEventListener('change', function () { applyInputs(true); });
   [].forEach.call(document.querySelectorAll('[data-scen]'), function (b) {
     b.addEventListener('click', function () {
       var s = b.dataset.scen;
@@ -1983,6 +2495,7 @@ footer { color: var(--muted); font-size: 13px; display: flex; flex-wrap: wrap; g
       if (s === 'slow') setInputs('13', 7.4, 420);
       if (s === 'over') setInputs('5', 11, 90);
       if (s === 'buffer') setInputs('5', 11, 90, 20);
+      if (s === 'waves') setInputs('13', 7.4, 90, 8, 'valuri');
       setSpeed(60); startTest();
     });
   });
@@ -1999,7 +2512,14 @@ footer { color: var(--muted); font-size: 13px; display: flex; flex-wrap: wrap; g
   [].forEach.call($('speedSeg').children, function (b) { b.addEventListener('click', function () { setSpeed(+b.dataset.speed); }); });
   $('btnSaveA').addEventListener('click', saveA);
   $('btnCompare').addEventListener('click', function () { startCompare(120); });
-  $('changeB').addEventListener('input', function () { checkRange('changeB', 'un timp de schimbare', 's', 10, 1800, true, '90'); });
+  $('btnSaveA').addEventListener('click', function () { $('diffRep').hidden = true; });
+  $('btnFactories').addEventListener('click', compareFactories);
+  $('btnCode').addEventListener('click', function () {
+    var code = scenarioCode(), m = $('codeMsg');
+    function shown() { $('codeIn').value = code; $('codeIn').select(); m.textContent = 'Codul e selectat în câmp. Copiază-l cu Cmd/Ctrl + C.'; m.hidden = false; }
+    try { navigator.clipboard.writeText(code).then(function () { m.textContent = 'Cod copiat'; m.hidden = false; $('codeIn').value = code; }, shown); } catch (e) { shown(); }
+  });
+  $('btnLoadCode').addEventListener('click', function () { loadCode($('codeIn').value.trim()); });
   bindSeg('abSeg', 'ab', function (v) { var showB = v === 'b'; $('conA').dataset.hide = String(showB); $('conB').dataset.hide = String(!showB); if (cmp) [cmp.a, cmp.b].forEach(function (r) { r.view.fit(); r.tl.fit(); }); });
   $('target').addEventListener('input', function () { clearTimeout(slowTimer); slowTimer = setTimeout(computeSens, 200); });
   $('btnAtLimit').addEventListener('click', function () { var d = sens.data; if (d && d.tr && d.tr.c) runAtChange(d.tr.c, 'La limită (' + M.fmtDur(d.tr.c) + ')'); });
@@ -2009,7 +2529,8 @@ footer { color: var(--muted); font-size: 13px; display: flex; flex-wrap: wrap; g
   $('btnCopy').addEventListener('click', copySummary);
   CHANNELS.forEach(function (ch, i) { ['chE', 'chC'].forEach(function (p) { $(p + i).addEventListener('input', renderBiz); }); });
   ['meet', 'win', 'cpc'].forEach(function (id) { $(id).addEventListener('input', renderBiz); });
-  ['lead', 'capm', 'cPrice', 'cCost', 'cOther', 'cTax', 'cTarget'].forEach(function (id) { $(id).addEventListener('input', renderCalendar); });
+  ['lead', 'capm', 'instLag', 'cPrice', 'cCost', 'cOther', 'cTax', 'cTarget'].forEach(function (id) { $(id).addEventListener('input', renderCalendar); });
+  $('recog').addEventListener('change', renderCalendar);
   MONTHS.forEach(function (m, i) { $('calI' + i).addEventListener('input', renderCalendar); });
   $('btnFromFunnel').addEventListener('click', fillCalendarFromFunnel);
   document.addEventListener('keydown', function (ev) {
@@ -2048,8 +2569,8 @@ footer { color: var(--muted); font-size: 13px; display: flex; flex-wrap: wrap; g
   }
 
   applyInputs(true);
-  clearTimeout(slowTimer); computeInterventions(); computeSens();
-  renderFunnel(); fillCalendarFromFunnel();
+  clearTimeout(slowTimer); computeInterventions(); computeSens(); computeRobust();
+  renderFunnel(); fillCalendarFromFunnel(); renderMsg(); renderQual(); renderLost(); renderNext(); renderView(); renderDemoPlan();
   M.runUntil(main.sim, 240);
   setPlayLabel(); updateKpis();
   requestAnimationFrame(frame);

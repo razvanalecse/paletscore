@@ -57,6 +57,7 @@ rows = [
     ("Celule pe client", 2, NUM1, YELLOW, "Ipoteză: PURATOS a cumpărat două celule."),
     ("Livrare după comandă (luni)", 4, NUM0, None, "Reperul cazului PURATOS: livrare în aproximativ patru luni."),
     ("Instalări posibile pe lună (celule)", 3, NUM0, YELLOW, "Ipoteză privind capacitatea echipei Tech-Con. De confirmat."),
+    ("Buget total de promovare (EUR)", 30000, EUR, None, "Tema concursului: 30.000 EUR/an. Modificați pentru negocierea bugetului (de exemplu 20.000)."),
 ]
 put(ws, "A3", "Parametru", BOLD, fill=HEAD)
 put(ws, "B3", "Valoare", BOLD, fill=HEAD)
@@ -97,7 +98,7 @@ put(wp, f"B{tot}", f"=SUM(B{first}:B{last})", BOLD, EUR)
 put(wp, f"D{tot}", f"=SUM(D{first}:D{last})", BOLD, NUM1)
 for col in "ABCD":
     wp[f"{col}{tot}"].border = LINE
-put(wp, f"A{tot + 1}", f'=IF(ROUND(B{tot},0)=30000,"Bugetul se închide la 30.000 EUR","Atenție: totalul trebuie să fie 30.000 EUR")', BOLD)
+put(wp, f"A{tot + 1}", f'=IF(ROUND(B{tot},0)=ROUND(Ipoteze!B14,0),"Bugetul se închide la totalul din Ipoteze","Atenție: totalul canalelor diferă de bugetul din Ipoteze (B14)")', BOLD)
 put(wp, f"A{tot + 2}", "Un client venit din mai multe canale se numără o singură dată. Un click nu este o cerere relevantă.", NOTE)
 
 # ---------- Pâlnie ----------

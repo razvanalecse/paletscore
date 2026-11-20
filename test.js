@@ -99,5 +99,40 @@ check('Pâlnie — celule', f.cells, 58 * 0.35 * 0.28 * 2, 0.01);
 const d = M.deliveries([2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2], 4, 3);
 check('Livrări — doar comenzile până în august intră în an', d.inYear, 16, 0);
 
+// 14. Sosiri în valuri: aceeași medie pe oră, coadă maximă mai mare
+const reg = M.runLine({ format: '13', feed: 7.4, changeSec: 90 });
+const wav = M.runLine({ format: '13', feed: 7.4, changeSec: 90, arrivals: 'valuri' });
+check('Valuri — aceleași sosiri pe oră', wav.arrived, reg.arrived, 3);
+const qmax = r => r.bins.reduce((m, b) => Math.max(m, b.q), 0);
+check('Valuri — coada maximă crește', qmax(wav) > qmax(reg) + 5 ? 1 : 0, 1, 0);
+console.log('     coadă maximă: regulat ' + qmax(reg) + ', valuri ' + qmax(wav));
+
+// 15. Robustețe și ce măsurăm întâi
+const tor = M.tornado({ format: '13', feed: 7.4, changeSec: 420 });
+check('Ce măsurăm întâi — durata schimbării e pe primul loc la 420 s', tor.items[0].id === 'change' ? 1 : 0, 1, 0);
+const rob = M.robustness({ format: '13', feed: 7.4, changeSec: 420 });
+console.log('     recomandarea rămâne aceeași în ' + rob.same + ' din 9 combinații');
+
+// 16. Ora reală din CSV
+const csv = M.parseCSV(M.sampleCSV(2026));
+check('CSV — fără erori pe exemplu', csv.errors.length, 0, 0);
+const rep = M.runLine({ format: '13', feed: 7.4, changeSec: 300, arrivalTimes: csv.arrivals, changeList: csv.changes });
+check('CSV — toate sosirile intră în oră', rep.arrived, csv.arrivals.length, 0);
+console.log('     oră reală: ' + csv.arrivals.length + ' sosiri, ' + rep.placed + ' paletizate, așteptare ' + rep.waitPos.toFixed(0) + ' s');
+check('CSV — linie greșită semnalată', M.parseCSV('sosire,abc\nceva,3').errors.length, 2, 0);
+
+// 17. Două celule, un operator
+const L1 = { format: '13', feed: 7.4, changeSec: 200 };
+const tc = M.twoCells(L1, L1, 'fifo', 30, 0);
+check('Două celule — un operator comun reduce producția față de celule separate', tc.placed < M.runLine(L1).placed * 2 ? 1 : 0, 1, 0);
+const org = M.bestOrganization(L1, L1, 30);
+check('Două celule — cea mai bună organizare nu e mai slabă decât regula de bază', org.best.placed >= org.baseline.placed ? 1 : 0, 1, 0);
+console.log('     separat ' + org.alone + ', comun (FIFO, fără decalaj) ' + org.baseline.placed + ', cel mai bine ' + org.best.placed + ' (' + org.best.label + ', decalaj ' + org.best.offset + ' s)');
+
+// 18. Zi cu două formate
+const day = M.daySchedule([{ line: { format: '5', feed: 8.6, changeSec: 90 }, minutes: 240 }, { line: { format: '13', feed: 7.4, changeSec: 90 }, minutes: 240 }], 30);
+check('Zi — total = suma segmentelor', day.total, day.per[0].placed + day.per[1].placed, 0);
+console.log('     zi: 5 kg ' + day.per[0].placed + ' + 13 kg ' + day.per[1].placed + ' găleți, ' + day.tonnes.toFixed(1) + ' t');
+
 console.log(fails ? '\n' + fails + ' teste au eșuat' : '\nToate testele au trecut');
 process.exit(fails ? 1 : 0);
