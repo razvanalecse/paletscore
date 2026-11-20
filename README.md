@@ -1,18 +1,21 @@
-# PaletScore / Line Lab
+# PaletScore
 
 Prototip web pentru AI-Powered Business Challenge 2026 (secțiunea Studenți, tema Tech-Con / paletizare UR20).
-Directorul de producție schimbă un parametru al liniei și vede, pe aceeași oră simulată, unde începe așteptarea robotului.
+Simulează secundă cu secundă o celulă UR20 cu două poziții și arată ce merită schimbat în fabrică.
 
-## Cum testezi
-1. Deschide linkul și apasă **Demo de 45 de secunde**.
-2. Sau: alege **Schimbare lentă**, apoi **Arată-mi primul blocaj** (minutul 12:02).
-3. **Ce schimbăm?** → Salvează ca Varianta A → B = 90 s → Compară aceleași 60 de minute.
-4. Caz cu date greșite: scrie `-3` sau `abc` la debit; simularea nu pornește și apare mesajul de corectare.
+## Cum testezi (2 minute)
+1. **Demo 45 s**: flux stabil → schimbare în 7 minute → primul blocaj → intervenția recomandată pe aceeași oră.
+2. **Primul blocaj** (scenariul „Schimbare lentă”): minutul 12:02. Apasă pe palet sau pe robot pentru Inspector și pentru „Unde merită să intervii?”.
+3. **Ținta**: „Vreau minimum 430 de găleți/oră” → schimbare de cel mult 6 min 09 s → „Rulează la limită” → „+30 s” (401 găleți).
+4. **Cronometru**: „Încarcă 8 observații demonstrative” → aplicația separă așteptarea operatorului de operație și spune ce contează mai mult.
+5. **Plan comercial**: modifică bugetul pe canale și ratele; calendarul arată câte celule ajung livrate până la 31 decembrie.
+6. Caz cu date greșite: `-3` sau `abc` la debit → mesaj de corectare, simularea nu pornește.
 
 ## Fișiere
-- `model.js` — modelul de calcul unic (simulare, reguli, ergonomie, scenariu comercial)
+- `model.js` — modelul de calcul unic (simulare, buffer, operatori, variație cu sămânță fixă, prag, țintă, intervenții, pâlnie, livrări)
 - `paletscore.html` — interfața
 - `test.js` — teste numerice (`node test.js`)
 - `build.sh` — generează `dist/` pentru GitHub Pages / Netlify / Vercel
+- `Model_financiar_PaletScore.xlsx` — modelul financiar editabil, cu formule (generat de `build_xlsx.py`)
 
-Reperele PURATOS (7,4 și 8,6 găleți/min; 44 și 100 găleți/palet) sunt rezultate de test, nu garanții. Toate datele de solicitare sunt fictive.
+Reperele PURATOS (7,4 și 8,6 găleți/min; 44 și 100 găleți/palet) sunt rezultate de test, nu garanții. Toate datele sunt fictive.

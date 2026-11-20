@@ -65,5 +65,39 @@ check('Jurnal — timp total (s)', tot, 3600, 0.5);
 const pw = s.bins.reduce((a, b) => a + b.p, 0);
 check('Jurnal — așteptare poziție = KPI (s)', pw, s.waitPos, 0.5);
 
+// 9. Funcția inversă: obiectiv 430 găleți/oră la 13 kg, 7,4/min
+const L13 = { format: '13', feed: 7.4, changeSec: 90 };
+const tgt = M.maxChangeForTarget(L13, 430);
+const atLimit = M.runLine(M.with_(L13, { changeSec: tgt.c })).placed;
+const over = M.runLine(M.with_(L13, { changeSec: tgt.c + 1 })).placed;
+check('Țintă 430 — la limită se atinge', atLimit >= 430 ? 1 : 0, 1, 0);
+check('Țintă 430 — +1 s nu se mai atinge', over < 430 ? 1 : 0, 1, 0);
+console.log('     limită pentru 430 găleți/oră: ' + tgt.c + ' s; +30 s → ' + M.runLine(M.with_(L13, { changeSec: tgt.c + 30 })).placed + ' găleți');
+check('Țintă 500 imposibilă la 13 kg', M.maxChangeForTarget(L13, 500).c === null ? 1 : 0, 1, 0);
+
+// 10. Variabilitate reproductibilă (aceeași sămânță → aceleași rezultate)
+const v1 = M.variability(M.with_(L13, { changeSec: 240 }), 60, 420, 20, 2026);
+const v2 = M.variability(M.with_(L13, { changeSec: 240 }), 60, 420, 20, 2026);
+check('Variabilitate — reproductibilă', v1.median === v2.median && v1.min === v2.min ? 1 : 0, 1, 0);
+console.log('     60–420 s: min ' + v1.min + ', mediană ' + v1.median + ', max ' + v1.max + ', blocaj în ' + Math.round(v1.blockedShare * 100) + '% din rulări');
+
+// 11. Buffer limitat: peste reper, coada se oprește la 20, restul rămâne în amonte
+s = M.runLine({ format: '5', feed: 11, changeSec: 90, buffer: 20 });
+check('Buffer 20 — coada nu depășește 20', s.queue, 20, 0);
+check('Buffer 20 — găleți reținute în amonte', s.held, 124, 3);
+
+// 12. Al doilea operator reduce, dar nu elimină, blocajul la schimbare de 420 s (schimbarea rămâne mai lungă decât umplerea)
+s = M.runLine({ format: '13', feed: 7.4, changeSec: 420, operators: 2 });
+check('Doi operatori, 420 s — așteptare redusă, nu zero', s.waitPos > 0 && s.waitPos < 442 ? 1 : 0, 1, 0);
+const iv = M.interventions({ format: '13', feed: 7.4, changeSec: 420 });
+check('Intervenții — cea mai bună este schimbarea mai rapidă', iv.best && iv.best.id === 'faster' ? 1 : 0, 1, 0);
+
+// 13. Pâlnie și livrări
+const f = M.funnel([{ eur: 6000, cpr: 150 }, { eur: 4500, cpr: 250 }, { eur: 19500, cpr: 0 }], 35, 28, 2);
+check('Pâlnie — cereri', f.requests, 58, 0.01);
+check('Pâlnie — celule', f.cells, 58 * 0.35 * 0.28 * 2, 0.01);
+const d = M.deliveries([2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2], 4, 3);
+check('Livrări — doar comenzile până în august intră în an', d.inYear, 16, 0);
+
 console.log(fails ? '\n' + fails + ' teste au eșuat' : '\nToate testele au trecut');
 process.exit(fails ? 1 : 0);
