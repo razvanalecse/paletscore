@@ -944,7 +944,7 @@ footer { color: var(--muted); font-size: 13px; display: flex; flex-wrap: wrap; g
   <footer><span>PaletScore · prototip pentru AI-Powered Business Challenge 2026</span><span>Nu este un site Tech-Con sau PURATOS. Date fictive; nimic nu se trimite sau se stochează.</span></footer>
 </div>
 
-<script src="model.js?v=1795170573"></script>
+<script src="model.js?v=1795170982"></script>
 <script>
 (function () {
   'use strict';
@@ -2203,10 +2203,10 @@ footer { color: var(--muted); font-size: 13px; display: flex; flex-wrap: wrap; g
     if (!B) { sc.className = 'sumcheck bad'; sc.textContent = 'Introdu un buget total pozitiv, de exemplu 30.000 EUR.'; }
     else if (Math.abs(funnelData.total - B) < 0.5) { sc.className = 'sumcheck ok'; sc.textContent = 'Bugetul se închide la ' + fmt(B) + ' EUR, fiecare cost numărat o singură dată.'; }
     else { sc.className = 'sumcheck bad'; sc.textContent = 'Totalul trebuie să fie ' + fmt(B) + ' EUR. Acum: ' + fmt(funnelData.total) + ' EUR (' + (funnelData.total > B ? '+' : '−') + fmt(Math.abs(funnelData.total - B)) + '). Folosește „Ajustează canalele proporțional”.'; }
-    var rows = [['Cereri relevante', funnelData.requests, ''], ['Întâlniri tehnice', funnelData.meetings, ''], ['Clienți', funnelData.clients, ''], ['Celule', funnelData.cells, 'cells']];
+    var rows = [['Cereri relevante', funnelData.requests, ''], ['Întâlniri tehnice', funnelData.meetings, ''], ['Fabrici câștigate', funnelData.clients, ''], ['Celule', funnelData.cells, 'cells']];
     var mx = Math.max(1, funnelData.requests);
     $('funnel').innerHTML = rows.map(function (r) { return '<div class="row"><span>' + r[0] + '</span><div class="bar ' + r[2] + '" style="width:' + Math.max(12, r[1] / mx * 100) + '%">' + fmt(r[1], 1) + '</div></div>'; }).join('') +
-      '<p class="hint">' + (funnelData.costPerRequest ? fmt(funnelData.costPerRequest) + ' EUR pe cerere relevantă, ' : '') + (funnelData.costPerClient ? fmt(funnelData.costPerClient) + ' EUR pe client câștigat (tot bugetul).' : '') + '</p>';
+      '<p class="hint">' + (funnelData.costPerRequest ? fmt(funnelData.costPerRequest) + ' EUR pe cerere relevantă, ' : '') + (funnelData.costPerClient ? fmt(funnelData.costPerClient) + ' EUR pe fabrică câștigată (tot bugetul).' : '') + '</p>';
   }
   function fillCalendarFromFunnel() {
     var cells = Math.round(funnelData ? funnelData.cells : 0), w = [1, 2, 3, 3, 3, 3, 3, 2, 2, 1, 1, 0], sw = w.reduce(function (a, b) { return a + b; }, 0);
