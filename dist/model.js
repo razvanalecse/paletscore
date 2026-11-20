@@ -10,6 +10,8 @@
 
   var DT = 0.1;
   var EPS = 1e-9;
+  var BIN = 10; // secunde pe coloană în diagrama de timp
+  var STEPS_PER_BIN = Math.round(BIN / DT);
 
   // Reperele aplicației PURATOS (rezultate de test, nu garanții).
   var REF = {
@@ -37,7 +39,10 @@
       op: null, // indexul poziției în schimbare
       opQueue: [], // poziții pline care așteaptă operatorul
       blocked: false,
-      firstBlock: null
+      firstBlock: null,
+      bins: [], // per 10 s: w = robot lucrează, f = așteaptă găleți, p = așteaptă poziție, q = coadă la final
+      seg: [[{ t: 0, s: 'active' }], [{ t: 0, s: 'free' }]],
+      last: ['active', 'free']
     };
   }
 
@@ -115,6 +120,15 @@
         r.remain = p.cycle + r.carry;
       }
     }
+
+    // 5. Jurnal pentru diagrama de timp
+    var bi = Math.floor((s.n - 1) / STEPS_PER_BIN);
+    var b = s.bins[bi] || (s.bins[bi] = { w: 0, f: 0, p: 0, q: 0 });
+    if (r.busy) b.w += DT; else if (s.blocked) b.p += DT; else b.f += DT;
+    b.q = s.queue;
+    for (var k = 0; k < 2; k++) {
+      if (s.pos[k].state !== s.last[k]) { s.last[k] = s.pos[k].state; s.seg[k].push({ t: s.t, s: s.last[k] }); }
+    }
     return s;
   }
 
@@ -150,6 +164,24 @@
     var ref = REF[line.format];
     if (ref) return ref.kg;
     return line.weight;
+  }
+
+  // Curba de sensibilitate: găleți paletizate în 60 min în funcție de timpul de schimbare.
+  function sweep(line, values) {
+    return values.map(function (c) {
+      var r = run(simParams(Object.assign({}, line, { changeSec: c })), 3600);
+      return { c: c, placed: r.placed, waitPos: r.waitPos, queue: r.queue };
+    });
+  }
+
+  // Cel mai mic timp de schimbare (s, rezoluție 1 s) la care robotul ajunge să aștepte o poziție liberă în 60 min.
+  function criticalChange(line, lo, hi) {
+    lo = lo || 10; hi = hi || 1800;
+    function waits(c) { return run(simParams(Object.assign({}, line, { changeSec: c })), 3600).waitPos > 0.05; }
+    if (!waits(hi)) return null;
+    if (waits(lo)) return lo;
+    while (hi - lo > 1) { var mid = Math.floor((lo + hi) / 2); if (waits(mid)) hi = mid; else lo = mid; }
+    return hi;
   }
 
   // Masă cumulată teoretică manipulată manual (tone/zi).
@@ -221,7 +253,7 @@
   }
 
   var api = {
-    DT: DT, REF: REF, createSim: createSim, step: step, run: run, runUntil: runUntil,
+    DT: DT, BIN: BIN, REF: REF, sweep: sweep, criticalChange: criticalChange, createSim: createSim, step: step, run: run, runUntil: runUntil,
     runToFirstBlock: runToFirstBlock, cloneSim: cloneSim, simParams: simParams,
     ergonomics: ergonomics, evaluate: evaluate, commercial: commercial, fmt: fmt, fmtDur: fmtDur
   };

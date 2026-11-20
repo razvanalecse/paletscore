@@ -51,5 +51,19 @@ check('Comercial — fără impozit → profit nedeterminat', c.net === null ? 1
 const e = M.ergonomics({ format: '13', feed: 7.4, changeSec: 90, minutes: 420, shifts: 2 });
 check('Ergonomie — tone/zi', e.tonnes, 80.808, 0.01);
 
+// 7. Pragul critic (schimbare lentă): umplerea unui palet de 13 kg ≈ 357 s
+const crit = M.criticalChange({ format: '13', feed: 7.4 });
+check('Prag critic 13 kg, 7,4/min (s)', crit, 357, 15);
+const crit2 = M.criticalChange({ format: '5', feed: 8.6 });
+check('Prag critic 5 kg, 8,6/min (s)', crit2, 698, 15);
+
+// 8. Jurnalul de timp acoperă ora și însumează timpul
+s = M.run(M.simParams({ format: '13', feed: 7.4, changeSec: 420 }), H);
+check('Jurnal — 360 coloane de 10 s', s.bins.length, 360, 0);
+const tot = s.bins.reduce((a, b) => a + b.w + b.f + b.p, 0);
+check('Jurnal — timp total (s)', tot, 3600, 0.5);
+const pw = s.bins.reduce((a, b) => a + b.p, 0);
+check('Jurnal — așteptare poziție = KPI (s)', pw, s.waitPos, 0.5);
+
 console.log(fails ? '\n' + fails + ' teste au eșuat' : '\nToate testele au trecut');
 process.exit(fails ? 1 : 0);
