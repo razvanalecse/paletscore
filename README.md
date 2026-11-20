@@ -15,7 +15,7 @@ Simulează secundă cu secundă o celulă UR20 cu două poziții și arată ce m
 
 ## Prima deschidere și roluri
 
-La prima deschidere configurezi administratorul cu date fictive. Din Administrare → Echipa adaugi muncitorul cu PIN de patru cifre. Administratorul vede simulatorul, echipa, măsurătorile și problemele; muncitorul vede cronometrul, problemele și asistentul. Datele rămân în browserul dispozitivului, fără sincronizare automată între telefoane. [Instrucțiuni și limite](livrabile/client/).
+Pe ecranul de intrare sunt afișate conturile publice de demonstrație și două butoane de acces direct, fără configurare inițială: Director Demo / DemoPalet2026 și Operator Demo / PIN 2468. Poți crea separat un cont propriu. Din Administrare → Echipa adaugi muncitorul cu PIN de patru cifre. Administratorul vede simulatorul, echipa, măsurătorile și problemele; muncitorul vede cronometrul, problemele și asistentul. Datele rămân în browserul dispozitivului, fără sincronizare automată între telefoane. [Instrucțiuni și limite](livrabile/client/).
 
 ## Cum testezi ca administrator (2 minute)
 1. **Demo 45 s**: flux stabil → schimbare în 7 minute → primul blocaj → intervenția recomandată pe aceeași oră.

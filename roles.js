@@ -5,7 +5,7 @@
 (function () {
   'use strict';
   var M = window.PaletModel;
-  var VERSION = '2.0';
+  var VERSION = '2.1';
   var KEY = 'paletscore.roles.v1', SKEY = 'paletscore.session.v1';
   var FUNCS_ADMIN = ['Director de producție', 'Director financiar', 'Responsabil SSM', 'Șef de tură'];
   var FUNCS_WORKER = ['Operator paletizare', 'Operator linie', 'Stivuitorist'];
@@ -152,10 +152,44 @@
     var w = $('psWorker'); if (w) w.remove();
     clearInterval(watch.timer);
     closeChat(); fab.hidden = true;
-    if (!admins().length) return authSetup();
     authRole();
   }
-  function box(html) { $('psAuthBox').innerHTML = '<div class="ps-brand mob">' + LOGO + 'PaletScore<small>OPS</small></div>' + html; }
+  function demoAccess(role, button) {
+    if (demoAccess.busy) return;
+    demoAccess.busy = true;
+    button.disabled = true;
+    var definitions = [
+      { id: 'ps-public-demo-admin', name: 'Director Demo', role: 'admin', func: 'Director de producție', password: 'DemoPalet2026' },
+      { id: 'ps-public-demo-worker', name: 'Operator Demo', role: 'worker', func: 'Operator paletizare', password: '2468' }
+    ];
+    Promise.all(definitions.map(function (definition) {
+      var existing = userById(definition.id);
+      if (existing) return Promise.resolve(existing);
+      return hash(definition.password, definition.id).then(function (secret) {
+        var user = { id: definition.id, name: definition.name, role: definition.role, func: definition.func, active: true, created: Date.now(), secret: secret, demo: true };
+        db.users.push(user); return user;
+      });
+    })).then(function (users) {
+      save();
+      var selected = users.filter(function (user) { return user.role === role; })[0];
+      if (selected.active === false) { button.disabled = false; toast('Contul demo este dezactivat pe acest browser.'); return; }
+      login(selected);
+    }).catch(function () { button.disabled = false; toast('Accesul demo nu a putut porni. Încearcă din nou.'); })
+      .then(function () { demoAccess.busy = false; });
+  }
+  function box(html) {
+    $('psAuthBox').innerHTML = '<div class="ps-brand mob">' + LOGO + 'PaletScore<small>OPS</small></div>' + html +
+      '<section class="ps-demo-access" aria-labelledby="psDemoTitle"><h2 id="psDemoTitle">Testează fără configurare</h2>' +
+      '<p>Conturi publice de demonstrație. Apasă pe un rol pentru acces direct.</p>' +
+      '<div class="ps-demo-person"><strong>Administrator</strong><span>Nume: <b>Director Demo</b><br>Parolă: <code>DemoPalet2026</code></span>' +
+      '<button class="ps-btn primary block" type="button" data-demo-role="admin">Intră ca administrator demo</button></div>' +
+      '<div class="ps-demo-person"><strong>Muncitor</strong><span>Nume: <b>Operator Demo</b><br>Cod PIN: <code>2468</code></span>' +
+      '<button class="ps-btn block" type="button" data-demo-role="worker">Intră ca muncitor demo</button></div>' +
+      '<small>Datele demo rămân în acest browser. Poți trece de la un rol la altul folosind Ieșire.</small>' +
+      (!admins().length ? '<button class="ps-link" type="button" id="psOwnAccount">Creează un cont propriu</button>' : '') + '</section>';
+    on($('psAuthBox'), '[data-demo-role]', function (button) { demoAccess(button.dataset.demoRole, button); });
+    var own = $('psOwnAccount'); if (own) own.addEventListener('click', authSetup);
+  }
   function funcOptions(list, sel) { return list.map(function (f) { return '<option' + (f === sel ? ' selected' : '') + '>' + esc(f) + '</option>'; }).join(''); }
 
   function authSetup() {
