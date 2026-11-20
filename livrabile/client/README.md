@@ -8,8 +8,8 @@ Versiune operațională cu roluri de muncitor și administrator, copiată din su
 
 ## Demonstrație
 
-1. Creează primul administrator cu date fictive.
-2. Adaugă un muncitor cu PIN.
+1. Folosește butoanele demo de pe ecranul de intrare. Conturile demo se creează local, fără configurare. Poți crea separat un cont propriu.
+2. Pentru intrare manuală: Director Demo / DemoPalet2026 sau Operator Demo / PIN 2468, după prima folosire a accesului demo.
 3. Schimbă utilizatorul și cronometrează un schimb sau raportează o problemă.
 4. Revino ca administrator în același browser: consultă înregistrările, exportă CSV și transferă mediana în simulare.
 

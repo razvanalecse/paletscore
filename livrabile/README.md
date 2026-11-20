@@ -50,3 +50,7 @@ Pentru jurnalul AI, calculele de numerar și VAN pot fi reproduse prin `python3 
 Pitch-ul final are cinci slide-uri. Slide-ul 2 reunește simularea și pregătirea evaluării. Slide-ul 3 prezintă rolurile de muncitor și administrator, cu [capturi reale](capturi/) realizate în conturi fictive. Versiunile interactive mai vechi rămân în `pitch/`; pentru evaluare se folosesc fișierele `Pitch_PaletScore_final`.
 
 Planul are 31 de pagini și include interfețele actuale și verificările făcute în browser. Strategia de o pagină are un parcurs comercial vizual și criterii de prioritizare a conturilor.
+
+## Implementare și acces demo
+
+Slide-ul 4 al pitch-ului final include etapele 1–30, 31–60 și 61–90 de zile și bugetul complet de 30.000 EUR. Planul detaliat conține implementarea la paginile 19 și 27. Ecranul principal afișează accesul demo: Director Demo / DemoPalet2026 și Operator Demo / PIN 2468, cu intrare directă fără configurare. Conturile se creează local la folosirea butonului demo.
