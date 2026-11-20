@@ -185,6 +185,9 @@ button.ghost { background: transparent; }
 
 .transport { display: flex; flex-wrap: wrap; gap: 8px; align-items: center; }
 .transport .clock { font-family: var(--font-mono); font-size: 12.5px; color: var(--muted); margin-left: auto; }
+.keys { font-size: 11.5px; color: var(--faint); display: flex; gap: 10px; flex-wrap: wrap; }
+.keys kbd { font-family: var(--font-mono); font-size: 10.5px; border: 1px solid var(--line-2); border-bottom-width: 2px; border-radius: 4px; padding: 0 5px; margin-right: 4px; color: var(--muted); }
+@media (max-width: 960px), (pointer: coarse) { .keys { display: none; } }
 .seg { display: inline-flex; border: 1px solid var(--line-2); border-radius: 6px; overflow: hidden; }
 .seg button { border: 0; border-radius: 0; min-height: 40px; padding: 6px 12px; background: transparent; font-family: var(--font-mono); font-size: 12.5px; font-weight: 500; }
 .seg button + button { border-left: 1px solid var(--line-2); }
@@ -194,6 +197,7 @@ button.ghost { background: transparent; }
 .kpi { background: var(--panel); border: 1px solid var(--line); border-radius: 8px; padding: 12px 14px; display: grid; gap: 2px; min-width: 0; }
 .kpi .v { font-family: var(--font-mono); font-variant-numeric: tabular-nums; font-size: clamp(22px, 3vw, 30px); font-weight: 600; line-height: 1.1; }
 .kpi .l { font-size: 12.5px; color: var(--muted); }
+.kpi .s { font-family: var(--font-mono); font-size: 11px; color: var(--faint); margin-top: 4px; padding-top: 6px; border-top: 1px solid var(--line); font-variant-numeric: tabular-nums; }
 .kpi.alert { border-color: color-mix(in srgb, var(--risk) 55%, var(--line)); }
 .kpi.alert .v { color: var(--risk); }
 @media (max-width: 480px) { .kpi { padding: 10px; } .kpi .l { font-size: 11.5px; } }
@@ -374,10 +378,11 @@ footer { color: var(--muted); font-size: 12px; border-top: 1px solid var(--line)
       </div>
 
       <div class="kpis">
-        <div class="kpi"><span class="v" id="kPlaced">0</span><span class="l">Găleți paletizate</span></div>
-        <div class="kpi" id="kQueueBox"><span class="v" id="kQueue">0</span><span class="l">Găleți în așteptare pe transportor</span></div>
-        <div class="kpi" id="kWaitBox"><span class="v" id="kWait">0:00</span><span class="l">Robotul așteaptă o poziție liberă</span></div>
+        <div class="kpi"><span class="v" id="kPlaced">0</span><span class="l">Găleți paletizate</span><span class="s" id="kPlacedS">—</span></div>
+        <div class="kpi" id="kQueueBox"><span class="v" id="kQueue">0</span><span class="l">Găleți în așteptare pe transportor</span><span class="s" id="kQueueS">—</span></div>
+        <div class="kpi" id="kWaitBox"><span class="v" id="kWait">0:00</span><span class="l">Robotul așteaptă o poziție liberă</span><span class="s" id="kWaitS">—</span></div>
       </div>
+      <p class="keys" aria-hidden="true"><span><kbd>Space</kbd>pornește / pauză</span><span><kbd>B</kbd>primul blocaj</span><span><kbd>R</kbd>resetează</span><span><kbd>D</kbd>demo</span></p>
       <p class="verdict"><span class="dot" id="verdictDot"></span><span id="verdict">Apasă „Testează linia mea” ca să rulezi 60 de minute simulate.</span></p>
     </div>
 
@@ -641,7 +646,7 @@ footer { color: var(--muted); font-size: 12px; border-top: 1px solid var(--line)
       slots.push({ dx: -PW / 2 + (c + 0.5) * PW / cols, dy: -PD / 2 + (rr + 0.5) * PD / rows, z: PH + L * h, L: L });
     }
     var maxR = Math.min(PW / cols, PD / rows) * 0.47;
-    return { r: Math.min(r, maxR), h: h, slots: slots, big: big, top: PH + layers * h };
+    return { r: Math.min(r, maxR), h: h, slots: slots, big: big, top: PH + layers * h, perLayer: perLayer };
   }
 
   var T = {};
@@ -674,7 +679,7 @@ footer { color: var(--muted); font-size: 12px; border-top: 1px solid var(--line)
       [PAL[1].x - 0.7, PAL[1].y - 0.5, 1.75], [0, 0, 2.35], [OP_IDLE.x, OP_IDLE.y, 0], [PICK.x, -0.6, 2.0], [ZONE.x1 + 0.3, ZONE.y1, 0]];
     var minx = 1e9, maxx = -1e9, miny = 1e9, maxy = -1e9;
     pts.forEach(function (p) { var sx = (p[0] - p[1]) * 0.866, sy = (p[0] + p[1]) * 0.5 - p[2]; minx = Math.min(minx, sx); maxx = Math.max(maxx, sx); miny = Math.min(miny, sy); maxy = Math.max(maxy, sy); });
-    var padX = 14, padTop = 44, padBot = 14;
+    var padX = 14, padTop = 70, padBot = 14;
     v.k = Math.min((v.w - 2 * padX) / (maxx - minx), (v.h - padTop - padBot) / (maxy - miny));
     v.ox = (v.w - (maxx - minx) * v.k) / 2 - minx * v.k;
     v.oy = padTop + ((v.h - padTop - padBot) - (maxy - miny) * v.k) / 2 - miny * v.k;
@@ -884,6 +889,9 @@ footer { color: var(--muted); font-size: 12px; border-top: 1px solid var(--line)
     c.strokeStyle = T.grid; c.lineWidth = 1;
     for (var gx = -4.5; gx <= 2.61; gx += 0.5) { var a1 = P(v, gx, -3.4, 0), b1 = P(v, gx, 3.4, 0); c.beginPath(); c.moveTo(a1[0], a1[1]); c.lineTo(b1[0], b1[1]); c.stroke(); }
     for (var gy = -3.4; gy <= 3.41; gy += 0.5) { var a2 = P(v, -4.5, gy, 0), b2 = P(v, 2.6, gy, 0); c.beginPath(); c.moveTo(a2[0], a2[1]); c.lineTo(b2[0], b2[1]); c.stroke(); }
+    var vg = c.createRadialGradient(v.w * 0.52, v.h * 0.55, Math.min(v.w, v.h) * 0.3, v.w * 0.52, v.h * 0.55, Math.max(v.w, v.h) * 0.72);
+    vg.addColorStop(0, 'rgba(0,0,0,0)'); vg.addColorStop(1, T['scene-bg']);
+    c.fillStyle = vg; c.fillRect(0, 0, v.w, v.h);
     var zp = [P(v, ZONE.x0, ZONE.y0, 0), P(v, ZONE.x1, ZONE.y0, 0), P(v, ZONE.x1, ZONE.y1, 0), P(v, ZONE.x0, ZONE.y1, 0)];
     c.save(); c.globalAlpha = 0.05; poly(c, zp, T.zone); c.restore();
     SCANNERS.forEach(function (sc) {
@@ -989,16 +997,17 @@ footer { color: var(--muted); font-size: 12px; border-top: 1px solid var(--line)
     drawArm(v, r, s);
 
     for (var j = 0; j < 2; j++) {
-      var pos = s.pos[j], lp2 = P(v, PAL[j].x - 0.45, PAL[j].y - 0.45, g.top + 0.38);
-      if (pos.state === 'active') chip(v, lp2[0], lp2[1], pos.id + ' · ACTIVĂ ' + pos.count + '/' + s.p.perPallet, T.accent, { progress: pos.count / s.p.perPallet });
-      else if (pos.state === 'full') chip(v, lp2[0], lp2[1], pos.id + ' · PLINĂ · AȘTEAPTĂ OPERATORUL', T.warn);
-      else if (pos.state === 'changing') chip(v, lp2[0], lp2[1], pos.id + ' · SCHIMBARE ' + mmss(pos.remain), T.warn, { progress: 1 - pos.remain / s.p.changeSec });
-      else chip(v, lp2[0], lp2[1], pos.id + ' · LIBERĂ', T.muted);
+      var pos = s.pos[j], layersUp = pos.state === 'changing' ? 0 : Math.ceil(pos.count / g.perLayer), lp2 = P(v, PAL[j].x, PAL[j].y, PH + layersUp * g.h + 0.42);
+      var compact = v.w < 560;
+      if (pos.state === 'active') chip(v, lp2[0], lp2[1], pos.id + (compact ? ' ' : ' · ACTIVĂ ') + pos.count + '/' + s.p.perPallet, T.accent, { progress: pos.count / s.p.perPallet });
+      else if (pos.state === 'full') chip(v, lp2[0], lp2[1], pos.id + (compact ? ' · PLINĂ' : ' · PLINĂ · AȘTEAPTĂ OPERATORUL'), T.warn);
+      else if (pos.state === 'changing') chip(v, lp2[0], lp2[1], pos.id + (compact ? ' ' : ' · SCHIMBARE ') + mmss(pos.remain), T.warn, { progress: 1 - pos.remain / s.p.changeSec });
+      else chip(v, lp2[0], lp2[1], pos.id + (compact ? '' : ' · LIBERĂ'), T.muted);
     }
     var cl = P(v, PICK.x, 0, 1.98);
     c.font = '500 10px ' + MONO; c.fillStyle = T.muted; c.textAlign = 'center'; c.textBaseline = 'middle'; c.fillText('CAMERĂ 2D · MÂNER', cl[0], cl[1]); c.textAlign = 'left';
-    if (s.blocked) chip(v, v.w / 2, 30, 'ROBOTUL AȘTEAPTĂ O POZIȚIE LIBERĂ', T.risk, { filled: true });
-    else if (!s.robot.busy && s.queue < 1 && s.t > 0) chip(v, v.w / 2, 30, 'ROBOTUL AȘTEAPTĂ GĂLEȚI', T.muted);
+    if (s.blocked) chip(v, v.w / 2, 44, 'ROBOTUL AȘTEAPTĂ O POZIȚIE LIBERĂ', T.risk, { filled: true });
+    else if (!s.robot.busy && s.queue < 1 && s.t > 0) chip(v, v.w / 2, 44, 'ROBOTUL AȘTEAPTĂ GĂLEȚI', T.muted);
   }
 
   // ---------- Diagrama de timp ----------
@@ -1016,6 +1025,7 @@ footer { color: var(--muted); font-size: 12px; border-top: 1px solid var(--line)
     c.font = '500 10px ' + MONO; c.textBaseline = 'middle';
     for (var m = 0; m <= 60; m += 10) {
       var x = L.x(m * 60);
+      if (tv.w < 520 && m % 20) { c.strokeStyle = T.line; c.lineWidth = 1; c.beginPath(); c.moveTo(Math.round(x) + 0.5, Y(17)); c.lineTo(Math.round(x) + 0.5, tv.h - 4); c.stroke(); continue; }
       c.strokeStyle = T.line; c.lineWidth = 1; c.beginPath(); c.moveTo(Math.round(x) + 0.5, Y(17)); c.lineTo(Math.round(x) + 0.5, tv.h - 4); c.stroke();
       c.fillStyle = T.faint; c.textAlign = m === 0 ? 'left' : m === 60 ? 'right' : 'center'; c.fillText(m + (m === 60 ? ' min' : ''), x, Y(R.axis));
     }
@@ -1137,6 +1147,10 @@ footer { color: var(--muted); font-size: 12px; border-top: 1px solid var(--line)
     $('kWait').textContent = mmss(s.waitPos).replace(/^0/, '');
     $('kQueueBox').classList.toggle('alert', s.queue > 20);
     $('kWaitBox').classList.toggle('alert', s.waitPos > 0.05);
+    var maxQ = 0; for (var bi = 0; bi < s.bins.length; bi++) if (s.bins[bi].q > maxQ) maxQ = s.bins[bi].q;
+    $('kPlacedS').textContent = 'din ' + fmt(s.arrived) + ' sosite · ' + fmt(s.pallets) + ' paleți';
+    $('kQueueS').textContent = 'maxim ' + fmt(maxQ) + ' în această oră';
+    $('kWaitS').textContent = s.firstBlock ? 'primul blocaj la ' + mmss(s.firstBlock.t) : 'niciun blocaj până acum';
     $('hudMain').innerHTML = 'SIMULARE · <b>' + mmss(s.t) + '</b> / 60:00 · x' + main.speed;
     $('clockMain').textContent = 'Timp simulat accelerat x' + main.speed;
     if (!line) return;
@@ -1188,6 +1202,13 @@ footer { color: var(--muted); font-size: 12px; border-top: 1px solid var(--line)
   }
 
   function showCallout(html, good) { var c = $('callout'); c.innerHTML = html; c.classList.toggle('good', !!good); c.hidden = false; }
+  function buckets(n) { return n === 1 ? 'o găleată' : fmt(n) + (n % 100 >= 1 && n % 100 <= 19 ? ' găleți' : ' de găleți'); }
+  function hourReport() {
+    var s = main.sim, w = 0;
+    s.bins.forEach(function (b) { w += b.w; });
+    var good = s.waitPos < 0.05 && s.queue < 5;
+    showCallout('<b>Ora simulată s-a încheiat.</b> ' + fmt(s.placed) + ' găleți paletizate și ' + fmt(s.pallets) + ' paleți finalizați. Robotul a lucrat ' + fmt(w / H * 100) + '% din timp și a așteptat o poziție liberă ' + M.fmtDur(s.waitPos) + '. Pe transportor ' + (s.queue === 1 ? 'a rămas ' : 'au rămas ') + buckets(s.queue) + '.', good);
+  }
   function hideCallout() { $('callout').hidden = true; main.highlight = false; }
 
   function startTest() {
@@ -1205,7 +1226,7 @@ footer { color: var(--muted); font-size: 12px; border-top: 1px solid var(--line)
       var fb = main.sim.firstBlock;
       main.highlight = true;
       var rem = fb.changingRemain !== null ? Math.round(fb.changingRemain) : null;
-      showCallout('<b>Primul blocaj la minutul ' + mmss(fb.t) + '.</b> Ambele poziții sunt indisponibile. ' + (rem !== null ? 'Următoarea se eliberează în ' + rem + ' secunde.' : '') + ' Pe transportor așteaptă ' + fmt(main.sim.queue) + ' găleți.');
+      showCallout('<b>Primul blocaj la minutul ' + mmss(fb.t) + '.</b> Ambele poziții sunt indisponibile. ' + (rem !== null ? 'Următoarea se eliberează în ' + rem + ' secunde.' : '') + ' Pe transportor ' + (main.sim.queue === 1 ? 'așteaptă ' : 'așteaptă ') + buckets(main.sim.queue) + '.');
     } else {
       main.sim = M.createSim(M.simParams(line));
       showCallout('<b>Fără blocaj.</b> Nu apare acest blocaj în cele 60 de minute simulate.', true);
@@ -1540,6 +1561,16 @@ footer { color: var(--muted); font-size: 12px; border-top: 1px solid var(--line)
   $('btnSummary').addEventListener('click', buildSummary);
   $('btnCopy').addEventListener('click', copySummary);
   ['cPrice', 'cCost', 'cPromo', 'cCells', 'cOther', 'cTax', 'cTarget'].forEach(function (id) { $(id).addEventListener('input', renderCommercial); });
+  document.addEventListener('keydown', function (ev) {
+    if (ev.metaKey || ev.ctrlKey || ev.altKey) return;
+    var tag = ev.target && ev.target.tagName;
+    if (tag === 'INPUT' || tag === 'SELECT' || tag === 'TEXTAREA' || tag === 'BUTTON' || tag === 'SUMMARY') return;
+    var k = ev.key.toLowerCase();
+    if (k === ' ') { ev.preventDefault(); $('btnPlay').click(); }
+    else if (k === 'b') $('btnBlock').click();
+    else if (k === 'r') $('btnReset').click();
+    else if (k === 'd') $('btnDemo').click();
+  });
   function syncAB() {
     if (window.innerWidth > 760) { $('conA').dataset.hide = 'false'; $('conB').dataset.hide = 'false'; }
     else if ($('conA').dataset.hide === 'false' && $('conB').dataset.hide === 'false') $('conB').dataset.hide = 'true';
@@ -1550,7 +1581,7 @@ footer { color: var(--muted); font-size: 12px; border-top: 1px solid var(--line)
   var last = performance.now();
   function frame(now) {
     var dt = Math.min(0.1, (now - last) / 1000); last = now;
-    if (main.running) { advance(main, dt * main.speed); if (main.sim.n >= END) { main.running = false; setPlayLabel(); } }
+    if (main.running) { advance(main, dt * main.speed); if (main.sim.n >= END) { main.running = false; setPlayLabel(); if (!demo) hourReport(); } }
     render(main, dt);
     if (cmp) {
       if (cmp.running) { advance(cmp.a, dt * cmp.speed); advance(cmp.b, dt * cmp.speed); if (cmp.a.sim.n >= END) cmp.running = false; }
