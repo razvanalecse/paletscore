@@ -9,6 +9,8 @@ Simulează secundă cu secundă o celulă UR20 cu două poziții și arată ce m
 
 **Codul și documentele într-un singur folder:** [livrabile](livrabile/) — codul aplicației Claude, planul de afaceri Word/PDF, pitch-ul PDF, Excel-ul și simulările.
 
+**Versiunea pentru fabrică:** [Aplicație client](https://razvanalecse.github.io/paletscore/livrabile/client/) · [Cod și limite](livrabile/client/) — muncitor, administrator, măsurători, probleme și asistent.
+
 **Cine e cine:** utilizatorul este directorul de producție dintr-o fabrică alimentară, care își testează linia gratuit; clientul este Tech-Con, care plătește aplicația din bugetul de promovare și primește cererile.
 
 ## Cum testezi (2 minute)
