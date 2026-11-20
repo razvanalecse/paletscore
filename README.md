@@ -7,6 +7,8 @@ Simulează secundă cu secundă o celulă UR20 cu două poziții și arată ce m
 
 **Pitch-ul:** https://razvanalecse.github.io/paletscore/pitch/ (săgețile schimbă slide-ul, F pentru ecran complet; generat din `pitch/src` cu `python3 build_pitch.py`)
 
+**Codul și documentele într-un singur folder:** [livrabile](livrabile/) — codul aplicației Claude, planul de afaceri Word/PDF, pitch-ul PDF, Excel-ul și simulările.
+
 **Cine e cine:** utilizatorul este directorul de producție dintr-o fabrică alimentară, care își testează linia gratuit; clientul este Tech-Con, care plătește aplicația din bugetul de promovare și primește cererile.
 
 ## Cum testezi (2 minute)
