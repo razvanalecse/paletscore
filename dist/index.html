@@ -1,0 +1,1182 @@
+<!doctype html>
+<html lang="ro">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<style>:root{padding-top:env(safe-area-inset-top,0px);padding-bottom:env(safe-area-inset-bottom,0px)}body{margin:0}[hidden]{display:none!important}</style>
+</head>
+<body>
+<title>PaletScore Line Lab</title>
+<meta name="claude:viewport-fit-sides" content="cover">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Archivo:wdth,wght@62..125,400..800&family=JetBrains+Mono:wght@400;600&display=swap">
+<style>
+/* Layout: banc de lucru ingineresc — scena izometrică domină, controalele stau într-o coloană îngustă, indicatorii sub scenă. */
+:root {
+  color-scheme: dark;
+  --bg: #121417;
+  --panel: #1a1d21;
+  --panel-2: #22262b;
+  --line: #2f343a;
+  --fg: #e9e7e2;
+  --muted: #9aa0a8;
+  --accent: #f3c02e;
+  --accent-ink: #f3c02e;
+  --on-accent: #17150f;
+  --ok: #4fc48c;
+  --warn: #f0a23b;
+  --risk: #f0604f;
+  --scene-bg: #16191c;
+  --floor: #1c2024;
+  --grid: #272c32;
+  --zone: #f3c02e;
+  --belt: #3b4148;
+  --belt-side: #262a2f;
+  --belt-stripe: #4a515a;
+  --steel: #d5dae0;
+  --steel-dark: #8d96a0;
+  --joint: #6f8fb3;
+  --pallet: #b88a58;
+  --pallet-dark: #8a6640;
+  --bucket: #eef0f2;
+  --bucket-shade: #b9bec5;
+  --lid-13: #4f86d9;
+  --lid-5: #e07b39;
+  --person: #f3c02e;
+  --person-dark: #3b4148;
+  --font-display: "Archivo", "Helvetica Neue", Arial, sans-serif;
+  --font-body: "Archivo", "Helvetica Neue", Arial, sans-serif;
+  --font-mono: "JetBrains Mono", ui-monospace, "SF Mono", Menlo, monospace;
+}
+@media (prefers-color-scheme: light) {
+  :root:not([data-theme="dark"]) {
+    color-scheme: light;
+    --bg: #e8eaed; --panel: #f6f7f8; --panel-2: #eceef1; --line: #d2d6db; --fg: #15181b; --muted: #59606a;
+    --accent: #f3c02e; --accent-ink: #8a6a00; --on-accent: #17150f; --ok: #1e8a57; --warn: #b8650a; --risk: #c63a2b;
+    --scene-bg: #f1f2f4; --floor: #e4e7ea; --grid: #d3d8de; --zone: #d9a400;
+    --belt: #5a616a; --belt-side: #464c54; --belt-stripe: #6a727c;
+    --steel: #f4f6f8; --steel-dark: #7d8691; --joint: #4f78a8;
+    --pallet: #c79a66; --pallet-dark: #9a7347; --bucket: #ffffff; --bucket-shade: #c3c8cf;
+    --lid-13: #3d74c9; --lid-5: #d0682a; --person: #e0ac10; --person-dark: #3b4148;
+  }
+}
+:root[data-theme="light"] {
+  color-scheme: light;
+  --bg: #e8eaed; --panel: #f6f7f8; --panel-2: #eceef1; --line: #d2d6db; --fg: #15181b; --muted: #59606a;
+  --accent: #f3c02e; --accent-ink: #8a6a00; --on-accent: #17150f; --ok: #1e8a57; --warn: #b8650a; --risk: #c63a2b;
+  --scene-bg: #f1f2f4; --floor: #e4e7ea; --grid: #d3d8de; --zone: #d9a400;
+  --belt: #5a616a; --belt-side: #464c54; --belt-stripe: #6a727c;
+  --steel: #f4f6f8; --steel-dark: #7d8691; --joint: #4f78a8;
+  --pallet: #c79a66; --pallet-dark: #9a7347; --bucket: #ffffff; --bucket-shade: #c3c8cf;
+  --lid-13: #3d74c9; --lid-5: #d0682a; --person: #e0ac10; --person-dark: #3b4148;
+}
+:root[data-theme="dark"] {
+  color-scheme: dark;
+  --bg: #121417; --panel: #1a1d21; --panel-2: #22262b; --line: #2f343a; --fg: #e9e7e2; --muted: #9aa0a8;
+  --accent: #f3c02e; --accent-ink: #f3c02e; --on-accent: #17150f; --ok: #4fc48c; --warn: #f0a23b; --risk: #f0604f;
+  --scene-bg: #16191c; --floor: #1c2024; --grid: #272c32; --zone: #f3c02e;
+  --belt: #3b4148; --belt-side: #262a2f; --belt-stripe: #4a515a;
+  --steel: #d5dae0; --steel-dark: #8d96a0; --joint: #6f8fb3;
+  --pallet: #b88a58; --pallet-dark: #8a6640; --bucket: #eef0f2; --bucket-shade: #b9bec5;
+  --lid-13: #4f86d9; --lid-5: #e07b39; --person: #f3c02e; --person-dark: #3b4148;
+}
+
+* { box-sizing: border-box; }
+body {
+  background: var(--bg); color: var(--fg);
+  font-family: var(--font-body); font-size: 15px; line-height: 1.5;
+  padding-left: max(16px, env(safe-area-inset-left, 0px));
+  padding-right: max(16px, env(safe-area-inset-right, 0px));
+  padding-block: 20px 48px;
+}
+.wrap { max-width: 1280px; margin: 0 auto; display: grid; grid-template-columns: minmax(0, 1fr); gap: 28px; }
+.wrap > *, section.block > *, #cmpOut > * { min-width: 0; }
+h1, h2, h3 { font-family: var(--font-display); text-wrap: balance; margin: 0; }
+p { margin: 0; }
+.mono, .num { font-family: var(--font-mono); font-variant-numeric: tabular-nums; }
+.eyebrow { font-family: var(--font-mono); font-size: 12px; letter-spacing: .12em; text-transform: uppercase; color: var(--muted); }
+.eyebrow b { color: var(--accent-ink); font-weight: 600; }
+
+/* Antet */
+.top { display: grid; gap: 10px; }
+.top h1 { font-size: clamp(30px, 5vw, 52px); font-weight: 800; font-stretch: 78%; letter-spacing: -.01em; line-height: 1.02; }
+.top .lede { color: var(--muted); max-width: 62ch; }
+.actions { display: flex; flex-wrap: wrap; gap: 10px; margin-top: 6px; }
+
+button, .btn {
+  font: inherit; font-weight: 600; cursor: pointer; border-radius: 6px;
+  border: 1px solid var(--line); background: var(--panel-2); color: var(--fg);
+  padding: 10px 16px; min-height: 44px; display: inline-flex; align-items: center; gap: 8px;
+}
+button:hover { border-color: var(--muted); }
+button:focus-visible, input:focus-visible, select:focus-visible, summary:focus-visible { outline: 2px solid var(--accent); outline-offset: 2px; }
+button.primary { background: var(--accent); color: var(--on-accent); border-color: var(--accent); }
+button.primary:hover { filter: brightness(1.06); }
+button:disabled { opacity: .45; cursor: not-allowed; }
+button.ghost { background: transparent; }
+
+/* Laborator */
+.lab { display: grid; grid-template-columns: minmax(0, 1fr) 330px; gap: 20px; align-items: start; }
+@media (max-width: 920px) { .lab { grid-template-columns: minmax(0, 1fr); } }
+.stage-col { display: grid; gap: 12px; min-width: 0; }
+.stage {
+  position: relative; background: var(--scene-bg); border: 1px solid var(--line); border-radius: 10px; overflow: hidden;
+  aspect-ratio: 16 / 10; max-width: 100%;
+}
+@media (max-width: 560px) { .stage { aspect-ratio: 1 / 1; } }
+.stage canvas { position: absolute; inset: 0; width: 100%; height: 100%; display: block; }
+.stage .tag-corner { position: absolute; left: 12px; top: 10px; font-family: var(--font-mono); font-size: 11px; color: var(--muted); letter-spacing: .06em; pointer-events: none; }
+
+.callout {
+  background: var(--panel); border: 1px solid var(--risk); border-left-width: 4px;
+  border-radius: 6px; padding: 10px 12px; font-size: 14px;
+}
+.callout b { color: var(--risk); }
+
+.demo-bar {
+  position: absolute; left: 12px; right: 12px; top: 34px; display: grid; gap: 8px;
+  background: color-mix(in srgb, var(--panel) 94%, transparent); border: 1px solid var(--line); border-radius: 8px; padding: 10px 12px;
+}
+.demo-steps { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 6px; }
+.demo-steps span { height: 4px; border-radius: 2px; background: var(--line); position: relative; overflow: hidden; }
+.demo-steps span i { position: absolute; inset: 0 auto 0 0; width: 0; background: var(--accent); }
+.demo-row { display: flex; gap: 10px; align-items: center; justify-content: space-between; }
+.demo-row p { font-size: 14px; }
+.demo-row button { min-height: 36px; padding: 6px 12px; flex-shrink: 0; }
+
+.transport { display: flex; flex-wrap: wrap; gap: 8px; align-items: center; }
+.transport .clock { font-family: var(--font-mono); font-size: 13px; color: var(--muted); margin-left: auto; }
+.seg { display: inline-flex; border: 1px solid var(--line); border-radius: 6px; overflow: hidden; }
+.seg button { border: 0; border-radius: 0; min-height: 40px; padding: 6px 12px; background: transparent; font-family: var(--font-mono); font-size: 13px; }
+.seg button + button { border-left: 1px solid var(--line); }
+.seg button[aria-pressed="true"] { background: var(--panel-2); color: var(--accent-ink); }
+
+.kpis { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 10px; }
+.kpi { background: var(--panel); border: 1px solid var(--line); border-radius: 8px; padding: 12px 14px; display: grid; gap: 2px; min-width: 0; }
+.kpi .v { font-family: var(--font-mono); font-variant-numeric: tabular-nums; font-size: clamp(22px, 3.2vw, 32px); font-weight: 600; line-height: 1.1; }
+.kpi .l { font-size: 13px; color: var(--muted); }
+.kpi.alert .v { color: var(--risk); }
+@media (max-width: 480px) { .kpi { padding: 10px; } .kpi .l { font-size: 12px; } }
+
+.verdict { display: flex; gap: 10px; align-items: baseline; font-size: 16px; }
+.dot { width: 10px; height: 10px; border-radius: 50%; flex-shrink: 0; background: var(--muted); transform: translateY(1px); }
+.dot.ok { background: var(--ok); } .dot.warn { background: var(--warn); } .dot.risk { background: var(--risk); }
+
+/* Panou de control */
+.panel { background: var(--panel); border: 1px solid var(--line); border-radius: 10px; padding: 16px; display: grid; gap: 14px; min-width: 0; }
+.panel h2 { font-size: 15px; font-weight: 700; letter-spacing: .02em; }
+.field { display: grid; grid-template-columns: minmax(0, 1fr); gap: 4px; min-width: 0; }
+.field label, .field .lbl { font-size: 13px; font-weight: 600; }
+.inrow { min-width: 0; display: flex; align-items: stretch; border: 1px solid var(--line); border-radius: 6px; background: var(--bg); }
+.inrow input, .inrow select { flex: 1; min-width: 0; width: 100%; border: 0; background: transparent; color: var(--fg); font: inherit; font-family: var(--font-mono); padding: 9px 10px; min-height: 42px; }
+.inrow .u { padding: 0 10px; display: flex; align-items: center; color: var(--muted); font-family: var(--font-mono); font-size: 12px; border-left: 1px solid var(--line); white-space: nowrap; }
+.field.bad .inrow { border-color: var(--risk); }
+.err { color: var(--risk); font-size: 13px; }
+.hint { color: var(--muted); font-size: 12px; }
+.fmt { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); }
+.fmt button { font-family: var(--font-body); font-size: 14px; }
+.refbox { border: 1px dashed var(--line); border-radius: 6px; padding: 10px 12px; font-size: 13px; display: grid; gap: 4px; }
+.refbox .t { font-family: var(--font-mono); font-size: 11px; letter-spacing: .08em; text-transform: uppercase; color: var(--accent-ink); }
+.scen { display: grid; gap: 8px; }
+.scen-row { display: flex; flex-wrap: wrap; gap: 6px; }
+.scen-row button { min-height: 38px; padding: 6px 12px; font-size: 13px; }
+details.sub { border-top: 1px solid var(--line); padding-top: 10px; }
+details.sub summary { cursor: pointer; font-size: 13px; font-weight: 600; min-height: 32px; display: flex; align-items: center; }
+details.sub .field { margin-top: 10px; }
+
+.pill { display: inline-block; font-family: var(--font-mono); font-size: 10.5px; letter-spacing: .06em; text-transform: uppercase; padding: 2px 7px; border-radius: 4px; border: 1px solid var(--line); color: var(--muted); white-space: nowrap; }
+.pill.ref { color: var(--accent-ink); border-color: color-mix(in srgb, var(--accent-ink) 50%, transparent); }
+.pill.sim { color: var(--ok); border-color: color-mix(in srgb, var(--ok) 50%, transparent); }
+.pill.hyp { color: var(--warn); border-color: color-mix(in srgb, var(--warn) 50%, transparent); }
+
+/* Secțiuni */
+section.block { display: grid; grid-template-columns: minmax(0, 1fr); gap: 16px; border-top: 1px solid var(--line); padding-top: 24px; }
+section.block > header { display: grid; gap: 6px; }
+section.block h2 { font-size: clamp(22px, 3vw, 30px); font-weight: 800; font-stretch: 82%; }
+section.block header p { color: var(--muted); max-width: 70ch; }
+
+.cmp-ctrl { display: flex; flex-wrap: wrap; gap: 12px; align-items: end; }
+.cmp-ctrl .field { width: 220px; max-width: 100%; }
+.chip-a { font-family: var(--font-mono); font-size: 13px; padding: 8px 10px; border: 1px solid var(--line); border-radius: 6px; background: var(--panel); }
+.diffline { font-size: 14px; }
+.diffline b { color: var(--accent-ink); }
+.cmp-stages { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 12px; }
+.cmp-stages .stage { aspect-ratio: 4 / 3; }
+.cmp-stages .lbl { position: absolute; right: 10px; top: 8px; font-family: var(--font-mono); font-size: 12px; background: var(--panel); border: 1px solid var(--line); border-radius: 4px; padding: 3px 7px; }
+.ab-toggle { display: none; }
+@media (max-width: 720px) {
+  .cmp-stages { grid-template-columns: minmax(0, 1fr); }
+  .cmp-stages .stage[data-hide="true"] { display: none; }
+  .ab-toggle { display: inline-flex; }
+}
+.tablewrap { overflow-x: auto; }
+table.cmp { border-collapse: collapse; width: 100%; min-width: 420px; font-size: 14px; }
+table.cmp th, table.cmp td { text-align: right; padding: 9px 10px; border-bottom: 1px solid var(--line); }
+table.cmp th:first-child, table.cmp td:first-child { text-align: left; }
+table.cmp th { font-size: 12px; color: var(--muted); font-weight: 600; }
+table.cmp td { font-family: var(--font-mono); font-variant-numeric: tabular-nums; }
+table.cmp td:first-child { font-family: var(--font-body); }
+.better { color: var(--ok); } .worse { color: var(--risk); } .same { color: var(--muted); }
+.cmp-verdict { font-size: 16px; font-weight: 600; }
+
+.eval-grid { display: grid; grid-template-columns: minmax(0, 1.4fr) minmax(0, 1fr); gap: 16px; align-items: start; }
+@media (max-width: 860px) { .eval-grid { grid-template-columns: minmax(0, 1fr); } }
+.rules { list-style: none; margin: 0; padding: 0; display: grid; gap: 10px; }
+.rules li { background: var(--panel); border: 1px solid var(--line); border-radius: 8px; padding: 12px 14px; display: grid; grid-template-columns: auto minmax(0, 1fr); gap: 4px 12px; }
+.rules li .dot { grid-row: span 2; transform: translateY(6px); }
+.rules .r { font-size: 12px; color: var(--muted); display: flex; flex-wrap: wrap; gap: 6px; align-items: center; }
+.ergo { background: var(--panel); border: 1px solid var(--line); border-radius: 8px; padding: 16px; display: grid; gap: 6px; }
+.ergo .big { font-family: var(--font-mono); font-size: 34px; font-weight: 600; line-height: 1.1; }
+.ergo .formula { font-family: var(--font-mono); font-size: 12px; color: var(--muted); overflow-wrap: anywhere; }
+.ergo .note { font-size: 12px; color: var(--muted); }
+
+.final { background: var(--panel); border: 1px solid var(--line); border-radius: 10px; padding: 18px; display: grid; gap: 12px; }
+.final h3 { font-size: 22px; font-weight: 800; font-stretch: 82%; }
+pre.summary { margin: 0; white-space: pre-wrap; overflow-wrap: anywhere; font-family: var(--font-mono); font-size: 12.5px; line-height: 1.6; background: var(--bg); border: 1px solid var(--line); border-radius: 6px; padding: 14px; max-height: 480px; overflow: auto; }
+.copied { color: var(--ok); font-size: 13px; }
+
+details.fold { background: var(--panel); border: 1px solid var(--line); border-radius: 10px; padding: 0 16px; }
+details.fold > summary { cursor: pointer; padding: 14px 0; font-family: var(--font-display); font-weight: 700; font-size: 17px; min-height: 48px; display: flex; align-items: center; gap: 10px; }
+details.fold[open] > summary { border-bottom: 1px solid var(--line); }
+details.fold .inner { padding: 16px 0 18px; display: grid; gap: 14px; }
+.calc { display: grid; grid-template-columns: repeat(auto-fit, minmax(190px, 1fr)); gap: 12px; }
+.res { display: grid; grid-template-columns: repeat(auto-fit, minmax(190px, 1fr)); gap: 10px; }
+.res div { border: 1px solid var(--line); border-radius: 6px; padding: 10px 12px; display: grid; gap: 2px; }
+.res .v { font-family: var(--font-mono); font-size: 20px; font-weight: 600; font-variant-numeric: tabular-nums; }
+.res .l { font-size: 12px; color: var(--muted); }
+.res .miss .v { font-size: 14px; color: var(--warn); font-family: var(--font-body); }
+ul.lim { margin: 0; padding-left: 18px; display: grid; gap: 6px; color: var(--muted); max-width: 80ch; }
+footer { color: var(--muted); font-size: 12px; border-top: 1px solid var(--line); padding-top: 16px; max-width: 90ch; }
+
+@media (prefers-reduced-motion: reduce) { * { scroll-behavior: auto !important; } }
+</style>
+
+<div class="wrap">
+  <header class="top">
+    <p class="eyebrow"><b>PaletScore</b> / Line Lab · celulă UR20 cu două poziții</p>
+    <h1>Vezi unde începe așteptarea.</h1>
+    <p class="lede">Robotul poate ține pasul. Dar schimbul de paleți? Schimbă un singur parametru al liniei și urmărește, pe aceeași oră simulată, unde se oprește fluxul.</p>
+    <div class="actions">
+      <button class="primary" id="btnTest" type="button">Testează linia mea</button>
+      <button id="btnBlock" type="button">Arată-mi primul blocaj</button>
+      <button id="btnDemo" type="button">Demo de 45 de secunde</button>
+    </div>
+  </header>
+
+  <div class="lab">
+    <div class="stage-col">
+      <div class="stage" id="stageMain">
+        <canvas id="cvMain" aria-label="Simularea celulei de paletizare: transportor, robot, două poziții de palet și operator" role="img"></canvas>
+        <div class="tag-corner" id="tagMain">REZULTAT SIMULAT · MODEL SIMPLIFICAT</div>
+        <div class="demo-bar" id="demoBar" hidden>
+          <div class="demo-steps"><span><i id="ds1"></i></span><span><i id="ds2"></i></span><span><i id="ds3"></i></span></div>
+          <div class="demo-row"><p id="demoText">Pregătire…</p><button id="btnDemoStop" type="button" class="ghost">Oprește demo</button></div>
+        </div>
+      </div>
+      <div class="callout" id="callout" hidden></div>
+
+      <div class="transport">
+        <button id="btnPlay" type="button" aria-label="Pornește">▶ Pornește</button>
+        <button id="btnReset" type="button">Resetează</button>
+        <div class="seg" role="group" aria-label="Viteza timpului simulat" id="speedSeg">
+          <button type="button" data-speed="1" aria-pressed="false">x1</button>
+          <button type="button" data-speed="10" aria-pressed="false">x10</button>
+          <button type="button" data-speed="60" aria-pressed="true">x60</button>
+          <button type="button" data-speed="240" aria-pressed="false">x240</button>
+        </div>
+        <span class="clock" id="clockMain">00:00 / 60:00 simulat · timp accelerat x60</span>
+      </div>
+
+      <div class="kpis">
+        <div class="kpi"><span class="v" id="kPlaced">0</span><span class="l">Găleți paletizate</span></div>
+        <div class="kpi" id="kQueueBox"><span class="v" id="kQueue">0</span><span class="l">Găleți în așteptare pe transportor</span></div>
+        <div class="kpi" id="kWaitBox"><span class="v" id="kWait">0:00</span><span class="l">Robotul așteaptă o poziție liberă</span></div>
+      </div>
+      <p class="verdict"><span class="dot" id="verdictDot"></span><span id="verdict">Apasă „Testează linia mea” ca să rulezi 60 de minute simulate.</span></p>
+    </div>
+
+    <aside class="panel" aria-label="Datele liniei">
+      <h2>Datele liniei</h2>
+      <div class="field">
+        <span class="lbl">Format de referință</span>
+        <div class="seg fmt" role="group" aria-label="Format" id="fmtSeg">
+          <button type="button" data-fmt="13" aria-pressed="true">Găleată 13 kg</button>
+          <button type="button" data-fmt="5" aria-pressed="false">Găleată 5 kg</button>
+          <button type="button" data-fmt="alt" aria-pressed="false">Alt ambalaj</button>
+        </div>
+      </div>
+      <div class="refbox" id="refBox"></div>
+
+      <div class="field" id="f-feed">
+        <label for="feed">Debit de intrare</label>
+        <div class="inrow"><input id="feed" inputmode="decimal" value="7,4" autocomplete="off"><span class="u">găleți/min</span></div>
+        <span class="err" id="e-feed" hidden></span>
+      </div>
+      <div class="field" id="f-change">
+        <label for="change">Timp de schimbare a unui palet</label>
+        <div class="inrow"><input id="change" inputmode="numeric" value="90" autocomplete="off"><span class="u">secunde</span></div>
+        <span class="hint">Schimbare manuală de către un operator. Separatorii dintre straturi nu sunt modelați.</span>
+        <span class="err" id="e-change" hidden></span>
+      </div>
+      <div class="field" id="f-minutes">
+        <label for="minutes">Minute efective de funcționare pe schimb</label>
+        <div class="inrow"><input id="minutes" inputmode="numeric" value="420" autocomplete="off"><span class="u">min</span></div>
+        <span class="err" id="e-minutes" hidden></span>
+      </div>
+      <div class="field">
+        <label for="shifts">Schimburi pe zi</label>
+        <div class="inrow"><select id="shifts"><option value="1">1</option><option value="2" selected>2</option><option value="3">3</option></select><span class="u">schimburi</span></div>
+      </div>
+
+      <details class="sub" id="packDetails">
+        <summary>Ambalaj și mâner (opțional)</summary>
+        <div class="field" id="f-perpallet" hidden>
+          <label for="perpallet">Găleți pe palet</label>
+          <div class="inrow"><input id="perpallet" inputmode="numeric" value="" autocomplete="off"><span class="u">găleți</span></div>
+          <span class="err" id="e-perpallet" hidden></span>
+        </div>
+        <div class="field" id="f-weight">
+          <label for="weight">Greutatea reală a găleții</label>
+          <div class="inrow"><input id="weight" inputmode="decimal" value="" autocomplete="off" placeholder="ex. 13"><span class="u">kg</span></div>
+          <span class="err" id="e-weight" hidden></span>
+        </div>
+        <div class="field">
+          <label for="handle">Mâner</label>
+          <div class="inrow"><select id="handle"><option value="da">Da</option><option value="nu">Nu</option><option value="necunoscut">Necunoscut</option></select></div>
+        </div>
+        <div class="field">
+          <label for="material">Material</label>
+          <div class="inrow"><input id="material" value="" autocomplete="off" placeholder="ex. plastic PP"></div>
+        </div>
+      </details>
+
+      <div class="scen">
+        <span class="lbl" style="font-size:13px;font-weight:600">Scenarii pregătite</span>
+        <div class="scen-row">
+          <button type="button" data-scen="stable">Flux stabil</button>
+          <button type="button" data-scen="slow">Schimbare lentă</button>
+          <button type="button" data-scen="over">Peste reper</button>
+        </div>
+      </div>
+    </aside>
+  </div>
+
+  <section class="block" id="compare">
+    <header>
+      <p class="eyebrow">Funcția distinctivă</p>
+      <h2>Ce schimbăm?</h2>
+      <p>Salvează linia curentă ca Varianta A. Alege apoi un alt timp de schimbare pentru Varianta B. Restul rămâne identic: aceeași alimentare, același reper de capacitate, aceleași condiții inițiale.</p>
+    </header>
+    <div class="cmp-ctrl">
+      <button id="btnSaveA" type="button">Salvează ca Varianta A</button>
+      <span class="chip-a" id="chipA">Varianta A: nesalvată</span>
+      <div class="field" id="f-changeB">
+        <label for="changeB">Varianta B: timp de schimbare</label>
+        <div class="inrow"><input id="changeB" inputmode="numeric" value="90" autocomplete="off"><span class="u">secunde</span></div>
+        <span class="err" id="e-changeB" hidden></span>
+      </div>
+      <button class="primary" id="btnCompare" type="button" disabled>Compară aceleași 60 de minute</button>
+    </div>
+    <div id="cmpOut" hidden>
+      <p class="diffline" id="diffLine"></p>
+      <div class="transport" style="margin-top:10px">
+        <div class="seg ab-toggle" role="group" aria-label="Alege varianta afișată" id="abSeg">
+          <button type="button" data-ab="a" aria-pressed="true">Varianta A</button>
+          <button type="button" data-ab="b" aria-pressed="false">Varianta B</button>
+        </div>
+        <span class="clock" id="clockCmp">00:00 / 60:00 simulat</span>
+      </div>
+      <div class="cmp-stages" style="margin-top:10px">
+        <div class="stage" id="stageA"><canvas id="cvA" role="img" aria-label="Simularea variantei A"></canvas><span class="lbl" id="lblA">A</span></div>
+        <div class="stage" id="stageB" data-hide="true"><canvas id="cvB" role="img" aria-label="Simularea variantei B"></canvas><span class="lbl" id="lblB">B</span></div>
+      </div>
+      <div class="tablewrap" style="margin-top:12px">
+        <table class="cmp">
+          <thead><tr><th>Rezultat simulat, la același moment</th><th>Varianta A</th><th>Varianta B</th><th>Diferență B − A</th></tr></thead>
+          <tbody id="cmpBody"></tbody>
+        </table>
+      </div>
+      <p class="cmp-verdict" id="cmpVerdict" style="margin-top:12px"></p>
+    </div>
+  </section>
+
+  <section class="block" id="eval">
+    <header>
+      <p class="eyebrow">Rezultatul evaluării</p>
+      <h2>Ce spune simularea despre linia ta</h2>
+      <p>Reguli transparente, aplicate pe cele 60 de minute simulate. Nu reprezintă o declarație de compatibilitate tehnică.</p>
+    </header>
+    <div class="eval-grid">
+      <ul class="rules" id="rules"></ul>
+      <div class="ergo" id="ergo"></div>
+    </div>
+    <div class="final">
+      <h3>Ce trebuie verificat în fabrica ta?</h3>
+      <p style="color:var(--muted)">Rezumatul adună parametrii, observațiile și întrebările pentru o evaluare tehnică cu Tech-Con. Datele firmei sunt fictive și nimic nu se trimite.</p>
+      <div class="actions"><button class="primary" id="btnSummary" type="button">Pregătește evaluarea tehnică</button><button id="btnCopy" type="button" hidden>Copiază rezumatul</button><span class="copied" id="copied" hidden>Copiat</span></div>
+      <pre class="summary" id="summary" hidden></pre>
+    </div>
+  </section>
+
+  <details class="fold" id="commercial">
+    <summary>Scenariul comercial <span class="pill hyp">Valori de exercițiu</span></summary>
+    <div class="inner">
+      <p style="color:var(--muted);max-width:80ch">Valori din tema concursului, nu prețurile reale ale proiectului PURATOS. Se numără doar celulele vândute și livrate în același an calendaristic. Livrarea de aproximativ patru luni este reperul cazului prezentat; alte proiecte necesită confirmarea capacității de implementare.</p>
+      <div class="calc">
+        <div class="field"><label for="cPrice">Preț pe celulă</label><div class="inrow"><input id="cPrice" inputmode="numeric" value="130000"><span class="u">EUR</span></div></div>
+        <div class="field"><label for="cCost">Cost direct pe celulă</label><div class="inrow"><input id="cCost" inputmode="numeric" value="110000"><span class="u">EUR</span></div></div>
+        <div class="field"><label for="cPromo">Promovare anuală</label><div class="inrow"><input id="cPromo" inputmode="numeric" value="30000"><span class="u">EUR</span></div></div>
+        <div class="field"><label for="cCells">Celule vândute și livrate în an</label><div class="inrow"><input id="cCells" inputmode="numeric" value="20"><span class="u">celule</span></div></div>
+        <div class="field"><label for="cOther">Alte costuri anuale</label><div class="inrow"><input id="cOther" inputmode="numeric" value="" placeholder="neprecizat"><span class="u">EUR</span></div></div>
+        <div class="field"><label for="cTax">Cotă de impozit pe profit</label><div class="inrow"><input id="cTax" inputmode="decimal" value="" placeholder="neprecizat"><span class="u">%</span></div></div>
+        <div class="field"><label for="cTarget">Țintă de profit net</label><div class="inrow"><input id="cTarget" inputmode="numeric" value="300000"><span class="u">EUR</span></div></div>
+      </div>
+      <span class="err" id="e-comm" hidden></span>
+      <div class="res" id="cRes"></div>
+    </div>
+  </details>
+
+  <details class="fold">
+    <summary>Ipoteze și limite ale modelului</summary>
+    <div class="inner">
+      <ul class="lim">
+        <li>Reperele de 7,4 găleți/min (13 kg) și 8,6 găleți/min (5 kg), 44 și 100 de găleți pe palet sunt rezultate de test ale aplicației PURATOS, nu garanții pentru alte fabrici.</li>
+        <li>Model simplificat: două poziții de paletizare, un singur operator, schimbări de palet una câte una, fără opriri ale liniei.</li>
+        <li>Alimentarea și robotul sunt procese separate. Când există coadă, robotul lucrează la ritmul reperului testat.</li>
+        <li>Separatorii dintre straturi și alte intervenții intermediare nu sunt modelați.</li>
+        <li>Simularea nu reproduce logica de siguranță a instalației (scanere, reducerea vitezei, oprirea de protecție).</li>
+        <li>Convenție: la t = 0 transportorul e gol, poziția A e activă, poziția B e liberă. Pas de calcul 0,1 s.</li>
+        <li>Înfolierea, transportul către logistică și expedierea sunt în afara acestui instrument.</li>
+      </ul>
+    </div>
+  </details>
+
+  <footer>Prototip demonstrativ pentru AI-Powered Business Challenge 2026 · Start Your StartUP. Nu este un site Tech-Con sau PURATOS. Datele de solicitare sunt fictive; aplicația nu trimite și nu stochează date.</footer>
+</div>
+
+<script src="model.js"></script>
+<script>
+(function () {
+  'use strict';
+  var M = window.PaletModel;
+  var H = 3600;
+  var $ = function (id) { return document.getElementById(id); };
+  var reduceMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+  var fmt = M.fmt;
+
+  // ---------- Date de intrare ----------
+  var state = { format: '13' };
+  var DEFAULTS = { '13': '7,4', '5': '8,6', alt: '6' };
+
+  function num(v) {
+    v = String(v).trim().replace(/\s/g, '');
+    if (v === '') return null;
+    if (/^-?\d+([.,]\d+)?$/.test(v)) return parseFloat(v.replace(',', '.'));
+    return NaN;
+  }
+  function setErr(key, msg) {
+    var f = $('f-' + key), e = $('e-' + key);
+    if (f) f.classList.toggle('bad', !!msg);
+    if (e) { e.textContent = msg || ''; e.hidden = !msg; }
+  }
+  function checkRange(key, label, unit, lo, hi, required) {
+    var v = num($(key).value);
+    if (v === null) { if (required) { setErr(key, 'Completează ' + label + '.'); return { ok: false }; } setErr(key, ''); return { ok: true, v: null }; }
+    if (isNaN(v)) { setErr(key, 'Introdu un număr, de exemplu ' + fmt(lo === 0.1 ? 7.4 : hi / 2, lo === 0.1 ? 1 : 0) + '.'); return { ok: false }; }
+    if (v < lo || v > hi) { setErr(key, 'Introdu ' + label + ' între ' + fmt(lo, lo < 1 ? 1 : 0) + ' și ' + fmt(hi) + ' ' + unit + '.'); return { ok: false }; }
+    setErr(key, ''); return { ok: true, v: v };
+  }
+  function readLine() {
+    var alt = state.format === 'alt';
+    var feed = checkRange('feed', 'un debit', 'găleți/min', 0.1, 30, true);
+    var change = checkRange('change', 'un timp de schimbare', 's', 10, 1800, true);
+    var minutes = checkRange('minutes', 'minutele efective', 'min', 1, 720, true);
+    var per = alt ? checkRange('perpallet', 'numărul de găleți pe palet', 'găleți', 1, 200, true) : (setErr('perpallet', ''), { ok: true, v: null });
+    var weight = checkRange('weight', 'greutatea', 'kg', 0.1, 60, false);
+    var ok = feed.ok && change.ok && minutes.ok && per.ok && weight.ok;
+    if (!ok) return null;
+    return {
+      format: state.format, feed: feed.v, changeSec: change.v, minutes: minutes.v,
+      shifts: parseInt($('shifts').value, 10), perPallet: per.v, weight: weight.v,
+      handle: $('handle').value, material: $('material').value.trim()
+    };
+  }
+
+  function renderRef() {
+    var r = M.REF[state.format];
+    var box = $('refBox');
+    if (r) {
+      box.innerHTML = '<span class="t">Reper testat · aplicația PURATOS</span>' +
+        '<span>Găleată ' + r.kg + ' kg: <b class="num">' + r.perPallet + '</b> găleți/palet, <b class="num">' + fmt(r.cap, 1) + '</b> găleți/min testat.</span>' +
+        '<span class="hint">Două poziții de paletizare. Schimbarea paleților și separatoarele rămân manuale. Rezultate de test, nu garanții.</span>';
+    } else {
+      box.innerHTML = '<span class="t" style="color:var(--warn)">Necesită validare tehnică</span>' +
+        '<span>Nu există un reper testat pentru acest ambalaj. Simularea folosește debitul introdus ca <b>ipoteză</b> de capacitate.</span>';
+    }
+    $('f-perpallet').hidden = !!r;
+    if (!r) $('packDetails').open = true;
+  }
+
+  // ---------- Geometria scenei (metri) ----------
+  var CONV = { x0: -3.9, x1: -0.62, y: 0, w: 0.5, z: 0.72 };
+  var PICK = { x: -0.8, y: 0 };
+  var PAL = [{ x: 0.2, y: -1.3 }, { x: 0.2, y: 1.3 }];
+  var PW = 1.2, PD = 0.8, PH = 0.14;
+  var OP_POS = [{ x: 0.2, y: -2.25 }, { x: 0.2, y: 2.25 }];
+  var OP_IDLE = { x: 1.55, y: -2.3 };
+
+  function geom(per, kg) {
+    var big = kg >= 9;
+    var r = big ? 0.135 : 0.085, h = big ? 0.3 : 0.2;
+    var layers = 4, perLayer = Math.ceil(per / layers);
+    var cols = Math.ceil(Math.sqrt(perLayer * PW / PD)), rows = Math.ceil(perLayer / cols);
+    var slots = [];
+    for (var i = 0; i < per; i++) {
+      var L = Math.floor(i / perLayer), k = i % perLayer, c = k % cols, rr = Math.floor(k / cols);
+      slots.push({ dx: -PW / 2 + (c + 0.5) * PW / cols, dy: -PD / 2 + (rr + 0.5) * PD / rows, z: PH + L * h, L: L });
+    }
+    var maxR = Math.min(PW / cols, PD / rows) * 0.46;
+    return { r: Math.min(r, maxR), h: h, slots: slots, big: big };
+  }
+
+  var T = {};
+  function readTokens() {
+    var cs = getComputedStyle(document.documentElement);
+    ['floor', 'grid', 'zone', 'belt', 'belt-side', 'belt-stripe', 'steel', 'steel-dark', 'joint', 'pallet', 'pallet-dark', 'bucket', 'bucket-shade', 'lid-13', 'lid-5', 'person', 'person-dark', 'accent', 'ok', 'warn', 'risk', 'fg', 'muted', 'panel', 'scene-bg', 'line']
+      .forEach(function (n) { T[n] = cs.getPropertyValue('--' + n).trim(); });
+  }
+  readTokens();
+  window.matchMedia('(prefers-color-scheme: dark)').addEventListener('change', readTokens);
+  new MutationObserver(readTokens).observe(document.documentElement, { attributes: true, attributeFilter: ['data-theme'] });
+
+  // ---------- Randare ----------
+  function makeView(canvas) {
+    var v = { canvas: canvas, ctx: canvas.getContext('2d'), k: 60, ox: 0, oy: 0, dpr: 1, w: 0, h: 0 };
+    function fit() {
+      var rect = canvas.getBoundingClientRect();
+      v.dpr = Math.min(2, window.devicePixelRatio || 1);
+      v.w = Math.max(10, rect.width); v.h = Math.max(10, rect.height);
+      canvas.width = Math.round(v.w * v.dpr); canvas.height = Math.round(v.h * v.dpr);
+      var pts = [[CONV.x0, -0.4, 0], [CONV.x0, 0.4, 1.0], [PAL[0].x + 0.7, PAL[0].y - 0.5, 0], [PAL[1].x + 0.7, PAL[1].y + 0.5, 0], [PAL[1].x - 0.7, PAL[1].y - 0.5, 1.9], [0, 0, 2.3], [OP_IDLE.x, OP_IDLE.y, 0], [OP_POS[1].x, OP_POS[1].y + 0.3, 0], [OP_POS[0].x, OP_POS[0].y - 0.3, 0]];
+      var minx = 1e9, maxx = -1e9, miny = 1e9, maxy = -1e9;
+      pts.forEach(function (p) { var sx = (p[0] - p[1]) * 0.866, sy = (p[0] + p[1]) * 0.5 - p[2]; minx = Math.min(minx, sx); maxx = Math.max(maxx, sx); miny = Math.min(miny, sy); maxy = Math.max(maxy, sy); });
+      var padX = 18, padTop = 46, padBot = 22;
+      v.k = Math.min((v.w - 2 * padX) / (maxx - minx), (v.h - padTop - padBot) / (maxy - miny));
+      v.ox = (v.w - (maxx - minx) * v.k) / 2 - minx * v.k;
+      v.oy = padTop + ((v.h - padTop - padBot) - (maxy - miny) * v.k) / 2 - miny * v.k;
+    }
+    v.fit = fit;
+    new ResizeObserver(fit).observe(canvas);
+    fit();
+    return v;
+  }
+  function P(v, x, y, z) { return [v.ox + (x - y) * 0.866 * v.k, v.oy + ((x + y) * 0.5 - z) * v.k]; }
+  function poly(ctx, pts, fill, stroke) {
+    ctx.beginPath(); ctx.moveTo(pts[0][0], pts[0][1]);
+    for (var i = 1; i < pts.length; i++) ctx.lineTo(pts[i][0], pts[i][1]);
+    ctx.closePath();
+    if (fill) { ctx.fillStyle = fill; ctx.fill(); }
+    if (stroke) { ctx.strokeStyle = stroke; ctx.lineWidth = 1; ctx.stroke(); }
+  }
+  function box(v, x0, y0, z0, dx, dy, dz, top, sideX, sideY) {
+    var c = v.ctx, x1 = x0 + dx, y1 = y0 + dy, z1 = z0 + dz;
+    poly(c, [P(v, x1, y0, z0), P(v, x1, y1, z0), P(v, x1, y1, z1), P(v, x1, y0, z1)], sideX);
+    poly(c, [P(v, x0, y1, z0), P(v, x1, y1, z0), P(v, x1, y1, z1), P(v, x0, y1, z1)], sideY);
+    poly(c, [P(v, x0, y0, z1), P(v, x1, y0, z1), P(v, x1, y1, z1), P(v, x0, y1, z1)], top);
+  }
+  function cyl(v, x, y, z, r, h, body, top, taper, stroke) {
+    var c = v.ctx, b = P(v, x, y, z), t = P(v, x, y, z + h);
+    var rx = 1.2247 * r * v.k, ry = 0.7071 * r * v.k, rxb = rx * (taper || 1), ryb = ry * (taper || 1);
+    c.beginPath();
+    c.moveTo(t[0] - rx, t[1]); c.lineTo(b[0] - rxb, b[1]);
+    c.ellipse(b[0], b[1], rxb, ryb, 0, Math.PI, 0, true);
+    c.lineTo(t[0] + rx, t[1]); c.closePath();
+    c.fillStyle = body; c.fill();
+    if (stroke) { c.strokeStyle = stroke; c.lineWidth = 0.8; c.stroke(); }
+    c.beginPath(); c.ellipse(t[0], t[1], rx, ry, 0, 0, Math.PI * 2); c.fillStyle = top; c.fill();
+    if (stroke) { c.strokeStyle = stroke; c.lineWidth = 0.8; c.stroke(); }
+    return { t: t, rx: rx, ry: ry };
+  }
+  function bucket(v, x, y, z, g, lid, alpha) {
+    var c = v.ctx;
+    if (alpha !== undefined) c.globalAlpha = alpha;
+    var o = cyl(v, x, y, z, g.r, g.h, T.bucket, lid, 0.86, T['bucket-shade']);
+    c.beginPath();
+    c.ellipse(o.t[0], o.t[1] - o.ry * 0.2, o.rx * 0.92, o.ry * 1.6, 0, Math.PI * 1.05, Math.PI * 1.95);
+    c.strokeStyle = T['steel-dark']; c.lineWidth = Math.max(1, v.k * 0.012); c.stroke();
+    c.globalAlpha = 1;
+  }
+  function lidColor(r) { return r.g.big ? T['lid-13'] : T['lid-5']; }
+
+  function chip(v, x, y, text, color, filled) {
+    var c = v.ctx;
+    c.font = '600 11px ' + getComputedStyle(document.body).getPropertyValue('--font-mono');
+    var w = c.measureText(text).width + 12, h = 20;
+    x = Math.max(4, Math.min(v.w - w - 4, x - w / 2));
+    c.fillStyle = filled ? color : T.panel; c.strokeStyle = color; c.lineWidth = 1;
+    c.beginPath(); c.roundRect ? c.roundRect(x, y - h / 2, w, h, 4) : c.rect(x, y - h / 2, w, h); c.fill(); c.stroke();
+    c.fillStyle = filled ? T['scene-bg'] : color; c.textBaseline = 'middle'; c.fillText(text, x + 6, y + 0.5);
+  }
+  function mmss(sec) { sec = Math.max(0, Math.round(sec)); var m = Math.floor(sec / 60), s = sec % 60; return (m < 10 ? '0' : '') + m + ':' + (s < 10 ? '0' : '') + s; }
+
+  function lerp(a, b, f) { return a + (b - a) * f; }
+  function ease(f) { return f < 0.5 ? 2 * f * f : 1 - Math.pow(-2 * f + 2, 2) / 2; }
+
+  function gripperPose(r, s) {
+    var g = r.g, rb = s.robot;
+    var rest = { x: PICK.x, y: PICK.y, z: CONV.z + g.h + 0.35 };
+    if (!rb.busy) return { p: rest, carry: false };
+    var f = 1 - rb.remain / s.p.cycle; f = Math.max(0, Math.min(1, f));
+    var slot = g.slots[Math.min(g.slots.length - 1, s.pos[rb.target].count)];
+    var pal = PAL[rb.target];
+    var tgt = { x: pal.x + slot.dx, y: pal.y + slot.dy, z: slot.z + g.h + 0.05 };
+    var pick = { x: PICK.x, y: PICK.y, z: CONV.z + g.h + 0.05 };
+    function cylLerp(a, b, t) {
+      var aa = Math.atan2(a.y, a.x), ab = Math.atan2(b.y, b.x);
+      var da = ab - aa; while (da > Math.PI) da -= 2 * Math.PI; while (da < -Math.PI) da += 2 * Math.PI;
+      var ra = Math.hypot(a.x, a.y), rbb = Math.hypot(b.x, b.y);
+      var ang = aa + da * t, rad = lerp(ra, rbb, t);
+      return { x: Math.cos(ang) * rad, y: Math.sin(ang) * rad };
+    }
+    var lift = 0.45 + g.h;
+    var p, carry;
+    if (f < 0.1) { p = { x: pick.x, y: pick.y, z: lerp(pick.z, pick.z + lift * 0.6, ease(f / 0.1)) }; carry = true; }
+    else if (f < 0.42) { var t1 = ease((f - 0.1) / 0.32), h1 = cylLerp(pick, tgt, t1); p = { x: h1.x, y: h1.y, z: lerp(pick.z + lift * 0.6, Math.max(tgt.z + 0.25, pick.z + 0.2), t1) + Math.sin(t1 * Math.PI) * 0.25 }; carry = true; }
+    else if (f < 0.5) { p = { x: tgt.x, y: tgt.y, z: lerp(Math.max(tgt.z + 0.25, pick.z + 0.2), tgt.z, ease((f - 0.42) / 0.08)) }; carry = true; }
+    else if (f < 0.56) { p = { x: tgt.x, y: tgt.y, z: lerp(tgt.z, tgt.z + 0.3, (f - 0.5) / 0.06) }; carry = false; }
+    else { var t2 = ease((f - 0.56) / 0.44), h2 = cylLerp(tgt, rest, t2); p = { x: h2.x, y: h2.y, z: lerp(tgt.z + 0.3, rest.z, t2) + Math.sin(t2 * Math.PI) * 0.2 }; carry = false; }
+    return { p: p, carry: carry, placed: f >= 0.5, f: f };
+  }
+
+  function drawArm(v, r, s) {
+    var c = v.ctx, gp = gripperPose(r, s), g = r.g;
+    var S = { x: 0, y: 0, z: 1.0 };
+    var W = { x: gp.p.x, y: gp.p.y, z: gp.p.z + 0.22 };
+    var dx = W.x - S.x, dy = W.y - S.y, dz = W.z - S.z, d = Math.hypot(dx, dy), D = Math.hypot(d, dz);
+    var L1 = 1.0, L2 = 0.98; D = Math.min(D, L1 + L2 - 0.001);
+    var a = Math.atan2(dz, d), b = Math.acos(Math.max(-1, Math.min(1, (L1 * L1 + D * D - L2 * L2) / (2 * L1 * D))));
+    var e = a + b, ux = d > 1e-6 ? dx / d : 1, uy = d > 1e-6 ? dy / d : 0;
+    var E = { x: S.x + ux * Math.cos(e) * L1, y: S.y + uy * Math.cos(e) * L1, z: S.z + Math.sin(e) * L1 };
+    // carried bucket under gripper
+    if (gp.carry) bucket(v, gp.p.x, gp.p.y, gp.p.z - g.h - 0.04, g, lidColor(r));
+    var pS = P(v, S.x, S.y, S.z), pE = P(v, E.x, E.y, E.z), pW = P(v, W.x, W.y, W.z), pG = P(v, gp.p.x, gp.p.y, gp.p.z);
+    c.lineCap = 'round';
+    function link(a1, b1, w) { c.strokeStyle = T['steel-dark']; c.lineWidth = w + 3; c.beginPath(); c.moveTo(a1[0], a1[1]); c.lineTo(b1[0], b1[1]); c.stroke(); c.strokeStyle = T.steel; c.lineWidth = w; c.stroke(); }
+    link(pS, pE, Math.max(5, v.k * 0.13));
+    link(pE, pW, Math.max(4, v.k * 0.105));
+    link(pW, pG, Math.max(3, v.k * 0.07));
+    [pS, pE, pW].forEach(function (p, i) {
+      var rr = Math.max(4, v.k * (0.1 - i * 0.015));
+      c.beginPath(); c.arc(p[0], p[1], rr, 0, Math.PI * 2); c.fillStyle = T.steel; c.fill(); c.lineWidth = 1.5; c.strokeStyle = T['steel-dark']; c.stroke();
+      c.beginPath(); c.arc(p[0], p[1], rr * 0.55, 0, Math.PI * 2); c.fillStyle = T.joint; c.fill();
+    });
+    // gripper
+    var gw = Math.max(6, v.k * 0.16);
+    c.fillStyle = T['steel-dark']; c.fillRect(pG[0] - gw / 2, pG[1] - 3, gw, 6);
+  }
+
+  function drawScene(r, opts) {
+    var v = r.view, s = r.sim, c = v.ctx, g = r.g;
+    opts = opts || {};
+    c.setTransform(v.dpr, 0, 0, v.dpr, 0, 0);
+    c.clearRect(0, 0, v.w, v.h);
+    // podea + zonă monitorizată
+    poly(c, [P(v, -4.3, -3.0, 0), P(v, 2.4, -3.0, 0), P(v, 2.4, 3.0, 0), P(v, -4.3, 3.0, 0)], T.floor);
+    c.strokeStyle = T.grid; c.lineWidth = 1;
+    for (var gx = -4; gx <= 2.4; gx += 0.6) { var a1 = P(v, gx, -3, 0), b1 = P(v, gx, 3, 0); c.beginPath(); c.moveTo(a1[0], a1[1]); c.lineTo(b1[0], b1[1]); c.stroke(); }
+    for (var gy = -3; gy <= 3; gy += 0.6) { var a2 = P(v, -4.3, gy, 0), b2 = P(v, 2.4, gy, 0); c.beginPath(); c.moveTo(a2[0], a2[1]); c.lineTo(b2[0], b2[1]); c.stroke(); }
+    c.setLineDash([6, 5]); c.strokeStyle = T.zone; c.globalAlpha = 0.55; c.lineWidth = 1.5;
+    poly(c, [P(v, -0.95, -2.0, 0), P(v, 1.1, -2.0, 0), P(v, 1.1, 2.0, 0), P(v, -0.95, 2.0, 0)], null, T.zone);
+    c.setLineDash([]); c.globalAlpha = 1;
+
+    // transportor
+    var bw = CONV.w / 2;
+    box(v, CONV.x0, -bw, 0, CONV.x1 - CONV.x0, CONV.w, CONV.z, T.belt, T['belt-side'], T['belt-side']);
+    var off = (s.t * 0.35) % 0.3;
+    c.strokeStyle = T['belt-stripe']; c.lineWidth = 1.2;
+    for (var sx = CONV.x0 + off; sx < CONV.x1; sx += 0.3) { var p1 = P(v, sx, -bw, CONV.z), p2 = P(v, sx, bw, CONV.z); c.beginPath(); c.moveTo(p1[0], p1[1]); c.lineTo(p2[0], p2[1]); c.stroke(); }
+    // găleți pe transportor
+    var spacing = Math.max(0.3, g.r * 2.3);
+    var maxVis = Math.floor((PICK.x - CONV.x0 - 0.25) / spacing);
+    var vis = Math.min(s.queue, maxVis);
+    var lc = lidColor(r);
+    var items = [];
+    for (var q = 0; q < vis; q++) items.push(PICK.x - q * spacing);
+    if (s.queue <= maxVis) {
+      var tailX = PICK.x - vis * spacing;
+      var startX = CONV.x0 + 0.15;
+      var fx = lerp(startX, tailX, Math.min(1, s.feedAcc));
+      if (fx < tailX + 0.01) items.push(fx);
+    }
+    items.sort(function (a, b) { return a - b; }).forEach(function (x) { bucket(v, x, 0, CONV.z, g); });
+    if (s.queue > maxVis) {
+      var lp = P(v, CONV.x0 + 0.3, 0, CONV.z + 0.75);
+      chip(v, lp[0], lp[1], '+' + (s.queue - maxVis) + ' în coadă', T.risk, false);
+    }
+
+    // paleți (în ordinea adâncimii: A, robot, B)
+    function drawPallet(i) {
+      var pal = PAL[i], pos = s.pos[i];
+      var x0 = pal.x - PW / 2, y0 = pal.y - PD / 2;
+      box(v, x0, y0, 0, PW, PD, PH, T.pallet, T['pallet-dark'], T['pallet-dark']);
+      var n = pos.count;
+      if (s.robot.busy && s.robot.target === i && r._placed) n = Math.min(g.slots.length, n + 1);
+      var alpha = 1;
+      if (pos.state === 'changing') alpha = Math.max(0, Math.min(1, pos.remain / s.p.changeSec * 1.4));
+      var sl = g.slots.slice(0, n).sort(function (a, b) { return a.L - b.L || (a.dx + a.dy) - (b.dx + b.dy); });
+      sl.forEach(function (sl1) { bucket(v, pal.x + sl1.dx, pal.y + sl1.dy, sl1.z, g, lc, alpha); });
+      var unavailable = pos.state === 'full' || pos.state === 'changing';
+      var hl = opts.highlight && unavailable;
+      if (s.blocked || hl) {
+        var pulse = hl && !reduceMotion ? 0.55 + 0.45 * Math.sin(performance.now() / 180) : 1;
+        c.globalAlpha = pulse; c.lineWidth = 2.5;
+        poly(c, [P(v, x0 - 0.06, y0 - 0.06, 0), P(v, x0 + PW + 0.06, y0 - 0.06, 0), P(v, x0 + PW + 0.06, y0 + PD + 0.06, 0), P(v, x0 - 0.06, y0 + PD + 0.06, 0)], null, T.risk);
+        c.globalAlpha = 1;
+      }
+    }
+    drawPallet(0);
+    // operator
+    var op = s.op !== null ? OP_POS[s.op] : OP_IDLE;
+    function drawOperator() {
+      cyl(v, op.x, op.y, 0, 0.17, 1.15, T['person-dark'], T['person-dark']);
+      cyl(v, op.x, op.y, 0.75, 0.19, 0.42, T.person, T.person);
+      var hp = P(v, op.x, op.y, 1.36);
+      c.beginPath(); c.arc(hp[0], hp[1], Math.max(4, v.k * 0.12), 0, Math.PI * 2); c.fillStyle = T.person; c.fill();
+    }
+    // robot base
+    cyl(v, 0, 0, 0, 0.3, 0.12, T['steel-dark'], T['steel-dark']);
+    cyl(v, 0, 0, 0.12, 0.2, 0.88, T.steel, T.steel, 1, T['steel-dark']);
+    if (op === OP_POS[1] || op === OP_IDLE) { drawPallet(1); drawOperator(); } else { drawOperator(); drawPallet(1); }
+    drawArm(v, r, s);
+
+    // etichete paleți
+    for (var i = 0; i < 2; i++) {
+      var pos = s.pos[i], lp2 = P(v, PAL[i].x - 0.45, PAL[i].y - 0.45, PH + 4 * g.h + 0.35);
+      var txt, col, fill = false;
+      if (pos.state === 'active') { txt = pos.id + ' · ACTIVĂ ' + pos.count + '/' + s.p.perPallet; col = T.accent; }
+      else if (pos.state === 'full') { txt = pos.id + ' · PLINĂ, AȘTEAPTĂ OPERATORUL'; col = T.warn; }
+      else if (pos.state === 'changing') { txt = pos.id + ' · ÎN SCHIMBARE ' + mmss(pos.remain); col = T.warn; }
+      else { txt = pos.id + ' · LIBERĂ'; col = T.muted; }
+      chip(v, lp2[0], lp2[1], txt, col, fill);
+    }
+    if (s.blocked) {
+      chip(v, v.w / 2, 30, 'Robotul așteaptă o poziție liberă', T.risk, true);
+    } else if (s.robot && !s.robot.busy && s.queue < 1 && s.t > 0) {
+      chip(v, v.w / 2, 30, 'Robotul așteaptă găleți', T.muted, false);
+    }
+  }
+
+  // ---------- Runners ----------
+  function makeRunner(canvas, params, kg) {
+    var r = { view: makeView(canvas), params: params, kg: kg };
+    reset(r, params, kg);
+    return r;
+  }
+  function reset(r, params, kg) {
+    r.params = params; r.kg = kg;
+    r.sim = M.createSim(params);
+    r.g = geom(params.perPallet, kg);
+    r.clock = 0; r.highlight = false; r._placed = false;
+  }
+  function advance(r, simSec) {
+    r.clock += simSec;
+    var steps = Math.floor(r.clock / M.DT + 1e-9);
+    r.clock -= steps * M.DT;
+    var end = Math.round(H / M.DT);
+    for (var i = 0; i < steps && r.sim.n < end; i++) M.step(r.sim);
+  }
+  function render(r) {
+    var gp = r.sim.robot.busy ? gripperPose(r, r.sim) : null;
+    r._placed = !!(gp && gp.placed);
+    drawScene(r, { highlight: r.highlight });
+  }
+
+  function kgOf(line) { var ref = M.REF[line.format]; return ref ? ref.kg : (line.weight || 13); }
+
+  var line = readLine();
+  var main = makeRunner($('cvMain'), M.simParams(line), kgOf(line));
+  main.running = false; main.speed = 60;
+  var cmp = null; // {a, b, running, speed}
+  var savedA = null;
+  var lastFinal = null;
+
+  // ---------- UI ----------
+  function setPlayLabel() { $('btnPlay').textContent = main.running ? '❚❚ Pauză' : '▶ Pornește'; $('btnPlay').setAttribute('aria-label', main.running ? 'Pauză' : 'Pornește'); }
+  function setSpeed(sp) {
+    main.speed = sp;
+    [].forEach.call($('speedSeg').children, function (b) { b.setAttribute('aria-pressed', String(+b.dataset.speed === sp)); });
+  }
+  function updateKpis() {
+    var s = main.sim;
+    $('kPlaced').textContent = fmt(s.placed);
+    $('kQueue').textContent = fmt(s.queue);
+    $('kWait').textContent = mmss(s.waitPos).replace(/^0/, '');
+    $('kQueueBox').classList.toggle('alert', s.queue > 20);
+    $('kWaitBox').classList.toggle('alert', s.waitPos > 0.05);
+    $('clockMain').textContent = mmss(s.t) + ' / 60:00 simulat · timp accelerat x' + main.speed;
+    var d = $('verdictDot'), t = $('verdict');
+    if (!line) return;
+    if (s.n === 0) { d.className = 'dot'; t.textContent = 'Apasă „Testează linia mea” ca să rulezi 60 de minute simulate.'; return; }
+    var cls = 'ok', msg;
+    if (s.blocked) { cls = 'risk'; msg = 'Ambele poziții sunt indisponibile: robotul așteaptă o poziție liberă.'; }
+    else if (s.p.feed > s.p.cap + 1e-9 && s.queue > 3) { cls = 'risk'; msg = 'Alimentarea depășește ritmul robotului, iar coada crește.'; }
+    else if (s.waitPos > 0.05) { cls = 'warn'; msg = 'Schimbarea paleților a oprit deja robotul ' + M.fmtDur(s.waitPos) + '.'; }
+    else if (s.p.feed < s.p.cap - 1e-9) { cls = 'ok'; msg = 'Robotul are rezervă: așteaptă găleți de la alimentare, nu poziții libere.'; }
+    else { msg = 'Flux stabil: o poziție se umple în timp ce cealaltă se schimbă.'; }
+    if (s.n >= Math.round(H / M.DT)) msg = 'Ora simulată s-a încheiat. ' + msg;
+    d.className = 'dot ' + cls; t.textContent = msg;
+  }
+
+  function applyInputs(resetSim) {
+    renderRef();
+    line = readLine();
+    var bad = !line;
+    $('btnTest').disabled = bad; $('btnBlock').disabled = bad; $('btnPlay').disabled = bad; $('btnSaveA').disabled = bad;
+    if (bad) {
+      main.running = false; setPlayLabel();
+      $('verdictDot').className = 'dot risk';
+      $('verdict').textContent = 'Corectează datele marcate. Simularea pornește doar cu valori valide.';
+      return;
+    }
+    if (resetSim) { reset(main, M.simParams(line), kgOf(line)); main.running = false; hideCallout(); setPlayLabel(); }
+    lastFinal = M.run(M.simParams(line), H);
+    renderEval();
+    if (!$('summary').hidden) buildSummary();
+    updateKpis();
+  }
+
+  function renderEval() {
+    var ev = M.evaluate(line, lastFinal);
+    var tagCls = { 'Reper testat': 'ref', 'Rezultat simulat': 'sim', 'Ipoteză': 'hyp' };
+    $('rules').innerHTML = ev.map(function (e) {
+      return '<li><span class="dot ' + (e.level === 'info' ? 'ok' : e.level) + '"></span><span class="r"><span class="pill ' + tagCls[e.tag] + '">' + e.tag + '</span>' + esc(e.rule) + '</span><p>' + esc(e.text) + '</p></li>';
+    }).join('');
+    var er = M.ergonomics(line);
+    var ergo = $('ergo');
+    if (!er) {
+      ergo.innerHTML = '<span class="eyebrow">Ergonomie</span><p>Introdu greutatea găleții ca să calculezi masa cumulată.</p>';
+    } else {
+      var hyp = state.format === 'alt';
+      ergo.innerHTML = '<span class="eyebrow">Ergonomie · <span class="pill ' + (hyp ? 'hyp' : 'sim') + '">' + (hyp ? 'Ipoteză' : 'Calcul teoretic') + '</span></span>' +
+        '<span class="big">' + fmt(er.tonnes, 1) + ' t/zi</span>' +
+        '<p>Masă cumulată teoretică manipulată manual</p>' +
+        '<span class="formula">' + fmt(er.rate, 1) + ' găleți/min × ' + fmt(er.kg, er.kg % 1 ? 1 : 0) + ' kg × ' + fmt(line.minutes) + ' min × ' + line.shifts + ' schimburi</span>' +
+        '<p class="note">Calcul teoretic la ritm continuu. Nu este o evaluare medicală, nu este masa ridicată de fiecare operator și nu reprezintă o economie garantată.</p>';
+    }
+  }
+  function esc(s) { return String(s).replace(/[&<>"]/g, function (ch) { return { '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;' }[ch]; }); }
+
+  function showCallout(html) { $('callout').innerHTML = html; $('callout').style.borderColor = ''; $('callout').hidden = false; }
+  function hideCallout() { $('callout').hidden = true; main.highlight = false; }
+
+  function startTest() {
+    applyInputs(true);
+    if (!line) return;
+    main.running = true; setPlayLabel();
+    if (window.innerWidth < 920) $('stageMain').scrollIntoView({ behavior: reduceMotion ? 'auto' : 'smooth', block: 'start' });
+  }
+
+  function firstBlock() {
+    applyInputs(true);
+    if (!line) return false;
+    var found = M.runToFirstBlock(main.sim, H);
+    main.running = false; setPlayLabel();
+    if (found) {
+      var fb = main.sim.firstBlock;
+      main.highlight = true;
+      var rem = fb.changingRemain !== null ? Math.round(fb.changingRemain) : null;
+      showCallout('<b>Primul blocaj la ' + mmss(fb.t) + '.</b> Ambele poziții sunt indisponibile. ' +
+        (rem !== null ? 'Următoarea se eliberează în ' + rem + ' secunde.' : '') + ' În așteptare pe transportor: ' + fmt(main.sim.queue) + ' găleți.');
+    } else {
+      main.sim = M.createSim(M.simParams(line));
+      showCallout('<b>Fără blocaj.</b> Nu apare acest blocaj în cele 60 de minute simulate.');
+      $('callout').style.borderColor = 'var(--ok)';
+    }
+    updateKpis();
+    return found;
+  }
+
+  // ---------- Comparație A/B ----------
+  function saveA() {
+    if (!line) return;
+    savedA = JSON.parse(JSON.stringify(line));
+    $('chipA').textContent = 'Varianta A: ' + (savedA.format === 'alt' ? 'alt ambalaj' : savedA.format + ' kg') + ', ' + fmt(savedA.feed, 1) + ' găleți/min, schimbare ' + fmt(savedA.changeSec) + ' s';
+    $('btnCompare').disabled = false;
+  }
+  function startCompare(speed) {
+    if (!savedA) return false;
+    var cb = checkRange('changeB', 'un timp de schimbare', 's', 10, 1800, true);
+    if (!cb.ok) return false;
+    var lineB = Object.assign({}, savedA, { changeSec: cb.v });
+    var pa = M.simParams(savedA), pb = M.simParams(lineB), kg = kgOf(savedA);
+    $('cmpOut').hidden = false;
+    if (!cmp) {
+      cmp = { a: makeRunner($('cvA'), pa, kg), b: makeRunner($('cvB'), pb, kg) };
+    } else { reset(cmp.a, pa, kg); reset(cmp.b, pb, kg); cmp.a.view.fit(); cmp.b.view.fit(); }
+    cmp.clock = 0; cmp.speed = speed || 120; cmp.running = true;
+    $('lblA').textContent = 'A · schimbare ' + fmt(savedA.changeSec) + ' s';
+    $('lblB').textContent = 'B · schimbare ' + fmt(cb.v) + ' s';
+    $('diffLine').innerHTML = savedA.changeSec === cb.v
+      ? 'Variantele sunt identice. Alege alt timp de schimbare pentru B.'
+      : 'Singura diferență: <b>timpul de schimbare ' + fmt(savedA.changeSec) + ' s → ' + fmt(cb.v) + ' s</b>. Alimentare ' + fmt(savedA.feed, 1) + ' găleți/min în ambele variante.';
+    // rezultat final, pentru verdict
+    cmp.finalA = M.run(pa, H); cmp.finalB = M.run(pb, H);
+    return true;
+  }
+  function stepCompare(dt) {
+    if (!cmp || !cmp.running) return;
+    var simSec = dt * cmp.speed;
+    advance(cmp.a, simSec); advance(cmp.b, simSec);
+    if (cmp.a.sim.n >= Math.round(H / M.DT)) cmp.running = false;
+  }
+  function cmpRow(label, a, b, fmtFn, higherBetter) {
+    var d = b - a, cls = Math.abs(d) < 1e-6 ? 'same' : ((d > 0) === higherBetter ? 'better' : 'worse');
+    var sign = d > 0 ? '+' : (d < 0 ? '−' : '±');
+    return '<tr><td>' + label + '</td><td>' + fmtFn(a) + '</td><td>' + fmtFn(b) + '</td><td class="' + cls + '">' + sign + fmtFn(Math.abs(d)) + '</td></tr>';
+  }
+  function updateCompare() {
+    if (!cmp) return;
+    var a = cmp.a.sim, b = cmp.b.sim;
+    $('clockCmp').textContent = mmss(a.t) + ' / 60:00 simulat · x' + cmp.speed;
+    var n = function (x) { return fmt(x); }, tm = function (x) { return mmss(x); };
+    $('cmpBody').innerHTML = cmpRow('Găleți paletizate', a.placed, b.placed, n, true) +
+      cmpRow('Găleți în așteptare', a.queue, b.queue, n, false) +
+      cmpRow('Robotul așteaptă o poziție liberă', a.waitPos, b.waitPos, tm, false);
+    var fa = cmp.finalA, fb = cmp.finalB, v = $('cmpVerdict');
+    var done = !cmp.running;
+    var prefix = done ? '' : 'La finalul celor 60 de minute: ';
+    var dp = fb.placed - fa.placed, dw = fb.waitPos - fa.waitPos;
+    if (Math.abs(dp) <= 1 && Math.abs(dw) < 1) {
+      var limit = fa.p.feed > fa.p.cap + 1e-9 ? 'capacitatea robotului' : 'alimentarea liniei';
+      v.textContent = prefix + 'Modificarea nu îmbunătățește rezultatul. Limita este ' + limit + ', nu schimbarea paleților.';
+    } else if (dp > 0) {
+      v.textContent = prefix + 'Varianta B paletizează cu ' + fmt(dp) + ' găleți mai mult și reduce așteptarea robotului cu ' + M.fmtDur(-dw) + '.';
+    } else {
+      v.textContent = prefix + 'Varianta B paletizează cu ' + fmt(-dp) + ' găleți mai puțin și crește așteptarea robotului cu ' + M.fmtDur(dw) + '.';
+    }
+  }
+
+  // ---------- Demo ----------
+  var demo = null;
+  function sleep(ms) { return new Promise(function (res) { setTimeout(res, ms); }); }
+  function setInputs(fmtv, feed, change) {
+    state.format = fmtv;
+    [].forEach.call($('fmtSeg').children, function (b) { b.setAttribute('aria-pressed', String(b.dataset.fmt === fmtv)); });
+    $('feed').value = String(feed).replace('.', ',');
+    $('change').value = String(change);
+  }
+  function demoStep(i, text) {
+    for (var k = 1; k <= 3; k++) $('ds' + k).style.width = k < i ? '100%' : '0%';
+    $('demoText').textContent = text;
+  }
+  function demoProgress(i, f) { $('ds' + i).style.width = Math.round(Math.min(1, f) * 100) + '%'; }
+  async function waitFor(ms, i, cond) {
+    var t0 = performance.now();
+    while (performance.now() - t0 < ms) {
+      if (demo.cancel) throw new Error('stop');
+      demoProgress(i, (performance.now() - t0) / ms);
+      if (cond && cond()) return true;
+      await sleep(80);
+    }
+    demoProgress(i, 1);
+    return false;
+  }
+  async function runDemo() {
+    if (demo) return;
+    demo = { cancel: false };
+    $('demoBar').hidden = false; $('btnDemo').disabled = true;
+    try {
+      // 1. Flux stabil
+      setInputs('13', 7.4, 90); applyInputs(true);
+      demoStep(1, '1/3 · Flux stabil: schimbare de palet în 90 s. Robotul nu așteaptă nicio poziție.');
+      if (reduceMotion) { M.runUntil(main.sim, 1320); updateKpis(); await waitFor(6000, 1); }
+      else { setSpeed(120); main.running = true; setPlayLabel(); await waitFor(11000, 1); }
+      // 2. Intervenție întârziată
+      main.running = false;
+      setInputs('13', 7.4, 420); applyInputs(true);
+      demoStep(2, '2/3 · Aceeași linie, schimbare în 420 s. Urmărește primul blocaj.');
+      if (reduceMotion) { firstBlock(); await waitFor(7000, 2); }
+      else {
+        setSpeed(120); main.running = true; setPlayLabel();
+        await waitFor(9000, 2, function () { return !!main.sim.firstBlock; });
+        main.running = false; setPlayLabel();
+        var fb = main.sim.firstBlock;
+        if (fb) {
+          main.highlight = true;
+          showCallout('<b>Primul blocaj la ' + mmss(fb.t) + '.</b> Ambele poziții sunt indisponibile. Următoarea se eliberează în ' + Math.round(fb.changingRemain) + ' secunde.');
+        }
+        await waitFor(5000, 2);
+      }
+      // 3. Comparație
+      saveA(); $('changeB').value = '90';
+      demoStep(3, '3/3 · Aceeași oră simulată: A cu schimbare în 420 s, B cu schimbare în 90 s.');
+      startCompare(reduceMotion ? 3600 : 360);
+      $('compare').scrollIntoView({ behavior: reduceMotion ? 'auto' : 'smooth', block: 'start' });
+      await waitFor(reduceMotion ? 6000 : 11500, 3, function () { return cmp && !cmp.running; });
+      demoStep(4, 'Gata. Ce trebuie verificat în fabrica ta?');
+      buildSummary();
+      await sleep(800);
+      $('eval').scrollIntoView({ behavior: reduceMotion ? 'auto' : 'smooth', block: 'start' });
+    } catch (e) { /* oprit */ }
+    $('demoBar').hidden = true; $('btnDemo').disabled = false;
+    demo = null;
+  }
+
+  // ---------- Rezumat ----------
+  function buildSummary() {
+    if (!line) return;
+    var ref = M.REF[line.format], f = lastFinal, ev = M.evaluate(line, f), er = M.ergonomics(line);
+    var d = new Date();
+    var L = [];
+    L.push('PALETSCORE · REZUMAT PENTRU EVALUARE TEHNICĂ');
+    L.push('Date fictive, generat ' + d.toLocaleDateString('ro-RO') + '. Nu s-a trimis nimic.');
+    L.push('');
+    L.push('Firmă: Fabrica Demo SRL (fictiv) · Rol: director de producție');
+    L.push('');
+    L.push('PARAMETRII LINIEI');
+    L.push('- Format: ' + (ref ? 'găleată ' + ref.kg + ' kg (reper testat: ' + ref.perPallet + ' găleți/palet, ' + fmt(ref.cap, 1) + ' găleți/min)' : 'alt ambalaj, ' + fmt(line.perPallet) + ' găleți/palet (ipoteză, necesită validare)'));
+    L.push('- Debit de intrare: ' + fmt(line.feed, 1) + ' găleți/min');
+    L.push('- Timp de schimbare a unui palet: ' + fmt(line.changeSec) + ' s');
+    L.push('- Funcționare efectivă: ' + fmt(line.minutes) + ' min/schimb × ' + line.shifts + ' schimburi');
+    L.push('- Greutate declarată: ' + (line.weight ? fmt(line.weight, 1) + ' kg' : 'neprecizată') + ' · Mâner: ' + line.handle + ' · Material: ' + (line.material || 'neprecizat'));
+    L.push('');
+    L.push('REZULTAT SIMULAT (60 min, model simplificat)');
+    L.push('- Găleți paletizate: ' + fmt(f.placed) + ' · paleți finalizați: ' + fmt(f.pallets));
+    L.push('- Găleți în așteptare la final: ' + fmt(f.queue));
+    L.push('- Robotul a așteptat o poziție liberă: ' + M.fmtDur(f.waitPos) + ' · a așteptat găleți: ' + M.fmtDur(f.waitFeed));
+    if (f.firstBlock) L.push('- Primul blocaj (ambele poziții indisponibile): minutul ' + mmss(f.firstBlock.t));
+    L.push('');
+    L.push('OBSERVAȚII');
+    ev.forEach(function (e) { L.push('- [' + e.tag + '] ' + e.text); });
+    if (er) L.push('- Masă cumulată teoretică manipulată manual: ' + fmt(er.tonnes, 1) + ' t/zi (calcul teoretic la ritm continuu, nu evaluare medicală)');
+    L.push('');
+    L.push('ÎNTREBĂRI DE CLARIFICAT CU TECH-CON');
+    L.push('1. Ce spațiu avem pentru celulă și cele două poziții de paletizare, inclusiv accesul operatorului la schimbarea paleților?');
+    L.push('2. Cum se integrează transportorul de alimentare și ce semnale de proces oferă linia actuală?');
+    L.push('3. Ce model de paletizare și ce separatoare folosim pentru fiecare format?');
+    L.push('4. Ce cerințe de igienă se aplică în zona de ambalare?');
+    L.push('5. Cum se face evaluarea riscurilor și cum lucrează operatorii lângă zona monitorizată?');
+    if (!ref || line.handle !== 'da') L.push('6. Gripperul și sistemul de vedere pot prelua ambalajul nostru? Ce probe sunt necesare?');
+    L.push('');
+    L.push('LIMITE: reperele PURATOS sunt rezultate de test, nu garanții. Separatorii, siguranța instalației, înfolierea și transportul spre logistică nu sunt modelate.');
+    $('summary').textContent = L.join('\n');
+    $('summary').hidden = false; $('btnCopy').hidden = false; $('copied').hidden = true;
+  }
+  function copySummary() {
+    var txt = $('summary').textContent;
+    function fallback() { var r = document.createRange(); r.selectNodeContents($('summary')); var sel = getSelection(); sel.removeAllRanges(); sel.addRange(r); $('copied').textContent = 'Text selectat. Copiază-l cu Cmd/Ctrl + C.'; $('copied').hidden = false; }
+    try {
+      navigator.clipboard.writeText(txt).then(function () { $('copied').textContent = 'Copiat'; $('copied').hidden = false; }, fallback);
+    } catch (e) { fallback(); }
+  }
+
+  // ---------- Comercial ----------
+  function renderCommercial() {
+    var keys = { price: 'cPrice', cost: 'cCost', promo: 'cPromo', cells: 'cCells', other: 'cOther', tax: 'cTax', target: 'cTarget' };
+    var c = {}, bad = [];
+    Object.keys(keys).forEach(function (k) {
+      var v = num($(keys[k]).value);
+      var optional = k === 'other' || k === 'tax';
+      if (v === null) { if (optional) c[k] = null; else bad.push(k); return; }
+      if (isNaN(v) || v < 0 || (k === 'tax' && v >= 100)) bad.push(k); else c[k] = v;
+      $(keys[k]).parentNode.style.borderColor = '';
+    });
+    bad.forEach(function (k) { $(keys[k]).parentNode.style.borderColor = 'var(--risk)'; });
+    var e = $('e-comm');
+    if (bad.length) { e.textContent = 'Corectează câmpurile marcate: numere pozitive, cota de impozit sub 100%.'; e.hidden = false; $('cRes').innerHTML = ''; return; }
+    e.hidden = true;
+    var r = M.commercial(c), eur = function (x) { return fmt(x) + ' EUR'; };
+    var html = '<div><span class="l">Contribuție pe celulă</span><span class="v">' + eur(r.unit) + '</span></div>' +
+      '<div><span class="l">Contribuție anuală (' + fmt(c.cells) + ' celule)</span><span class="v">' + eur(r.contribution) + '</span></div>' +
+      '<div><span class="l">Rezultat după promovare, înainte de alte costuri și impozit</span><span class="v">' + eur(r.afterPromo) + '</span></div>';
+    if (r.missing.length) {
+      html += '<div class="miss"><span class="l">Profit net</span><span class="v">Profitul net nu poate fi verificat. Lipsesc: ' + r.missing.join(', ') + '.</span></div>';
+    } else {
+      var ok = r.net >= c.target;
+      html += '<div><span class="l">Profit net</span><span class="v" style="color:var(--' + (ok ? 'ok' : 'risk') + ')">' + eur(Math.round(r.net)) + '</span></div>' +
+        '<div><span class="l">Celule necesare pentru ținta de ' + eur(c.target) + '</span><span class="v">' + (r.needed !== null ? fmt(r.needed) : '—') + '</span></div>';
+    }
+    if (c.cells > 0) html += '<div><span class="l">Cost de promovare pe celulă vândută</span><span class="v">' + eur(Math.round(c.promo / c.cells)) + '</span></div>';
+    $('cRes').innerHTML = html;
+  }
+
+  // ---------- Evenimente ----------
+  [].forEach.call($('fmtSeg').children, function (b) {
+    b.addEventListener('click', function () {
+      state.format = b.dataset.fmt;
+      [].forEach.call($('fmtSeg').children, function (x) { x.setAttribute('aria-pressed', String(x === b)); });
+      $('feed').value = DEFAULTS[state.format];
+      if (state.format === 'alt' && !$('perpallet').value) $('perpallet').value = '';
+      applyInputs(true);
+    });
+  });
+  ['feed', 'change', 'minutes', 'perpallet', 'weight', 'material'].forEach(function (id) { $(id).addEventListener('input', function () { applyInputs(id !== 'material' && id !== 'weight' ? true : false); }); });
+  ['shifts', 'handle'].forEach(function (id) { $(id).addEventListener('change', function () { applyInputs(false); }); });
+  [].forEach.call(document.querySelectorAll('[data-scen]'), function (b) {
+    b.addEventListener('click', function () {
+      var s = b.dataset.scen;
+      if (s === 'stable') setInputs('13', 7.4, 90);
+      if (s === 'slow') setInputs('13', 7.4, 420);
+      if (s === 'over') setInputs('5', 11, 90);
+      setSpeed(60);
+      startTest();
+    });
+  });
+  $('btnTest').addEventListener('click', startTest);
+  $('btnBlock').addEventListener('click', function () { firstBlock(); });
+  $('btnDemo').addEventListener('click', runDemo);
+  $('btnDemoStop').addEventListener('click', function () { if (demo) demo.cancel = true; main.running = false; setPlayLabel(); if (cmp) cmp.running = false; });
+  $('btnPlay').addEventListener('click', function () {
+    if (!line) return;
+    if (main.sim.n >= Math.round(H / M.DT)) reset(main, M.simParams(line), kgOf(line));
+    hideCallout();
+    main.running = !main.running; setPlayLabel();
+  });
+  $('btnReset').addEventListener('click', function () { applyInputs(true); });
+  [].forEach.call($('speedSeg').children, function (b) { b.addEventListener('click', function () { setSpeed(+b.dataset.speed); }); });
+  $('btnSaveA').addEventListener('click', saveA);
+  $('btnCompare').addEventListener('click', function () { startCompare(120); });
+  $('changeB').addEventListener('input', function () { checkRange('changeB', 'un timp de schimbare', 's', 10, 1800, true); });
+  [].forEach.call($('abSeg').children, function (b) {
+    b.addEventListener('click', function () {
+      var showB = b.dataset.ab === 'b';
+      [].forEach.call($('abSeg').children, function (x) { x.setAttribute('aria-pressed', String(x === b)); });
+      $('stageA').dataset.hide = String(showB); $('stageB').dataset.hide = String(!showB);
+      if (cmp) { cmp.a.view.fit(); cmp.b.view.fit(); }
+    });
+  });
+  $('btnSummary').addEventListener('click', buildSummary);
+  $('btnCopy').addEventListener('click', copySummary);
+  ['cPrice', 'cCost', 'cPromo', 'cCells', 'cOther', 'cTax', 'cTarget'].forEach(function (id) { $(id).addEventListener('input', renderCommercial); });
+
+  // Pe ecrane mari, B e vizibil lângă A
+  function syncAB() { if (window.innerWidth > 720) { $('stageA').dataset.hide = 'false'; $('stageB').dataset.hide = 'false'; } else if ($('stageB').dataset.hide === 'false' && $('stageA').dataset.hide === 'false') { $('stageB').dataset.hide = 'true'; } }
+  window.addEventListener('resize', syncAB); syncAB();
+
+  // ---------- Bucla ----------
+  var last = performance.now();
+  function frame(now) {
+    var dt = Math.min(0.1, (now - last) / 1000); last = now;
+    if (main.running) {
+      advance(main, dt * main.speed);
+      if (main.sim.n >= Math.round(H / M.DT)) { main.running = false; setPlayLabel(); }
+    }
+    stepCompare(dt);
+    render(main);
+    if (cmp) { if ($('stageA').dataset.hide !== 'true') render(cmp.a); if ($('stageB').dataset.hide !== 'true') render(cmp.b); updateCompare(); }
+    updateKpis();
+    requestAnimationFrame(frame);
+  }
+
+  applyInputs(true);
+  renderCommercial();
+  // Prima imagine: scena în lucru, la minutul 4, ca exemplu
+  M.runUntil(main.sim, 240);
+  updateKpis();
+  requestAnimationFrame(frame);
+})();
+</script>
+
+</body>
+</html>
